@@ -1,3 +1,3 @@
 # Algorithmique et complexite
 
-[../presentations/algo-complexite.html](Les slides)
+[Les slides](../presentations/algo-complexite.html)
