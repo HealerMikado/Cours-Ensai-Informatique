@@ -1,0 +1,1229 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Projet informatique</title>
+    <link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/mine.css">
+    <link rel="stylesheet" href="css/simple-grid.css">
+
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>
+                <section>
+                    <h1>Complèment info 2A, CM2</h1>
+                    <p>Pépin Rémi, Ensai, 2019</p>
+                    <p>remi.pepin@ensai.fr</p>
+                    <img class="no-print" src="img/logo pyhton.png" alt="">
+                </section>
+
+                <section>
+                    <h3>Le plan</h3>
+                    <ol style="font-size: xx-large;">
+                        <li>Gestion de projet
+                            <ol>
+                                <li>Conseils généraux</li>
+                                <li>Méthodes Agiles</li>
+                            </ol>
+                        </li>
+                        <hr>
+                        <li>Rappels
+                            <ol>
+                                <li>Separation of concern</li>
+                                <li>API</li>
+                            </ol>
+                        </li>
+                        <li>
+                            Webservice
+                            <ol>
+                                <li>Définition</li>
+                                <li>Exemples</li>
+                                <li>Architecture microservices</li>
+                            </ol>
+                        </li>
+                        <li>
+                            Hyper Text Trasfer Protocol
+                            <ol>
+                                <li>Définition</li>
+                                <li>Exemples</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </section>
+
+            </section>
+
+            <section class="no-print">
+                <h2>Question ?</h2>
+                <iframe src="https://giphy.com/embed/xT0xeuOy2Fcl9vDGiA" width="480" height="480" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Data access object (DAO)</h2>
+
+                    <iframe src="https://giphy.com/embed/dIBLtolI6axTGIGopo" width="960" height="540" frameBorder="0"
+                        class="giphy-embed" allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>Question</h3>
+                    Quels sont les composants "importants" de votre ordinateur et leur utilité ?
+
+                    <aside class="notes">Question ouverte, noter réponse au tableau</aside>
+                </section>
+
+                <section>
+                    <h3>Un ordinateur (en gros)</h3>
+                    <ul>
+                        <li>Un processeur (CPU) : fait UNIQUEMENT du calcul</li>
+                        <li>La mémoire RAM : mémoire volatile rapide</li>
+                        <li>Disque dur (HDD, SSD) : mémoire longue durée</li>
+                        <li>Carte graphique : unité de calcul spécialisée</li>
+                    </ul>
+
+                    <aside class="notes">Bien insister sur CPU, RAM, disque ! Rendent 3 services différents
+                        <br>
+                        <b>Faire un dessin</b>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Question </h3>
+                    <p>A votre avis, où sont stockées les <span class="important">variables</span> de votre programme
+                        python
+                        ?</p>
+                    <span class="important fragment ">Dans la RAM <span class="important fragment "> -> tout disparaît
+                            quand on éteint le programme <img src="https://img.icons8.com/color/48/000000/boring.png"
+                                class="plain icon"></span> </span>
+
+                    <div class="important-bloc fragment">Vous avez un programme "one shot"</div>
+                    <aside class="notes">Pareil laisser participer les élèves (ne pas rentrer dans les détails
+                        de la gestion mémoire python par contre)
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Comment résoudre ce problème ?</h3>
+
+                    <img src="https://media2.giphy.com/media/a5viI92PAF89q/giphy.gif?cid=790b76119068737928a0a3e1282ee7ff952e04585d31791e&rid=giphy.gif"
+                        class="plain w80" alt="Batman pensif">
+                </section>
+
+                <section>
+                    <h3>Une question à ce poser</h3>
+                    <p>C'est quoi une variable python ?</p>
+                    <ul class="fragment">
+                        <li>Une référence (le nom de la variable)</li>
+                        <li class="fragment highlight-important">Un objet associé (sa valeur)</li>
+                    </ul>
+                    <aside class="notes">On zap la notion d'adressage mémoire.
+                        <br>
+                        Pas besoin de stocker la référence, car elle est dans le code source
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Une question qui en découle</h3>
+                    <p>C'est quoi un objet python ?</p>
+                    <ul class="fragment">
+                        <li class="fragment highlight-important">Des attributs (qui peuvent être eux même des objets)
+                        </li>
+                        <li>Des méthodes</li>
+                    </ul>
+                    <aside class="notes">Pareil, les méthodes c'est du code, nous on veut juste les attributs</aside>
+
+                </section>
+
+                <section>
+                    <h3>Pour résumer</h3>
+                    <p>
+                        On veut sauvegarder des couples clef-valeur, avec des valeurs qui peuvent être elle-même
+                        constituée de couples clef-valeur
+                    </p>
+
+                    <p class="fragment important">On veut sauvegarder un arbre <img class="plain icon"
+                            src="https://img.icons8.com/office/40/000000/tree-structure.png">
+                    </p>
+
+                    <aside class="notes">Besoin d'un dessin, parallèle avec les dict python</aside>
+
+                </section>
+
+
+                <section>
+                    <h3>Comment faire ça ?</h3>
+
+                    <ul>
+                        <li class="fragment">Écrire nos données sur le disque dur dans un fichier (sérialisation, format
+                            json, xml ...) <img class="plain icon" src=https://img.icons8.com/dusk/48/000000/hdd.png>
+                        </li>
+                        <li class="fragment">Utiliser une base de données (tables + relations) <img class="plain icon"
+                                src="https://img.icons8.com/clouds/100/000000/favorite-database.png">
+                        </li>
+                    </ul>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>Pour les notions seront expliquée la semaine prochaine</li>
+                            <li>Demander comment la base fait à leur avis ? Elle gère dans des fichiers
+                                et la on peut faire le parallèle avec les couches. La bdd rend un service, j'ignore
+                                comment
+                                elle
+                                fait mais je sais ce qu'elle attend en entrée et ce qu'elle me donne en sortie !
+                            </li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Checkpoint</h3>
+                    <p><span class="important">Rappel du problème</span> : persister des données</p>
+                    <ul>
+                        <li class="fragment"><b>Quoi ?</b> Variables, peuvent être représentées par des arbres</li>
+                        <li class="fragment"><b>Où ?</b> En base, ou dans un fichier sous forme sérialisée</li>
+                        <li class="fragment"><span class="important"><b>Comment ?</b> En utilisant des Data access
+                                objects (DAO)</span>
+                        </li>
+                    </ul>
+
+                    <aside class="notes">Petite pose recap pour essayer de récupérer tout le monde avant la DAO</aside>
+                </section>
+
+                <section>
+                    <h3>C'est quoi une DAO ?</h3>
+
+                    <img src="https://media2.giphy.com/media/a5viI92PAF89q/giphy.gif?cid=790b76119068737928a0a3e1282ee7ff952e04585d31791e&rid=giphy.gif"
+                        class="plain w80" alt="Batman pensif">
+                </section>
+
+                <section>
+                    <h3>C'est quoi une DAO ?</h3>
+
+                    <ul>
+                        <li class="fragment">Classe technique <img class="plain icon"
+                                src="https://img.icons8.com/color/48/000000/sonic-screwdriver.png">
+                        </li>
+                        <li class="fragment">Une classe DAO / object métier <img class="plain icon"
+                                src="https://img.icons8.com/officel/48/000000/one-to-one.png">
+                        </li>
+                        <li class="fragment">Expose des méthodes pour communiquer avec la couche de persistance <img
+                                class="plain icon" src=https://img.icons8.com/dusk/48/000000/hdd.png>
+                        </li>
+                    </ul>
+                    <aside class="notes">
+                        Placer le mot API (application programming interface). Rend un service à des clients. Comment
+                        elle
+                        fait ?
+                        Pas le problème du client. Comme vous au restaurant. Vous voulez manger, comment c'est fait vous
+                        importe peu tant que le service est rendu (avec un niveau d'exigence)
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Quelles méthodes exposer ?</h3>
+                    <div class="fragment">
+                        <p class="important">CRUD</p>
+                        <ul>
+                            <li><span class="important">C</span>reate</li>
+                            <li><span class="important">R</span>ead</li>
+                            <li><span class="important">U</span>pdate</li>
+                            <li><span class="important">D</span>elete</li>
+                        </ul>
+                    </div>
+
+                    <aside class="notes">Faire participer et essayer de montrer que ses 4 là suffisent.
+                        Après on peut avoir des raffinements en faisant des choses en masses, ou filtrer etc ...
+                        <br>
+                        Quid de la copie ? Une copie c'est une lecture + creation donc on sait faire
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>L'intérêt d'une classe à part</h3>
+                    <div class="fragment">
+                        <p class="important">Separation of concern</p>
+                        <ul>
+                            <li>Classe "jetable" <img class="plain icon"
+                                    src="https://img.icons8.com/officel/48/000000/trash.png"></li>
+                            <li>Modifiable sans risque <img class="plain icon"
+                                    src="https://img.icons8.com/color/48/000000/warning-shield.png">
+                            </li>
+                            <li>Parallélisation du travail <img class="plain icon"
+                                    src="https://img.icons8.com/dusk/48/000000/teamwork.png">
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <aside class="notes">On remet une couche (^.^) ça fait pas de mal</aside>
+                </section>
+
+                <section>
+                    <h3>Petit recap</h3>
+                    <img class="plain" src="img/couche dao.png" alt="Trois couches. Couche métier, DAO et persistance.">
+
+                    <aside class="notes">Petit exemple pour illustrer. A partir de l'exemple montrer la vie d'un objet
+                        avenger
+                        (de la représentation python, puis dao, puis base). On commence avec notre objet métier d'un
+                        côté et
+                        la base de l'autre. Puis à chaque slide suivant on montre ce qu'il se passe.
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Un petit exemple : AvengerDAO</h3>
+
+                    <pre><code data-trim data-noescape>
+                class AvengerDAO :
+                    def create(self, avenger):
+                    """
+                    Persiste une instance d'avenger en base. Retourne l'avenger en entrée
+                    mise à jour de son id en base
+                    """
+                        cur = connection.cursor()
+                        try:
+                            cur.execute(
+                                "INSERT INTO avengers (name, alias, power) VALUES (%s, %s, %s) RETURNING id;"
+                                , (avenger.name, avenger.alias, avenger.power))
+                            avenger.id = cur.fetchone()[0]
+                            # la transaction est enregistrée en base
+                            connection.commit()
+                        except psycopg2.Error as error:
+                            # la transaction est annulée
+                            connection.rollback()
+                            raise error
+                        finally:
+                            cur.close()
+
+                        return avenger
+                </code></pre>
+
+                    <aside class="notes">Exemple avec une base. Décrire le SQL, le reset c'est du technique, TP de
+                        cette aprem.
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Un petit exemple : AvengerDAO</h3>
+
+                    <pre><code data-trim data-noescape>
+                def read(self, id):
+                    with connection.cursor() as cur:
+                        row = cur.execute(
+                            "select name, alias, power from avengers where id=%s;", (id,))
+                        row = cur.fetchone()
+                        if row:
+                            return Avenger(name=row[0], alias=row[1],power=row[2], id=id)
+                        else:
+                            return None
+                </code></pre>
+
+                    <pre><code data-trim data-noescape>
+                def update(self, avenger):
+                    with connection.cursor() as cur:
+                        try:
+                            cur.execute(
+                                "update avengers set name=%s, alias=%s, power=%s where id=%s"
+                                ,(avenger.name, avenger.alias, avenger.power, avenger.id))
+                            connection.commit()
+                        except psycopg2.Error as error:
+                            connection.rollback()
+                            raise error
+                </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Un petit exemple : AvengerDAO</h3>
+
+                    <pre><code data-trim data-noescape>
+                def delete(self, avenger):
+                    with connection.cursor() as cur:
+                        try:
+                            cur.execute("delete from avengers where id=%s", (avenger.id,))
+                            connection.commit()
+                        except psycopg2.Error as error:
+                            connection.rollback()
+                            raise error
+                </code></pre>
+
+                </section>
+
+
+                <section>
+                    <h3>Avenger End game</h3>
+
+                    <ul>
+                        <li class="fragment">Python travail en RAM (volatile) <img class="plain icon"
+                                src="https://img.icons8.com/color/48/000000/the-flash-sign--v2.png">
+                        </li>
+                        <li class="fragment">Obliger d'avoir un mécanisme de persistance des données <img
+                                class="plain icon" src=https://img.icons8.com/dusk/48/000000/hdd.png>
+                        </li>
+                        <li class="fragment">DAO : centralise les méthodes pour lire/écrire nos données <img
+                                class="plain icon" src="https://img.icons8.com/color/48/000000/edit-property.png">
+                        </li>
+                        <li class="fragment">Le couche métier appele la DAO sans se préoccuper du système de persistance
+                            <img class="plain icon" src="https://img.icons8.com/color/48/000000/invisible.png">
+                        </li>
+                        <li class="fragment">Permet un travail d'équipe efficace <img class="plain icon"
+                                src="https://img.icons8.com/dusk/48/000000/teamwork.png">
+                        </li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <iframe src="https://giphy.com/embed/acJ6UbGLUB2De" width="960" height="540" frameBorder="0"
+                        class="giphy-embed" allowFullScreen></iframe>
+                </section>
+
+
+            </section>
+            <section>
+                <h2>The end</h2>
+
+                <iframe src="https://giphy.com/embed/3oriO0OEd9QIDdllqo" width="480" height="477" frameBorder="0"
+                    class="giphy-embed" allowFullScreen></iframe>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Bonus : injection sql</h2>
+
+                    <img class="w80" src="https://imgs.xkcd.com/comics/exploits_of_a_mom.png" alt="injection sql">
+
+                    <aside class="notes">Des idées ?</aside>
+                </section>
+
+                <section>
+                    <h3>Never trust your input !</h3>
+
+                    <div class="important-bloc">
+                        Tout ce qui rentre dans votre système (saisies, fichiers ...) est potentiellement dangereux !
+                    </div>
+
+                </section>
+
+                <section>
+                    <h3>Cas de l'injection SQL</h3>
+
+                    <ul>
+                        <li class="fragment">Connaissance de base d'architecture logicielle et de SQL</li>
+                        <li class="fragment">Écrire dans un champ du SQL car on se doute qu'il sera envoyé en base</li>
+                        <li class="fragment">Pourquoi ?
+                            <ul>
+                                <li class="fragment">Récupérer des données</li>
+                                <li class="fragment">Supprimer des données</li>
+                                <li class="fragment">Rendre le service inaccessible</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </section>
+                <section>
+                    <h3>Solution </h3>
+
+                    <ul>
+                        <li> Ne pas créer vos requêtes par simple concaténation de string !!!!
+                        </li>
+                        <li>Échapper tous les caractères spéciaux/sujets à problème</li>
+                    </ul>
+
+
+                    <div class="important-bloc fragment">
+                        Utiliser des outils performants -> psycopg2
+                    </div>
+
+
+                </section>
+
+                <section>
+                    <h3>Solution</h3>
+
+                    <pre><code data-trim data-noescape>
+                def read(self, id):
+                    with connection.cursor() as cur:
+                        row = cur.execute(
+                            "select name, alias, power from avengers where id=%s;", (id,))
+                        row = cur.fetchone()
+                        if row:
+                            return Avenger(name=row[0], alias=row[1],power=row[2], id=id)
+                        else:
+                            return None
+                </code></pre>
+                    <aside class="notes">Expliquer le execute %s</aside>
+                </section>
+
+                <section>
+                    <h3>Autres failles</h3>
+                    <ul>
+                        <li class="fragment">Cross site scripting (XSS)</li>
+                        <li class="fragment">Json/XML injection</li>
+                        <li class="fragment">Exécution de code à distance</li>
+                    </ul>
+                </section>
+
+
+            </section>
+
+            
+
+            <section>
+                <section>
+                    <h2>Gestion de projet</h2>
+                    <img class="plain w80 no-print" src="http://i.imgur.com/s3HpPeb.gif" alt="">
+                    <aside class="notes">On veut éviter ce sentiment à la fin</aside>
+                </section>
+
+                <section>
+                    <h3>Quelques conseils généraux</h3>
+                    <ul>
+                        <li class="fragment">Passez du temps sur l'analyse</li>
+                        <li class="fragment">Avancez étape par étape</li>
+                        <li class="fragment">Validez chaque étape (test)</li>
+                    </ul>
+                    <aside class="notes">Eviter l'effet tunnel. Faire un point de temps en temps est-on sur la bonne voix ?</aside>
+                </section>
+
+                <section>
+                    <h3>Fixez des objectifs réalisables</h3>
+                    <img class="plain w60  no-print" src="https://www.reactiongifs.com/wp-content/uploads/2013/03/Almost-did-good.gif" alt="">
+                    <aside class="notes">Encore une fois on préfère une petite appli qui fonctionne qu'un projet ambitieux qui plante</aside>
+                </section>
+
+                <section>
+                    <h3>Ne procrastinez pas !</h3>
+                    <iframe src="https://giphy.com/embed/NTur7XlVDUdqM" width="960" height="540" frameBorder="0" class="giphy-embed  no-print"
+                        allowFullScreen></iframe>
+
+                </section>
+
+                <section>
+                    <h3>Sachez demander de l'aide</h3>
+                    <iframe src="https://giphy.com/embed/3J1lZsin0EYUw" width="960" height="548" frameBorder="0" class="giphy-embed  no-print"
+                        allowFullScreen></iframe>
+                        <aside class="notes">Surtout sur la partie git (CM4). Ne restez pas bloqué bêtement. En entreprise c'est pareils</aside>
+                </section>
+
+                <section>
+                    <h3>Ne vous dispersez pas</h3>
+                    <iframe src="https://giphy.com/embed/14afmHqKZ3ctsk" width="480" height="480" frameBorder="0" class="giphy-embed  no-print"
+                        allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>Mais surtout</h3>
+                    <h1 class="fragment">PAS D'IHM !</h1>
+                </section>
+
+                <section>
+                    <h3 class="fragment">Pas d'ihm</h3>
+                    <ol>
+                        <li class="fragment fade-right">Pas d'ihm</li>
+                        <li class="fragment fade-up"><span class="important">Pas d'ihm</span></li>
+                        <li class="fragment fade-down"><span class="fragment highlight-important">PAS d'IHM</span></li>
+                        <li class="fragment fade-left"><span class="fragment highlight-red">PaS d'IhM</span></li>
+                        <li class="fragment">
+                            <div class="important-bloc fragment grow">Pas d'ihm !!!!!!</div>
+                        </li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>Bonne pratique</h3>
+                    <span class="important">Montrez toutes les semaines votre avancée à votre tuteur</span>
+                    <aside class="notes">Aussi bien code que diagramme</aside>
+                </section>
+
+                <section>
+                    <h3>S'organiser en équipe</h3>
+                    <ul>
+                        <li>Parallélisation</li>
+                        <li>Tout le monde fait quelque chose</li>
+                        <li>Entreaide</li>
+                        <li>Sessions collectives > individuelles</li>
+                    </ul>
+                    <aside class="notes">Il faut de temps en temps prendre le temps pour s'organiser (ex overcoocked)</aside>
+                </section>
+
+                <section>
+                    <h3>Prioriser les tâches</h3>
+                    <ol>
+                        <li class="fragment">Recensez les tâches à faire</li>
+                        <li class="fragment">Estimez un niveau de criticité</li>
+                        <li class="fragment">Estimez une difficulté</li>
+                    </ol>
+                    <aside class="notes">Pas besoin d'aller dans le détail. 4 niveau suffisent (bas, moyen, haut, très haut)
+                        <br> Faites ce travail en groupe et chaque personne donne son avis. Le tout animé par le chef de
+                        groupe
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>Prioriser les tâches</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tâche</th>
+                                <th>Criticité</th>
+                                <th>Difficulté</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Récupérer des tweets</td>
+                                <td>4</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>Authentification</td>
+                                <td>2</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Gestion des abonnements (utilisateur)</td>
+                                <td>3</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>Gestion des thématique (administrateur)</td>
+                                <td>1</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Sauvegarde de tweets</td>
+                                <td>2</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Formatage de l'IHM</td>
+                                <td>1</td>
+                                <td>3</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Prioriser les tâches</h3>
+                    <p>On peut ensuite faire un graphique</p>
+                    <div class="important-bloc fragment">Et arbitrer sur les tâches à faire</div>
+                    <aside class="notes">Faire un dessin</aside>
+                </section>
+
+                <section>
+                    <h3>Faire un macro planing</h3>
+                    <ul>
+                        <li class="fragment">Echéances</li>
+                        <li class="fragment">Assez de travail pour tout le monde ?</li>
+                        <li class="fragment">Objectifs réalisables ?</li>
+                        <li class="fragment">Retard/avance ?</li>
+                    </ul>
+                    <aside class="notes">Pas besoin de précision, car ne sera pas respecté, mais d'une idée</aside>
+                </section>
+
+                <section>
+                    <h3>Diagramme gantt</h3>
+                    <ul>
+                        <li class="fragement">On place les différentes taches</li>
+                        <li class="fragement">On représente leur criticité (optionnel)</li>
+                        <li class="fragement">On estime le temps de travail</li>
+                        <li class="fragement">On essayer de faire des dépendances</li>
+                        <li class="fragement">On estime les dates de début</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Exemple</h3>
+                    <img class="plain w80" src="img/gant exemple.PNG" alt="">
+                </section>
+
+                <section>
+                    <h3>Exemple</h3>
+                    <img class="plain w80" src="img/gant exemple durée.PNG" alt="">
+                </section>
+
+                <section>
+                    <h3>Exemple</h3>
+                    <img class="plain w80" src="img/gant exemple full.PNG" alt="">
+                </section>
+
+                <section>
+                    <h3>Limites</h3>
+                    <div class="bloc-important">Un planing doit être mis à jour</div>
+
+                    <aside class="notes">Il n'est pas immuable, il peut y avoir des coûts cachés. Il ne faut pas hésiter
+                        à le mettre à jour voir abandonner des tâches (priorisation)</aside>
+                </section>
+
+                <section>
+
+                    <h2>Méthodes Agile</h2>
+
+                    <iframe src="https://giphy.com/embed/8Ysb7IbGnjZE4" width="960" height="540" frameBorder="0" class="no-print giphy-embed"
+                        allowFullScreen></iframe>
+
+                </section>
+
+                <section>
+                    <h3>Cause d'échec de projet</h3>
+                    <ul>
+                        <li class="fragment highlight-important">40% Changements de périmètre</li>
+                        <li class="fragment highlight-important">36% Disponibilité des ressources</li>
+                        <li>33% Deadlines non réalistes</li>
+                        <li class="fragment highlight-important">28% Objectifs non clarifiés</li>
+                        <li>20% Dépendance incertaine (« uncertain dependencies » dans le texte)</li>
+                        <li>19% Communication pauvre</li>
+                        <li lass="fragment highlight-important">19% Echec de planification</li>
+                        <li>14% Manque de compétences au sein de l’équipe projet
+                        </li>
+                    </ul>
+
+                    <p>Etude KPMG - 2010</p>
+                    <aside class="notes">Changement de périmètre c'est ultra sourant, perdre une personne aussi, objectifs pas clairs aussi</aside>
+                </section>
+
+                <section>
+                    <h3>Une solution <span class="important">l'agilité </span></h3>
+                </section>
+
+                <section>
+                    <h3>La philosophie</h3>
+
+                    <ul>
+                        <li>Les individus et leurs interactions plus que les processus et les outils</li>
+                        <li>Un logiciel qui fonctionne plus qu’une documentation exhaustive</li>
+                        <li>La collaboration avec les clients plus que la négociation contractuelle</li>
+                        <li class="important">L’adaptation au changement plus que le suivi d’un plan</li>
+                    </ul>
+                    <aside class="notes">Attention, cela ne veut pas dire que c'est la fête ! Besoin de points réguliers
+                        avec des démos, une adhésion de toutes l'équipe
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Les méthodes agiles</h3>
+                    Plusieurs méthodes (XP, Scrum, Lean, Kanban...)
+
+                    <div class="important-bloc">Plus que la méthode, c'est la démarche qui compte !</div>
+
+                    <aside class="notes">Préciser qu'il y a une dérive de l'agilité dans l'entreprise. Les décideurs veulent
+                        que leur équipes en fassent et impose une méthode. C'est clairement un eccueil !
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Zoom : Kanban</h3>
+                    <img class="w80" src="https://www.smoall.com/wp-content/uploads/2017/10/Kanban-1080x675.jpg" alt="">
+                </section>
+
+                <section>
+                    <h3>Zoom : Kanban</h3>
+                    <ul>
+                        <li>Un post-it = une tâche</li>
+                        <li>Priorisation (de haut en bas)</li>
+                        <li>L'équipier•e s’affecte sur une tâche (responsabilité)</li>
+                        <li>Permet de voir l’avancement</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Un outil</h3>
+                    <a href="https://trello.com">https://trello.com</a>
+                </section>
+
+                <section>
+                    <h3>Un outil pour communiquer</h3>
+                    <a href="https://slack.com/intl/fr-fr/">https://slack.com/intl/fr-fr/</a>
+                </section>
+
+                <section class="no-print">
+                    <h3>Questions ?</h3>
+                    <iframe src="https://giphy.com/embed/l0Iy8hSJalxmgTOF2" width="960" height="520" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+                </section>
+
+            </section>
+
+            <section>
+                <h2> Modèle client / serveurs</h2>
+            </section>
+
+            <section>
+                <section>
+                    <h2>
+                        Rappel de la semaine dernière
+                    </h2>
+                    <iframe src="https://giphy.com/embed/Jap1tdjahS0rm" width="900" height="500" frameBorder="0" class="no-print giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <p class="starWars"> Il y a pas longtemps, dans une galaxie pas vraiment lointaine ...</p>
+                </section>
+
+                <section data-background="#000000">
+                    <img class="plain" src="img/logo_SW_separation_of_concern.png" alt="">
+                </section>
+
+                <section>
+                    <h3>Plus sérieusement</h3>
+
+                    <img class="plain" src="https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/media/image5-2.png" alt="3 layers">
+
+                </section>
+
+                <section>
+                    <h3>Séparation en couche</h3>
+                    <ul>
+                        <li class="fragment">Chaque couche s'occupe d'une macro tâche</li>
+                        <li class="fragment">Une couche communique seulement avec les couches adjacentes</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>L'étape d'après</h3>
+                    Décomposer une couche en modules
+                </section>
+
+                <section>
+                    <h3>Exemples</h3>
+                    <p>Site de e-commerce</p>
+                    <ul>
+                        <li>Module authentification</li>
+                        <li>Module gestion de compte</li>
+                        <li>Module paiement</li>
+                        <li>Module de recherche</li>
+                        <li>Module analyse des données</li>
+                        <li>Module panier</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Application Programming Interface (API)</h3>
+                    <ul>
+                        <li class="fragment">Modules isolées au maximum</li>
+                        <li class="fragment">Chaque module ne fait qu'une chose</li>
+                        <li class="fragment">Réutilisation</li>
+                        <li class="fragment">Contractualisation des inputs/outputs</li>
+                        <li class="fragment">Boite noire</li>
+                    </ul>
+                    <aside class="notes">Pour reprendre l'exemple du dessus, le module d'authentification peut être utilisé
+                        aussi bien par les utilisateur pour la version site marchand, que les admins pour pour la partie
+                        administration.
+                    </aside>
+                </section>
+
+                <section>
+                    <div class="important-bloc">Une API rend un service aux utilisateurs sans qu'ils aient à savoir comment
+                        elle fait. Ils connaissent juste ce qu'elle attend en entrée et ce qu'elle produit !
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Limites</h3>
+                    <ul>
+                        <li class="fragment">Fait partie du code</li>
+                        <li class="fragment">Mise à jour difficile</li>
+                        <li class="fragment important">Application monolithique</li>
+                    </ul>
+                    <aside class="notes">Même si vous ne la voyez pas elle est dans votre code. Si vous devez mettre à jour
+                        une bibliothèque il faut arrêter le code, faire la maj, vérifier qu'il n'y a pas de regression ...
+                        C'est un peu lourd. Et quand les maj sont des maj de sécurité vous êtes obligé de les faire !
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Une API particulière, les web service</h3>
+                    <a href="https://www.testarchitect.com/product/features-and-supported-platforms/testarchitect-supported-platforms/web-service-and-api-testing">
+                        <img src="https://d14b7h0kp9rj1j.cloudfront.net/images/gallery/cross/web-service.png" alt="web service">
+                    </a>
+                </section>
+
+                <section>
+                    <h3>It's question time !! YEAAAAHHHH</h3>
+                    A votre avis, Twitter permet-il a tout le monde d'accéder à leurs bases de données ?
+                    <aside class="notes">Bien sûr non !</aside>
+                </section>
+
+                <section>
+                    <h3>Wait what ?!</h3>
+                    <p>
+                        Pourtant tout le monde utilisent les données twitter !
+
+                    </p>
+
+                    <p class="fragment">Comment font-ils ?</p>
+                </section>
+
+                <section class="no-print">
+                    <h3>Des idées ?</h3>
+
+                    <iframe src="https://giphy.com/embed/8acGIeFnqLA7S" width="600" height="600" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>Solution : web scraper</h3>
+                    Consiste à écrire une application qui se connecte à un site, et qui va lire la page pour en tirer des informations
+                    <div class="fragment">
+                        <p class="important">Problèmes</p>
+                        <ul>
+                            <li>Crée du traffic artificiel (côté site)</li>
+                            <li>Chaque changement dans le site casse notre application</li>
+                        </ul>
+                    </div>
+
+                    <aside class="notes">Dire que derrière un site il y a du HTML. Montrer un exemple ?</aside>
+                </section>
+
+                <section>
+                    <h3>Autre solution : créer un point d'entrée pour les machines </h3>
+                    <ul>
+                        <li class="fragment">Accessible depuis le web</li>
+                        <li class="fragment">Fait pour les machines</li>
+                        <li class="fragment important">Contrôle ce que l'on rend accessible</li>
+                    </ul>
+
+                    <div class="important-bloc fragment">Interface entre l'extérieur et notre système</div>
+                </section>
+
+                <section>
+                    <h3>Démo</h3>
+                </section>
+
+                <section class="no-print">
+                    <h3>Des questions ???</h3>
+                    <iframe src="https://giphy.com/embed/BfGSgzHlsELtu" width="480" height="480" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+                </section>
+            </section>
+
+            <section>
+
+                <section>
+                    <h2>Les web services</h2>
+                </section>
+
+                <section>
+                    <h3>Les web services</h3>
+                    <ul>
+                        <li class="fragment">Application web</li>
+                        <li class="fragment important">Accessible via requête HTTP</li>
+                        <li class="fragment">Sans interface graphique</li>
+                        <li class="fragment important">Renvoie des données compréhensible par les machines (JSON, XML...)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Plusieurs types</h3>
+                    <ul>
+                        <li>WS REST : le plus courant, le type que vous allez manipuler, json</li>
+                        <li>WS SOAP : plus complet donc plus lourd que le REST, xml</li>
+                        <li>WSDL : Web Services Description Language, xml</li>
+                        <li>WS UDDI : Universal Description Discovery and Integration, xml</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <div class="important-bloc">Un web service est un module applicatif, accessible sur le protocole HTTP
+                        via une URL qui va répondre à une demande
+                    </div>
+
+                    <p class="important fragment">Comme un site web, mais pour les machine</p>
+                </section>
+
+
+                <section>
+                    <h3>Exemple</h3>
+                    <a href="https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=statistiques-de-prets-de-dvd-en-2017-cesson-sevigne&rows=10&sort=nombre_de_prets_2017&facet=code_insee">
+                        Les 10 DVD les plus empruntés à la médiathèque en 2017 - Cesson-Sévigné</a>
+                </section>
+
+                <section>
+                    <h3>Architecture microservices </h3>
+                    <p>Site de e-commerce</p>
+                    <ul>
+                        <li>Module authentification</li>
+                        <li>Module gestion de compte</li>
+                        <li>Module paiement</li>
+                        <li>Module de recherche</li>
+                        <li>Module analyse des données</li>
+                        <li>Module panier</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Architecture microservices </h3>
+                    Chaque module est un webservice indépendant, et c'est l'application côté client qui va les contacter
+
+                    <aside class="notes">Un dessin pourrait peut-être aider</aside>
+                </section>
+
+                <section>
+                    <h3>Comment ça fonctionne ?</h3>
+                        <iframe src="https://giphy.com/embed/12NUbkX6p4xOO4" width="480" height="440" frameBorder="0" class="no-print giphy-embed"
+                            allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>La notion de client-serveur</h3>
+                    <ul>
+                        <li class="fragment"><span class="important">LE MODELE QUI REGIT LE WEB</span></li>
+                        <li class="fragment">Des machines qui attendent des demandes : <span class="important">serveurs</span></li>
+                        <li class="fragment">Des machines qui font des demandes : <span class="important">client</span></li>
+                        <li class="fragment">Le client initie le contact, le serveur répond</li>
+                    </ul>
+                </section>
+
+                <section class="no-print">
+                    <h3>Comparaison avec vie réelle</h3>
+                    <ul>
+                        <li class="fragment">Vous marchez dans la rue et vous avez envie d'un café frappé Double shot espresso
+                            and Cream</li>
+                        <li class="fragment">Vous rentrer dans un coffe-shop et <span class="important">demander</span> votre
+                            café </li>
+                        <li class="fragment">Le <span class="important">serveur</span> traite votre demande et vous donne
+                            votre café</li>
+                        <li class="fragment">Vous partez avec votre café</li>
+                    </ul>
+
+                    <aside class="notes"></aside>
+                </section>
+
+                <section>
+                    <h3>Communication client-serveur</h3>
+                </section>
+
+                <section>
+                    <h3>Mon pc connait-il www.google.com ?</h3>
+
+                    <img class="w60 plain" src="https://66.media.tumblr.com/tumblr_m7ois2qIWv1r4q04g.gif" alt="">
+
+                </section>
+
+
+                <section>
+                    <h3>NON !</h3>
+
+                    <img src="http://www.reactiongifs.com/wp-content/uploads/2013/11/omg-owl.gif" alt="" class="no-print plain w80">
+
+                </section>
+
+                <section>
+                    Votre machine sait manipuler des <span class="important"> adresse IP</span>, pas des <span class="important">noms
+                        de domaine</span>
+                </section>
+
+
+                <section>
+                    <h3>Nom de domaine, IP, DNS, port</h3>
+                    <ul>
+                        <li>Nom de domaine : nom "human friendly"</li>
+                        <li>Adresse IP : addresse de la machine sur internet</li>
+                        <li>DNS : serveur qui font la lien entre nom de domaine et IP</li>
+                        <li>Port : canal de communication, identifie le type de communication</li>
+                    </ul>
+                    <aside class="notes">Les DNS sont eux les garants du web tel qu'on le connait. Effacer un nom de domaine
+                        d'un DNS veut dire supprimer le serveur d'internet sauf pour ceux qui ont son IP. En interne, potentiellement
+                        pas de dns, donc besoin de se souvenir des IP.
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Pour résumer</h3>
+                    <ul>
+                        <li class="fragment">Client : initie une communication</li>
+                        <li class="fragment">Serveur : répond aux clients</li>
+                        <li class="fragment">Ne connaissent que les adresses IP</li>
+                        <li class="fragment"> DNS : nom de domaine -> IP</li>
+                        <li class="fragment">Plusieurs ports chacun avec un type de comunication associée par défaut.
+                        </li>
+                        <li class="fragment important">Comment communiquent-ils ?</li>
+                    </ul>
+                </section>
+
+                <section class="no-print">
+                    <iframe src="https://giphy.com/embed/XbPFv2ihC3rRm" width="900" height="600" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+                </section>
+
+                <section class="no-print">
+                    <h3>Des questions ?</h3>
+                    <iframe src="https://giphy.com/embed/7zusy37fwKjfy" width="480" height="343" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+                    </section>
+
+            </section>
+
+
+            <section>
+                <section>
+                    <h2>Hyper Text Transfer Protocol (HTTP)</h2>
+                </section>
+                <section>
+                    <h3>HTTP</h3>
+                    <p>Protocole de communication client-serveur développé pour le World Wide Web</p>
+                    <p>N'est pas le seul, FTP, SMTP, IRC ...</p>
+                </section>
+                <section class="no-print">
+                    <h3>Avez vous une idée de requête HTTP ?</h3>
+
+                    <iframe src="https://giphy.com/embed/14mgxYFJHXGmoo" width="900" height="500" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+
+                    <aside class="notes">Vous faites tout le temps des requêtes HTTP sans le savoir.</aside>
+                </section>
+
+                <section>
+                    <h3>Avez vous une idée de requête HTTP ?</h3>
+
+                    <p>Demander une page web via votre navigateur crée une requête HTTP</p>
+                    <aside class="notes">Vous faites tout le temps des requêtes HTTP sans le savoir.</aside>
+                </section>
+
+
+                <section>
+                    <h3>Les éléments d'une requête</h3>
+                    <ul>
+                        <li>Localisation de la ressoure : URL</li>
+                        <li>La méthode employée (GET, POST, UPDATE, DELETE ...)</li>
+                        <li>Les paramètres de la requête</li>
+                        <li>Le corps de la requête</li>
+                    </ul>
+                    <aside class="notes">
+                        Les paramètre son derière le ? le corps vous ne le voyez pas, mais possible de le voir
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Les éléments d'une requête</h3>
+                    <span class="fragment highlight-blue">GET </span>
+                    <span class="fragment highlight-red">https://api.twitter.com/1.1/search/tweets.json</span>
+                    ?<span class="fragment highlight-important">q=%23avengers</span>
+                    <p class="fragment">Pas de corps</p>
+                </section>
+
+                <section>
+                    <h3>Démo</h3>
+                </section>
+
+                <section>
+                    <h3>Les méthodes HTTP</h3>
+                    <ul>
+                        <li>POST</li>
+                        <li>GET</li>
+                        <li>UPDATE</li>
+                        <li>DELETE</li>
+                    </ul>
+                    <div class="fragment important-bloc ">C'est le CRUD !</div>
+                </section>
+
+                <section>
+                    <h3>Culture info</h3>
+                    <ul>
+                        <li class="fragment">Pas d'obligation de respecter</li>
+                        <li class="fragment">1 URL - différents comportements</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Exemple</h3>
+                    <p>https://www.monsite.com/user</p>
+                    <ul>
+                        <li>GET : récupérer un user en spécifiant un id (param ou corps)</li>
+                        <li>POST : ajouter un user passer dans le corps</li>
+                        <li>UPDATE : modifier un user avec les infos dans le corps</li>
+                        <li>DELETE : supprimer un user avec info dans le corps</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Pour résumer</h3>
+                    <ul>
+                        <li class="fragment">Le HTTP est le protocole du web</li>
+                        <li class="fragment">Méthode</li>
+                        <li class="fragment">URL</li>
+                        <li class="fragment">Paramètres dans URL ou corps</li>
+                    </ul>
+                </section>
+
+                <section class="no-print">
+                    <h3>Des questions ?</h3>
+                    <iframe src="https://giphy.com/embed/7PfwoiCwBp6Ra" width="480" height="384" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+                    </section>
+            </section>
+
+            <section class="no-print">
+                <h2>THE END</h2>
+                <iframe src="https://giphy.com/embed/fnlXXGImVWB0RYWWQj" width="480" height="480" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+            </section>
+
+
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+        });
+
+    </script>
+
+</body>
+</html>

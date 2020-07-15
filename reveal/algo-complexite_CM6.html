@@ -1,0 +1,750 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<section>
+					<h1>Algorithmique et complexité</h1>
+					<h2>Programmation dynamique</h2>
+					<p>Pépin Rémi, Ensai, 2019</p>
+					<img src="img/logo pyhton.png" alt="">
+				</section>
+				<section>
+					<h3>Les objectifs du cours</h3>
+					<ul>
+						<li>Voir les limites des solutions récursives simples</li>
+						<li>En comprendre les causes</li>
+						<li>Découvrir la programmation dynamique</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Le plan</h3>
+					<ol style="font-size: xx-large;">
+						<li>Exemple 1 : vente de fûts de bières</li>
+						<li>Exemple 2 : multiplications chaînées de matrices </li>
+						<li>La programmation dynamique</li>
+					</ol>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Exemple 1 : <br>
+						Vente de bière</h2>
+				</section>
+
+				<section>
+					<h3>Le contexte</h3>
+					<ul>
+						<li>Braserie artisanale</li>
+						<li>Vente de fûts</li>
+						<li>Différents acheteurs qui achètent par lots à différents prix</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Les prix</h3>
+					<table>
+						<caption>Prix des lots</caption>
+						<tr>
+							<th>Acheteur i</td>
+							<td>1</td>
+							<td>2</td>
+							<td>3</td>
+							<td>4</td>
+							<td>5</td>
+							<td>6</td>
+							<td>7</td>
+							<td>8</td>
+							<td>9</td>
+							<td>10<br></td>
+						</tr>
+						<tr>
+							<th>Taille lot</td>
+							<td>1</td>
+							<td>2</td>
+							<td>3</td>
+							<td>4</td>
+							<td>5</td>
+							<td>6</td>
+							<td>7</td>
+							<td>8</td>
+							<td>9</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<th>Prix</td>
+							<td>1</td>
+							<td>5</td>
+							<td>8</td>
+							<td>9</td>
+							<td>10</td>
+							<td>17</td>
+							<td>17</td>
+							<td>20</td>
+							<td>24</td>
+							<td>30</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Le problème</h3>
+					<span class="green">Le but</span> : maximiser votre profit
+					<p class="fragment important">Problème d'optmisation</p>
+					<div class="fragment important-bloc">
+						<p>Décomposer un lot de n fûts pour avoir le revenu maximal.</p>
+						<p class="note">On peut ne pas décomposer le lot</p>
+					</div>
+				</section>
+
+				<section>
+					<h3>Exemple</h3>
+					<p>
+						Vous voulez vendre 4 fûts
+					</p>
+					<ul>
+						<li>\(p_4 = 9\)</li>
+						<li>\(p_1 + p_3 = 9\)</li>
+						<li class="fragment highlight-important">\(p_2 + p_2 = 10\)</li>
+						<li>\(p_1 + p_1 + p_2 = 7\)</li>
+						<li>\(p_1 + p_1 + p_1 + p_1 = 4\)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Formalisation</h3>
+					Si une solution optimale décompose notre stock de \(n\) fûts en \(k\) lots alors la décomposition
+					\[n = i_1 + i_2 + ... + i_k\]
+					en lot de taille \(i_1, i_2, ..., i_k\) offre le revenu maximal
+					\[r_n = p_{i_1} + p_{i_2} + ... + p_{i_k}\]
+				</section>
+
+				<section>
+					<h3>Premières valeurs</h3>
+					<table style="font-size: xx-large;">
+						<tr>
+							<td>Taille</td>
+							<td>Revenu max<br></td>
+							<td>Décomposition</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>1</td>
+							<td>Pas de décomposition</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>5</td>
+							<td>Pas de décomposition</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>8</td>
+							<td>Pas de décomposition</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>10</td>
+							<td>2+2</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>13</td>
+							<td>2+3</td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>17</td>
+							<td>Pas de décomposition</td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>18</td>
+							<td>1+6 ou 2+2+3</td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>22</td>
+							<td>2+6</td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>25</td>
+							<td>3+6</td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>30</td>
+							<td>Pas de décomposition</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Formalisation</h3>
+					Plus généralement,
+					\[r_n=\max(p_n, r_1 + r_{n-1}, r_2 + r_{n-2}, ..., r_{n-1} + r_1)\]
+					ou
+					\[r_n= \max_{1 \leq i \leq n} \lbrace p_i + r_{n-i} \rbrace\]
+				</section>
+
+				<section>
+					<h3>Analyse du problème</h3>
+					<ul>
+						<li class="fragment">Pour résoudre un problème de taille n on doit résoudre un problème plus
+							petit
+						</li>
+						<li class="fragment"><span class="important">Récursivité</span></li>
+						<li class="fragment">Solutions optimales du problème incluent solutions optimales sous problème
+						</li>
+						<li class="fragment"><span class="important">Sous-structure optimale</span></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Sous-structure optimale</h3>
+					<p class="important-bloc">
+						Les solutions optimales du problème incorporent les solutions optimales des sous-problèmes
+						associés que l'on peut résoudre de manière indépendante.
+					</p>
+				</section>
+
+				<section>
+					<h3>Implémentation déscendante naïve</h3>
+				</section>
+
+
+				<section>
+					<h3>Implémentation déscendante naïve</h3>
+					Fichier fut_recursif_naif.py
+				</section>
+				<section>
+					<h3>Implémentation déscendante naïve</h3>
+					<img src="img/algo_comp/algo_naif_futs.png" alt="">
+				</section>
+
+				<section>
+					<h3>Une idée du problème ?</h3>
+				</section>
+
+
+				<section>
+					<h3>Complexité exponentielle</h3>
+					<p>+1 fût -> taille arbre x2</p>
+					<p class="important fragment">Complexité exponentielle <img class="icon plain"
+							src="https://img.icons8.com/dusk/64/000000/edvard-munch.png"></p>
+					<p class="fragment important-bloc">Pire, on recalcule des choses déjà calculées !! <img
+							class="icon plain" src="https://img.icons8.com/dusk/64/000000/edvard-munch.png"> <img
+							class="icon plain" src="https://img.icons8.com/dusk/64/000000/edvard-munch.png"></p>
+				</section>
+
+				<section>
+					<h3>La programmation dynamique à notre rescousse</h3>
+					<iframe src="https://giphy.com/embed/116aqRRPcDxYkg" width="900" height="500" frameBorder="0"
+						class="giphy-embed no-print" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>Le principe</h3>
+					<ul>
+						<li class="fragment"><span class="red">Un constat</span> : récursivité inefficace &lt;-
+							sous-problèmes identiques</li>
+						<li class="fragment"><span class="green">Une solution</span> : stocker résultats intermédiaires
+						</li>
+					</ul>
+					<p class="important-bloc fragment">Compromis temps-mémoire</p>
+					<aside class="notes">On peut passer de temps expo à temps poly !!</aside>
+				</section>
+
+				<section>
+					<h3>Deux méthodologies</h3>
+					<ul>
+						<li>Descendante avec mémoïsation</li>
+						<li>Ascendante</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Méthode descendante avec mémoïsation</h3>
+					<ul>
+						<li>Procédure récursive</li>
+						<li>Sauvegarde des résultats (liste, table de hachage)</li>
+						<li>Recherche du résultat puis calcul si inexistant</li>
+					</ul>
+					<p class="note">Voir CM2 sur Fibonacci</p>
+				</section>
+
+				<section>
+					<h3>Méthode ascendante</h3>
+					<ul>
+						<li>La résolution d'un problème dépend de la résolution de sous problèmes "plus petits"</li>
+						<li>Déterminer tous les sous problèmes</li>
+						<li>Ordonner par taille</li>
+						<li>Résolution dans l'ordre croissant et stockage du résultat</li>
+						<li>Pour un problème de taille n on à déjà tous les sous problèmes de résolus</li>
+					</ul>
+					<p class="note">N'est pas une méthode récursive</p>
+				</section>
+
+				<section>
+					<h3>Ascendante vs descendante</h3>
+					<ul>
+						<li class="fragment">Asymptotiquement même résultat</li>
+						<li class="fragment">Généralement ascendante facteur constant plus petit</li>
+					</ul>
+					<p class="important-bloc fragment">En python privilégier la méthode ascendante si beaucoup de
+						récursions</p>
+				</section>
+
+				<section>
+					<h3>Méthode descendante avec mémoisation</h3>
+					Fichier memoisation.py
+				</section>
+
+				<section>
+					<h3>Méthode descendante avec mémoisation</h3>
+					<img src="img/algo_comp/algo_meoisation_futs.png" alt="">
+				</section>
+
+				<section>
+					<h3>Méthode ascendante</h3>
+					Fichier ascendante.py
+				</section>
+
+				<section>
+					<h3>Méthode descendante avec mémoisation</h3>
+					<img src="img/algo_comp/algo_ascendant_futs.png" alt="">
+				</section>
+
+
+				<section>
+					<h3>Comparaison plus poussée</h3>
+					<img src="img/algo_comp/comparaion_algo_dynamique.png" alt="">
+
+				</section>
+
+				<section>
+					<h3>Complexité</h3>
+					<ul>
+						<li>Calculs : \(\mathcal{O}(n^2)\)</li>
+						<li>Mémoire : \(\mathcal{O}(n)\)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Graphe des sous problèmes</h3>
+					<ul>
+						<li>Graphe orienté</li>
+						<li>Chaque problème est un noeud</li>
+						<li>On passe d'un noeud x à y si la solution optimale du sous-problème x implique la solution du
+							sous problème y</li>
+						<li>Méthode ascendante : de bas en haut</li>
+						<li>Méthode déscendante : de haut en bas</li>
+					</ul>
+				</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>Exemple 2 <br>
+						Multiplication de matrices chainées</h2>
+				</section>
+
+
+				<section>
+					<h3>Le problème</h3>
+					Soit une chaîne \(\langle A_1, A_2, ... A_n \rangle\) de n matrices de dimensions \(\langle p_0,
+					p_1, p_2, ... p_n \rangle\) . On souhaite en calculer le
+					produit
+					\[A_1 \cdot A_2 \cdot ... \cdot A_n\]
+
+					<div class="fragment">
+						<p>
+							Or la multiplication de matrice des associatives
+						</p>
+						<p class="important-bloc">Tous les parenthesages donnent le même résultat</p>
+					</div>
+					<p class="important fragment">Mais le nombre de calculs est-il identique ??</p>
+				</section>
+
+				<section>
+					<h3>Un exemple</h3>
+					<ul>
+						<li>\(A_1\) : 10 x 100</li>
+						<li>\(A_2\) : 100 x 5</li>
+						<li>\(A_3\) : 5 x 50</li>
+					</ul>
+					<hr>
+					<ul class="fragment">
+						<li>\( (A_1A_2)A_3\) : 7 500 mutliplications</li>
+						<li>\( A_1(A_2A_3)\) : 75 000 multiplications</li>
+					</ul>
+					<p class="important-bloc fragment">L'odre est important !</p>
+				</section>
+
+				<section>
+					<h3>Algorithme en force brute</h3>
+					<p>Le principe : on détermine tous les parenthesages possibles</p>
+					<p>
+						Soit \(P(n)\) le nombre de parenthesage possible d'une séquence de \(n\) matrices.
+					</p>
+					<ul>
+						<li>\(n=1\) un seul cas possible</li>
+						<li>\(n>1\) chaque parenthesage est lui même un sous produit entièrement sous parenthésé. Et la démarcation peut apparitre entre toutes les matrices \(k\) et \(k+1\)</li>
+					</ul>
+
+				</section>
+
+				<section>
+						<h3>Algorithme en force brute</h3>
+						<p>Le principe : on détermine tous les parenthesages possibles</p>
+	
+						<p>d'où</p>
+						<script type="math/tex; mode=display">
+							P(n) =
+							\left
+							\lbrace \begin{array}{cl}
+							1 &  \text{si $n  = 1$}\\
+							\sum_{k=1}^{n-1}P(k)P(n-k) &\text{si $n  \gt 2$}
+							\end{array}\right.					</script>
+	
+						<p class="fragment">Similaire au <em>nombre de Catalan</em></p>
+						<p class="important-bloc fragment">
+							\(P(n) = \Omega(\frac{4^n}{n^{3/2}})\)
+						</p>
+						<p class="red fragment">Complexité exponentielle -> on oublie cette méthode !!</p>
+					</section>
+
+				<section>
+					<h3>Programmation dynamique</h3>
+
+					<ol>
+						<li>Caractériser la structure de la solution optimale</li>
+						<li>Définir récursivement la valeur d'une solution optimale</li>
+						<li>Calculer la valeur d'une solution optimale</li>
+						<li>Construire une solution optimale à partir des informations calculées</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Etape 1 : structure d'un parenthesage optimal</h3>
+					<p>
+						On note \(A_{i..j} = A_i \cdot A_{i+1} \cdot ...  \cdot A_j\)
+					</p>
+					<p class="fragment">
+						Soit \(A_{i..k}\) et \(A_{k+1..j}\) un parenthesage optimal de \(A_{i..j}\).
+					</p>
+					<p class="fragment">
+						La façon dont est parenthèsé \(A_{i..k}\) soit être optimale. Si c'est pas le cas, en remplaçant
+						notre parenthesage de \(A_{i..k}\) par un meilleur parenthesage, on obtient un meilleur
+						parenthesage de \(A_{i..j}\).
+					</p>
+					<p class="fragment important-bloc">
+						Ce qui est impossible par hypothèse
+					</p>
+
+
+				</section>
+
+				<section>
+					<h3>Etape 1 : structure d'un parenthesage optimal</h3>
+
+					<p class="important-bloc">Conclusion : tout parenthesage optimal est lui même parenthèsé de manière
+						optimale</p>
+
+				</section>
+
+				<section>
+					<h3>Etape 2 : une solution récursive</h3>
+					<p>
+						On note \(m[i,j]\) le nombre de multiplications pour calculer&nbsp;\(A_{i..j}\)
+					</p>
+					<ul>
+						<li>\(m[i,i] = 0\)</li>
+						<li>\(m[i,j] = m[i,k] + m[k+1,j] + p_{i-1} \times p_k \times p_{j}\)</li>
+					</ul>
+					<p class="fragment important">Problème : on ne connait pas k</p>
+				</section>
+				<section>
+					<h3>Etape 2 : une solution récursive</h3>
+
+
+					<script type="math/tex; mode=display">
+						m[i,j] =
+						\left
+						\lbrace \begin{array}{cl}
+						0 &  \text{si $i  = j$}\\
+						\min_{i \leq k \lt j} \lbrace m[i,k]+m[k+1,j]+p_{i-1}p_kp_{j}\rbrace  &\text{si $i  \lt j$}
+						\end{array}\right.	
+					</script>
+					On note \(s[i,j]\) la valeur de k qui minimise m[i,j]
+				</section>
+
+				<section>
+					<h3>Etape 3 : calcul des coûts optimaux</h3>
+					Algorithme basique par récurence possible ?
+					<p class="fragment red">Chevauchement des sous-problèmes !!</p>
+					<p class="green fragment">Besoin de mémoriser les résultats intermédiaires</p>
+				</section>
+
+				<section>
+					<h3>Méthode ascendante : principe</h3>
+					<ul>
+						<li>Pour toute sous chaîne de matrices possibles on va :
+							<ul>
+								<li>Calculer et stocker le nombre de multiplication minimum</li>
+								<li>Noter le parenthesage qui le permet</li>
+							</ul>
+						</li>
+						<li>On commence avec des sous chaîne de taille 2 : pas de difficulté </li>
+						<li>Puis on regarde les sous chaînes de taille supérieure, en utilisant les résultats précédents
+						</li>
+						<li>A la fin on a le nombre de multiplication minimum ET on peut reconstituer le parenthesage
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Démonstration</h3>
+					Fichier ordre_chaine_matrice.py
+				</section>
+
+				<section>
+					<h3>Complexité</h3>
+					<div class="fragment">
+						<ul>
+							<li>
+								Calculs : \(\Theta(n^3)\)
+							</li>
+							<li>
+								Mémoire : \(\Theta(n^2)\)
+							</li>
+						</ul>
+					</div>
+					<p class="important-bloc fragment">Passage de complexité exponentielle à polynomiale !!!</p>
+				</section>
+			</section>
+
+
+
+
+			<section>
+				<section>
+					<h2>Programmation dynamique bilan</h2>
+				</section>
+
+				<section>
+					<h3>Programmation dynamique</h3>
+					<ul>
+						<li>1950 Richard Bellman</li>
+						<li>Problème d'optimisation</li>
+					</ul>
+					<p class="important-bloc">La programmation dynamique consiste à résoudre un problème en le
+						décomposant en sous-problèmes, puis à résoudre les sous-problèmes, des plus petits aux plus
+						grands en stockant les résultats intermédiaires</p>
+				</section>
+				<section>
+					<h3>1 - Sous-structUre optimale</h3>
+					<p class="important-bloc">Solution optimale du problème contient les solutions optimales des
+						sous-problèmes
+					</p>
+				</section>
+
+				<section>
+					<h3>Découvrir sous-structure optimale</h3>
+					<ol>
+						<li>Montrer que la solution consiste à faire un choix et génère un ou plusieurs <span
+								class="important">sous-problèmes similaires</span></li>
+						<li>On suppose que l'on connait pour un problème le <span class="important">choix optimal</span>
+						</li>
+						<li>Déterminer <span class="important">l'espace des sous-problèmes</span></li>
+						<li><span class="important">La solution des sous-problème doit être optimale</span>. Si elle ne
+							l'est pas, alors on peut trouver
+							une meilleure solution, donc notre première solution n'était pas optimale.
+						</li>
+					</ol>
+				</section>
+				<section>
+					<h3>Retour sur les fûts</h3>
+					<ol>
+						<li>Besoin d'une décomposition initiale -> un nouveau lot à décomposer</li>
+						<li>Notre première décomposition en \(k\) et \(n-k\) est optimales</li>
+						<li>Le sous problème est un lot de taille \(n-k\)</li>
+						<li>Il faut décomposer le second lot. Si la décomposition n'est pas optimale, alors on peut en
+							trouver
+							une meilleure. Donc la décomposition initiale n'était pas optimale.
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Intuition du temps d'exécution</h3>
+					<p>Deux facteurs</p>
+					<ol>
+						<li>Le nombre de sous-problèmes à résoudre</li>
+						<li>Le nombre de choix envisagés pour chaque sous probllème</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Retours sur les exemples</h3>
+					<table>
+						<tr>
+							<th></th>
+							<th>Vente de fûts</th>
+							<th>Multiplication matrices</th>
+						</tr>
+						<tr>
+							<td>Nbr ss-pb</td>
+							<td>\(\Theta(n)\)</td>
+							<td>\(\Theta(n^2)\)</td>
+						</tr>
+						<tr>
+							<td>Nbr choix</td>
+							<td>\(\mathcal{O}(n)\)</td>
+							<td>\(\mathcal{O}(n)\)</td>
+						</tr>
+						<tr>
+							<td>Complexité</td>
+							<td>\(\mathcal{O}(n^2)\)</td>
+							<td>\(\mathcal{O}(n^3)\)</td>
+						</tr>
+					</table>
+					<p class="note">Avec cette méthode on peut seulement prouver des \(\mathcal{O}\)</p>
+				</section>
+
+				<section>
+					<h3>2 - Chevauchement des sous-problèmes</h3>
+					<p class="important-bloc">L'espace des sous-problèmes est réduit. Ainsi on résoud plusieurs fois
+						les mêmes sous-problèmes.
+					</p>
+					<p class="fragment">Est-ce si grave ??</p>
+				</section>
+
+				<section>
+					<h3>Retour sur les matrices</h3>
+					<p>Fichier matrice_rec.py</p>
+					<div class="fragment">
+						<p>Temps exécution</p>
+						\[T(n) \geq 1 + \sum_{k=1}^{n-1} (T(k) + T(n-k) +1 )\]
+						<p class="fragment red">
+							Est un \(\Omega(2^n)\)
+						</p>
+					</div>
+				</section>
+
+				<section>
+					<h3>Besoin de stocker</h3>
+					<p class="important-bloc">
+						On va gagner du temps de calcul en stockant les résultats
+					</p>
+				</section>
+
+				<section>
+					<h3>3 - Reconstruction d'une solution optimale</h3>
+					<p class="important-bloc">A chaque étape on va chercher les solutions déjà calculées, et stocker la
+						nouvelle solution
+					</p>
+					<p class="fragment">Nécessité d'un format de données adapté</p>
+					<ul class="fragment">
+						<li>Liste indexée</li>
+						<li>Table de hachage</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Les deux méthodes</h3>
+					<ul>
+						<li>Ascendante : non récursive, plus efficace en général</li>
+						<li>Déscendante : récursive, surcoût de la récursion, ne résoud que les problèmes nécessaires
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Diviser pour régner / programmation dynamique</h3>
+					<ul>
+						<li>Chevauchement : programmation dynamique</li>
+						<li>Sinon : diviser pour régner</li>
+					</ul>
+				</section>
+			</section>
+
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/ULHclikJ78DZe" width="960" height="540" frameBorder="0"
+					class="giphy-embed no-print" allowFullScreen></iframe>
+
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>

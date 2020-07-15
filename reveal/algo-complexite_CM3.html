@@ -1,0 +1,773 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>Algorithmique et complexité</h1>
+				<h2>Analyse d'algorithmes</h2>
+				<p>Pépin Rémi, Ensai, 2019</p>
+				<img src="img/logo pyhton.png" alt="">
+			</section>
+
+			<section>
+				<section>
+					<h2>Instances, problèmes algorithmes, complexité</h2>
+				</section>
+
+				<section>
+					<h3>Des instances de problèmes</h3>
+					<ul>
+						<li class="fragment">7892532657418710140132 est-il premier ?</li>
+						<li class="fragment">1, 4, 1, 5, 9, 2, 6, 5, 3, 5 série aléatoire de chiffres ?</li>
+						<li class="fragment">Trier 1, 4, 1, 5, 9, 2, 6, 5, 3, 5</li>
+						<li class="fragment">Multiplier les matrices
+							<script type="math/tex; mode=display">
+								\begin{pmatrix}
+1&2 \\
+3&1
+\end{pmatrix}
+\cdot 
+\begin{pmatrix}
+5&6\\
+7 & 8
+\end{pmatrix}					</script>
+						</li>
+						<li class="fragment">Plus court chemin entre Rennes et Brest en passant une seule fois par
+							toutes les villes de +
+							10 000 hab bretonnes </li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Des problèmes</h3>
+					<ul>
+						<li class="fragment">\( \forall n, n \) est-il premier ?</li>
+						<li class="fragment">\(\forall n_i \in \mathbb{N}, (n_i) \) série aléatoire d'entier ?</li>
+						<li class="fragment">\(\forall n_i \in \mathbb{N}, (n_i) \) trier \((n_i)\)</li>
+						<li class="fragment">Multiplier les matrices
+							<script type="math/tex; mode=display">
+A
+\cdot
+B				</script>
+						</li>
+						<li class="fragment">Problème du voyageur de commerce</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Des problèmes</h3>
+					<ul>
+						<li>Cartographier le génome humain</li>
+						<li>Router une message sur internet</li>
+						<li>Se protéger d'attaques DDOS</li>
+						<li>Requêter rapidement des To de données</li>
+						<li>Proposer une campagne marketing en se basant sur l'ensemble des comportements des clients
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Instance vs problème</h3>
+					<p>Une instance d'un problème est un problème auquel on a injecté des <span
+							class="important">données</span>. C'est un cas <span class="important">particulier</span>
+						d'un problème plus général</p>
+					<div class="important-bloc fragment">Résoudre un problème permet de résoudre toutes les instances
+					</div>
+				</section>
+
+				<section>
+					<h3>Des algorithmes</h3>
+					<blockquote>Un algorithme est la description, en un nombre <span class="important">fini</span>
+						d'étapes, d'un enchaînement
+						d'opération <span class="important">élémentaies</span>, permettant de résoudre un problème
+					</blockquote>
+				</section>
+
+				<section>
+					<h3>Des algorithmes, en résumé</h3>
+					<ul>
+						<li class="fragment">Permet de résoudre un <span class="important">problème</span> bien
+							spécifique
+						</li>
+						<li class="fragment">Dans les faits on le test sur des <span class="important">instances</span>
+							d'un problème</li>
+						<li class="fragment"><span class="green">Correct</span> : se termine et produit la bonne sortie
+							pour toutes les instances
+						</li>
+						<li class="fragment"><span class="red">Incorrect</span> : ne se termine pas ou en erreur ou
+							produit une mauvaise sortie
+							pour certaines instances</li>
+						<li class="fragment"> <span class="important">Un algorithme incorrect n'est pas forcément
+								mauvais</span></li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>Il existe des moyens théoriques de prouver son algo</li>
+							<li>taux d'erreur faible ? Résoud bien toutes les instances qu'il reçoit mais mal les autres
+								? </li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h3>Problèmes : décision</h3>
+					<p> Problème de decision, propriété binaire sur les réponses des instances
+						<ul>
+							<li>Oui</li>
+							<li>Non</li>
+						</ul>
+					</p>
+					<p class="fragment green">Existe-il un chemin reliant Rennes à Brest passant par Saint Malo ?</p>
+				</section>
+
+				<section>
+					<h3>Problèmes : optimisation</h3>
+					<p>On cherche à maximiser/minimiser une grandeur liée à l'instance</p>
+					<p class="fragment green">Quel est le chemin le plus court reliant Rennes et Brest ?</p>
+				</section>
+
+				<section>
+					<h3>Optimisation vs décision </h3>
+					<p>On peut passer de l'optimisation à la décision</p>
+					<p class="fragment green">Existe-il un chemin reliant Rennes à Brest de moins de 300km ?</p>
+				</section>
+
+				<section>
+					<h3>Décidabilité d'un problème</h3>
+					<blockquote>Un problème est décidable s'il existe un algorithme qui en un nombre fini d'étape répond
+						à la question posée</blockquote>
+				</section>
+
+				<section>
+					<h3>Décidabilité d'un problème</h3>
+					<ul>
+						<li class="fragment">Un algorithme arrive à traiter <span class="important">toutes</span> les
+							instances du problèmes</li>
+						<li class="fragment">S'arrête pour toutes instances</li>
+						<li class="fragment">Temps "humain"</li>
+						<li class="fragment">Il existe des problèmes <span class="important">non décidables</span> (ex
+							voir le théorème de Godel)</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Complexité</h3>
+					<ul>
+						<li>Complexité d'un algorithme</li>
+						<li>Complexité d'un problème</li>
+					</ul>
+				</section>
+				<section>
+					<h3>
+						Complexité d'un algorithme
+					</h3>
+					<p>
+						Mesure d'une quantité de ressources nécessaires pour exécuter cet algorithme
+					</p>
+					<p class="fragment">Un algorithme peux avoir plusieurs complexités</p>
+				</section>
+				<section>
+					<h3>
+						Complexité d'un problème
+					</h3>
+					<p>
+						Complexité minimal de l'algorithme permettant de résoudre ce problème
+					</p>
+					<p class="fragment">Un problème peux avoir plusieurs complexités</p>
+
+				</section>
+
+				<section>
+					<h3>Quelles ressources ?</h3>
+				</section>
+
+				<section>
+					<h3>Quelles ressources ?</h3>
+					<p>Quels sont les composants importants de votre ordinateur ?</p>
+				</section>
+
+				<section>
+					<h3>Un ordinateur (en gros)</h3>
+					<ul>
+						<li>Un processeur (CPU) : fait UNIQUEMENT du calcul</li>
+						<li>La mémoire RAM : mémoire vive, volatile, rapide</li>
+						<li>Disque dur (HDD, SSD) : mémoire longue durée, "statique"</li>
+						<li>Carte graphique : unité de calcul spécialisée</li>
+					</ul>
+
+					<aside class="notes">Bien insiter sur CPU, RAM, disque ! Rendent 3 services différents
+						<br>
+						<b>Faire un dessin</b>
+					</aside>
+				</section>
+
+				<section>
+					<h3>Quelles ressources ?</h3>
+					<ul>
+						<li class="fragment" data-fragment-index="1"><span class="fragment highlight-important"
+								data-fragment-index="6">La mémoire vive (RAM)</span></li>
+						<li class="fragment" data-fragment-index="2"><span class="fragment highlight-important"
+								data-fragment-index="6">Le nombre de calculs (CPU)</span></li>
+						<li class="fragment" data-fragment-index="3">Le réseau</li>
+						<li class="fragment" data-fragment-index="4">L'énergie</li>
+						<li class="fragment" data-fragment-index="5">...</li>
+
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Mesurer la complexité d'un algorithme</h2>
+				</section>
+
+				<section>
+					<h3>Un exemple</h3>
+					<ul>
+						<li class="fragment">Vous developpez un module de traitement de données</li>
+						<li class="fragment">Sur votre poste (16go, multi cores) le traitement dure ~30min</li>
+						<li class="fragment">Mais vous avez un petit échantillon de données (~5%)</li>
+						<li class="fragment">Sur le serveur en production après une journée le programme n'est pas
+							terminé</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Que faire ?</h3>
+					<ol>
+						<li class="fragment">Attendre ? (¯\_(ツ)_/¯)</li>
+						<li class="fragment">Demander un plus gros serveur ? ($$$)</li>
+						<li class="fragment">Demander plus de serveurs ? ($$)</li>
+						<li class="fragment"> <span class="fragment highlight-green">Analyser l'algorithme ? </span>
+							<img class="plain icon" src="https://img.icons8.com/color/48/000000/iron-man.png"></li>
+					</ol>
+				</section>
+
+
+				<section>
+					<h3>Mesurer la complexité</h3>
+					<ul>
+						<li>Comparer deux algorithmes</li>
+						<li>Utilisable en pratique ?</li>
+						<li>Prévoir les ressources</li>
+					</ul>
+					<div class="important-bloc fragment">Le tout de manière théorique</div>
+					<aside class="notes">
+						Indépendament de la machine, os ... Cela peut causer des erreurs d'interprétations, certains
+						langage, plateforme
+						étant plus performante pour un type de traitement que d'autres
+					</aside>
+				</section>
+
+				<section>
+					<h3>L'unité de mesure</h3>
+					<div class="important-bloc fragment">Les entrées</div>
+					<p class="fragment">Exemple : trier une liste de taille N. L'entrée est de taille N, quelque que
+						soit la contenu des cases</p>
+					<aside class="notes">
+						La complexité a être évalué en fonction de la taille des entrées. Mais la notion de taille de
+						l'entrée peut varier.
+						On ne veut pas une valeur exact mais un ordre d'idée
+					</aside>
+				</section>
+				<section>
+					<h3>Les entrées</h3>
+					<p>Attention à la notion de taille d'entrée</p>
+					<ul class="fragment">
+						<li>Trier tableau taille N => N</li>
+						<li>Addition deux entiers => nombre de bits</li>
+						<li>Multiplication de matrices => taille des matrices</li>
+						<li>N premier => nombre de bits de N</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<h3>Complexité en espace</h3>
+					<div class="important-bloc">Combien de mémoire ai-je besoin pour que mon algorithme fonctionne ?
+					</div>
+					<p class="fragment">Unité élémentaire : bit, octet ...</p>
+					<p class="fragment red">Si vous n'avez pas assez de mémoire vive, votre programme va planter
+					</p>
+					<aside class="notes">Ou ralentir car il va écrire sur le disque</aside>
+				</section>
+				<section>
+					<h3>Complexité en temps</h3>
+					<div class="important-bloc">Combien de calculs vais-je réaliser ?</div>
+					<p class="fragment">Unité élémentaire : affectation, opérations simples</p>
+					<p class="fragment red">Au pire votre algo prend un temps infini
+					</p>
+				</section>
+
+				<section>
+					<h3>Quel cas étudier ?</h3>
+					<ul>
+						<li>Pire : coût maximal</li>
+						<li>Moyen : coût en moyenne</li>
+						<li>Meilleur : coût dans le meilleur cas</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>Le plus simple à calculer, on peut dimensionner notre systeme</li>
+							<li>Moyen : besoin d'info sur les données.</li>
+							<li>Mieux : coût dans le meilleur cas. Peut aider dans des cas particuliers</li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h3>Complexité du pire</h3>
+					<ul>
+						<li class="fragment">Le cas que l'on va le plus étudier</li>
+						<li class="fragment">Complexité temporelle - spatiale : méthodes identiques</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Cas moyen et le meilleur</h3>
+					<ul>
+						<li class="fragment">Cas intéressants mais compliqués</li>
+						<li class="fragment">Nécessite de connaitre ses données</li>
+						<li class="fragment">A pproche aléatoire</li>
+						<li class="fragment">Si plusieurs algo de complexité au pire identiques permet de faire un choix
+						</li>
+						<li class="fragment important">Exemple quel tri choisir si données presque triées ?</li>
+					</ul>
+				</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>Notation asymptotique</h2>
+					<img src="http://www.euroinformatica.ro/documentation/programming/!!!Algorithms_CORMEN!!!/images/fig65_01_0.jpg"
+						alt="" class="w80">
+				</section>
+				<section>
+					<h3>Le pire \(\mathcal{O}\), le mieux \(\Omega\) et le moyen \(\Theta\)</h3>
+					<ul>
+						<li style=" margin: 0.5em" class="fragment">\(f(N) = \mathcal{O}(g(N))\) ssi \[\exists c \gt 0,
+							\exists
+							N_0,\forall N \gt N_0, f(N) \leq cg(N) \] </li>
+						<hr>
+						<li style=" margin: 0.5em" class="fragment">\(f(N) = \Omega(g(N))\) ssi \[g(N) =
+							\mathcal{O}(f(N)) \] </li>
+						<hr>
+						<li style=" margin: 0.5em" class="fragment">\(f(N) = \Theta(g(N))\) ssi \[f(N) =
+							\mathcal{O}(g(N))~et~f(N) =
+							\Omega(g(N))\] </li>
+
+					</ul>
+				</section>
+
+				<section>
+					<h3>Quelques exemples</h3>
+					<ul>
+						<li>\(f_1(N) = N^3 + 2N^2 + 3N + 4\)</li>
+						<li>\(f_2(N) = 2Nlog_2N + 12N + 42\)</li>
+						<li>\(f_3(N)= 1000N^{10} - N^7 + 12N^4 + \frac{2^N}{1000}\)</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Quelques exemples</h3>
+					<ul>
+						<li>\(f_1(N) = \Theta(N^3)\)</li>
+						<li>\(f_2(N) = \Theta(Nlog_2N)\)</li>
+						<li>\(f_3(N)= \Theta(2^N)\)</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Le plus petit majorant</h3>
+					Comme \(\mathcal{O}(n^2) \subset \mathcal{O}(n^3) \subset \mathcal{O}(n^4)\) etc on cherche le plus
+					petit des majorants.
+					<p class="fragment important">Dire que votre fonction est majorée par \(\mathcal{O}(n^2)\) alors
+						qu'elle est aussi majorée par \(\mathcal{O}(n)\) est une perte d'information</p>
+				</section>
+				<section>
+					<h3>Ne dites pas</h3>
+					<p class="fragment highlight-red">
+						Le temps d'exécution de l'algorithme
+						A est au moins \(\mathcal{O}(n^2)\)
+					</p>
+					<p class="fragment green">
+						Le temps d'exécution de l'algorithme
+						A est un \(\mathcal{O}(n^2)\) ou appartient à \(\mathcal{O}(n^2)\)
+					</p>
+				</section>
+				<section>
+					<h3>Ordre de grandeur</h3>
+					<ul>
+						<li class="fragment highlight-green" data-fragment-index="1">\(\Theta(1)\) : temps constant <img
+								class="plain icon" src="https://img.icons8.com/plasticine/100/000000/kawaii-pizza.png">
+						</li>
+						<li class="fragment highlight-green" data-fragment-index="1">\(\Theta(lnN)\) : temps
+							logarithmique <img class="plain icon"
+								src="https://img.icons8.com/plasticine/100/000000/kawaii-ice-cream.png"></li>
+						<li class="fragment highlight-green" data-fragment-index="1">\(\Theta(N)\) : temps linéaire <img
+								class="plain icon" src="https://img.icons8.com/plasticine/100/000000/kawaii-taco.png">
+						</li>
+						<li>\(\Theta(N^2)\) : temps quadratique</li>
+						<li class="fragment highlight-red" data-fragment-index="1">\(\Theta(N^p)\) : temps polynomial
+						</li>
+						<li class="fragment highlight-red" data-fragment-index="1">\(\Theta(p^N)\) : temps exponentiel
+						</li>
+						<li class="fragment highlight-red" data-fragment-index="1">\(\Theta(N^N)\) : temps factoriel
+						</li>
+
+					</ul>
+				</section>
+
+				<section>
+					<h3>Ordre de grandeurs</h3>
+					<p>Une opération prend un temps 1&micro;s</p>
+					<table style="font-size: smaller">
+						<tr>
+							<th>N</th>
+							<th>10</th>
+							<th>100</th>
+							<th>1000s</th>
+							<th>10<sup>4</sup></th>
+							<th>10<sup>5</sup></th>
+							<th>10<sup>6</sup></th>
+						</tr>
+						<tr>
+							<td>logN</td>
+							<td>2&micro;s</td>
+							<td>5&micro;s</td>
+							<td>7&micro;s</td>
+							<td>10&micro;s</td>
+							<td>12&micro;s</td>
+							<td>14&micro;s</td>
+						</tr>
+						<tr>
+							<td>N<br></td>
+							<td>10&micro;s</td>
+							<td>100&micro;s</td>
+							<td>1ms</td>
+							<td>10ms</td>
+							<td>100ms</td>
+							<td>1s</td>
+						</tr>
+						<tr>
+							<td>NlogN</td>
+							<td>23&micro;s</td>
+							<td>460&micro;s</td>
+							<td>7ms</td>
+							<td>100ms<br></td>
+							<td>1.2sec<br></td>
+							<td>14sec</td>
+						</tr>
+						<tr>
+							<td>N<sup>2</sup></td>
+							<td>100&micro;s</td>
+							<td>10ms</td>
+							<td>1s</td>
+							<td>100s</td>
+							<td>3h</td>
+							<td>10j</td>
+						</tr>
+						<tr>
+							<td>2<sup>N</sup></td>
+							<td>1ms</td>
+							<td>10<sup>14</sup> siecles</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>N<sup>N</sup></td>
+							<td>3h</td>
+							<td>10<sup>183</sup>siecle<s/td> <td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>En résumé</h3>
+					<table style="font-size: 0.7em">
+						<tr>
+							<th>Complexite</th>
+							<th>Vitesse</th>
+							<th>Formule</th>
+							<th>Exemple</th>
+						</tr>
+						<tr>
+							<td>factorielle</td>
+							<td>infiniment lent<br></td>
+							<td>N!</td>
+							<td>Résolution par recherche exhaustive du voyageur de commerce</td>
+						</tr>
+						<tr>
+							<td>exponentielle</td>
+							<td>très lent</td>
+							<td>a<sup>N</sup></td>
+							<td>Résolution par recherche exhaustive du jeu d'echec</td>
+						</tr>
+						<tr>
+							<td>polynomial<br></td>
+							<td>moyen à très lent<br></td>
+							<td>N<sup>k</sup></td>
+							<td>somme de matrices, multiplication de matrices<br></td>
+						</tr>
+						<tr>
+							<td>loglinéaire</td>
+							<td>assez rapide</td>
+							<td>NlogN</td>
+							<td>tri rapide, tri fusion</td>
+						</tr>
+						<tr>
+							<td>linéraire</td>
+							<td>rapide</td>
+							<td>N</td>
+							<td>somme d'un tableau</td>
+						</tr>
+						<tr>
+							<td>logarithmique</td>
+							<td>très rapide</td>
+							<td>logN</td>
+							<td>recherche dichotomique</td>
+						</tr>
+						<tr>
+							<td>constante</td>
+							<td>le plus rapide</td>
+							<td>k</td>
+							<td>accès par indice</td>
+						</tr>
+					</table>
+				</section>
+
+			</section>
+
+
+			<section>
+				<section>
+					<h2>Evaluation de la complexité</h2>
+				</section>
+
+				<section>
+					<h3>Séquences</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\langle \text{instruction1} \rangle & T_1(N)\\
+					\langle \text{instruction2} \rangle & T_2(N)\\
+					\end{array}
+					\right \}
+					T(N) = T_1(N) + T_2(N)
+					\]
+				</section>
+
+				<section>
+					<h3>Exemple</h3>
+					<pre><code data-trim data-noescape class="python">
+def echange (list, indice1, indice2):
+	x = liste[indice1]
+	liste[indice1] = liste[indice2]
+	liste[indice2] = x
+							</code></pre>
+					\[
+					T(N) = c_1 + c_2 +c_3 = \mathcal{O}(1)
+					\]
+					<aside class="notes">Décomposer l'algo en 3 étapes élémentaies et on fait la somme qui ne dépend pas
+						de la longeur de la liste</aside>
+				</section>
+
+				<section>
+					<h3>Condition</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\text{if} ~ \langle \text{condition} \rangle &\\
+					~~~\langle \text{instruction1} \rangle & T_1(N)\\
+					\text{else} ~ &\\
+					~~~\langle \text{instruction2} \rangle & T_2(N)\\
+					\end{array}
+					\right \}
+					T(N) = max(T_1(N) + T_2(N))
+					\]
+				</section>
+				<section>
+					<h3>Boucle for</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\text{for i in range (0,p)} &\\
+					~~~\langle \text{instruction} \rangle & T_i(N)\\
+					\end{array}
+					\right \}
+					T(N) = \sum_{i=0}^{p-1}T_i(N)
+					\]
+				</section>
+
+				<section>
+					<h3>Boucle while</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\text{while} ~ \langle \text{condition} \rangle &\\
+					~~~\langle \text{instruction} \rangle & T_i(N)\\
+					\end{array}
+					\right \}
+					T(N) = \sum_{i=0}^{nb\_iter}T_i(N)
+					\]
+
+					<p>Besoin de connaitre (ou majorer) le nombre d'itération</p>
+				</section>
+				<section>
+					<h3>Exemple recheche élément</h3>
+					\[
+					\begin{array}{ll}
+					\text{def recherche (element, liste):} & N = \text{len(liste)}\\
+					~~~\text{i=0} & T_1(N = c_1)\\
+					~~~\text{while i &lt len(list) and list[i]!=element } & \\
+					~~~~~~\text{i = i+1} & T_2(N) = s\\
+					~~~\text{return liste[i]==recheche} & \\
+					\end{array}
+					\]
+				</section>
+				<section>
+					<h3>Exemple multiplication matrices</h3>
+					<div style="font-size : smaller">
+						\[
+						\begin{array}{ll}
+						\text{def matrice_multiplcation (matrice_1, matrice_2):} & \\
+						~~~\text{produit =[]} & T_1(N)= c_1\\
+						~~~\text{for i in range(len(matrice_1))) :} & l_1 =\text{len(matrice_1) } \\
+						~~~~~~\text{ligne = []} & T_1(N)= c_2\\
+						~~~~~~\text{for i in range(len(matrice_2[0])) :} & l_2 =\text{len(matrice_2[0])} \\
+						~~~~~~~~~\text{element = 0} & T_3(N)= c_3 \\
+						~~~~~~~~~\text{for k in range(len(matrice_1[0])) :} & l_3 =\text{len(matrice_1[0])} \\
+						~~~~~~~~~~~~\text{element +=matrice_1[i][k] + matrice_2[k][j]} & T_4(N)= c_s \\
+						~~~~~~~~~\text{ligne.append(element)} & T_5(N)= a \\
+						~~~~~~\text{matrice.append(ligne)} & T_6(N)= a\\
+						~~~\text{return matrice} \\
+						\end{array}
+						\]
+
+					</div>
+				</section>
+
+				<section>
+					<h3>Exemples random 1</h3>
+					<pre><code data-trim data-noescape class="python">
+def function1(n) :
+	if n==1 :
+		return
+	for i in range(1,n):
+		for j in range(1,n):
+			print("*")
+			break
+
+					</code></pre>
+				</section>
+				<section>
+					<h3>Exemples random 2</h3>
+					<pre><code data-trim data-noescape class="python">
+def function2(n):
+	i = 1
+	s = 1 
+	while s <= n:
+		i+=1
+		s += i
+		printf("*")
+							
+	
+						</code></pre>
+				</section>
+				<section>
+					<h3>Sous tableau max</h3>
+					<pre><code data-trim data-noescape class="python">
+						def plus_grande_sous_liste_n2 (tableau) :
+							meilleur = 0
+							i_max,j_max = -1,-1
+							for i in range (0,len(tableau)) :
+								somme = 0
+								for j in range (i, len(tableau)) :
+									somme += tableau[j]
+									if somme > meilleur :
+										meilleur = somme
+										i_max,j_max = i,j+1
+							return tableau [i_max:j_max]
+													</code></pre>
+
+				</section>
+			</section>
+
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/CF93EZqOxjdHG" width="480" height="364" frameBorder="0"
+					class="no-print giphy-embed" allowFullScreen></iframe>
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>

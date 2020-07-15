@@ -1,0 +1,99 @@
+@startuml
+scale 2
+abstract class Source << abstract >> {
+    String name
+    Date start_collect
+    Date end_collect
+    String input_file
+
+    common_process()
+    {abstract} custom_process()
+    process()
+}
+
+abstract class Survey {
+    {abstract} custom_process()
+}
+
+abstract class Census {
+    {abstract} custom_process()
+}
+
+abstract class Webscrapping {
+    {abstract} custom_process()
+}
+
+abstract class AdministrativeFile {
+    {abstract} custom_process()
+}
+
+class SurveyCSV {
+    custom_process()
+}
+
+class CensusCSV {
+    custom_process()
+}
+
+class WebscrappingCSV {
+    custom_process()
+}
+
+class AdministrativeFileCSV {
+    custom_process()
+}
+
+class SurveyXML {
+    custom_process()
+}
+
+class CensusXML {
+    custom_process()
+}
+
+class WebscrappingXML {
+    custom_process()
+}
+
+class AdministrativeFileXML {
+    custom_process()
+}
+
+class SurveyJSON {
+    custom_process()
+}
+
+class CensusJSON {
+    custom_process()
+}
+
+class WebscrappingJSON {
+    custom_process()
+}
+
+class AdministrativeFileJSON {
+    custom_process()
+}
+
+Source <|-- Survey
+Source <|-- Census
+Source <|-right- Webscrapping
+Source <|-left- AdministrativeFile
+
+Survey <|-- SurveyCSV
+Survey <|-- SurveyXML
+Survey <|-- SurveyJSON
+
+Census <|-- CensusCSV
+Census <|-- CensusXML
+Census <|-- CensusJSON
+
+Webscrapping <|-up- WebscrappingCSV
+Webscrapping <|-up- WebscrappingXML
+Webscrapping <|-up- WebscrappingJSON
+
+AdministrativeFile <|-up- AdministrativeFileCSV
+AdministrativeFile <|-up- AdministrativeFileXML
+AdministrativeFile <|-up- AdministrativeFileJSON
+
+@enduml

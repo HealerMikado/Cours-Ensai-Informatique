@@ -1,0 +1,1049 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<section>
+					<h1>Algorithmique et complexité</h1>
+					<h2>Rappels de python</h2>
+					<p>Pépin Rémi, Ensai, 2019</p>
+					<img src="img/logo pyhton.png" alt="">
+				</section>
+
+				<section>
+					<h3>Le plan</h3>
+					<ol style="font-size: xx-large;">
+						<li>Introduction
+							<ul>
+								<li>Défintions</li>
+								<li>C'est quoi python</li>
+							</ul>
+						</li>
+						<li>Les variables
+							<ul>
+								<li>Types</li>
+								<li>Mutabilité</li>
+							</ul>
+						</li>
+						<li>Structures de contrôle
+							<ul>
+								<li>if elif else</li>
+								<li>for; while</li>
+							</ul>
+
+						</li>
+						<li>Les fonctions
+						</li>
+						<li>Les modules</li>
+					</ol>
+				</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h1>Le cours</h1>
+				</section>
+
+				<section>
+					<h2>Charge horaire</h2>
+					<ul>
+						<li>3h CM de programmation avec python + 9h CM complexité</li>
+						<li>6h TP de programmation avec python</li>
+						<li>9h TD compléxite + 3h TP</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Notation</h2>
+					Un examen terminal + QCM de 15min en TP
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1>Introduction</h1>
+				</section>
+
+				<section>
+					<h3>Pourquoi faire de l'informatique à l'Ensai ?</h3>
+					<iframe src="https://giphy.com/embed/3o7btNRptqBgLSKR2w" width="480" height="480" frameBorder="0"
+						class="giphy-embed" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>Pourquoi faire de l'informatique à l'Ensai ?</h3>
+					<ul>
+						<li class="fragment">Apporte des bases pour faire de nouveaux programmes de traitements de
+							données</li>
+						<li class="fragment">Permet de comprendre les informaticiens</li>
+						<li class="fragment">Devenir chef de projet</li>
+						<li class="fragment">Automatiser certaines tâches au quotidien</li>
+						<li class="fragment">En 2019 impossible de manipuler des données sans connaissances info</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Rudiments d'informatique</h3>
+					Pour que l'on parle tous le même langage
+				</section>
+
+				<section>
+					<h3>Un algorithme</h3>
+					<p>
+						Ensemble d'opérations élémentaires dans le but de résoudre un problème.
+					</p>
+					<ul>
+						<li class="fragment">Pas forcément informatique</li>
+						<li class="fragment">Pas forcément implémenté</li>
+						<li class="fragment">Doit s'arrêter</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Un programme (informatique)</h3>
+					<p>
+						L'implémentation informatique d'un algorithme
+					</p>
+					<ul>
+						<li class="fragment">Plusieurs types (batch, interactif)</li>
+						<li class="fragment">Compilé/interprété</li>
+						<li class="fragment">Mono/multi langages</li>
+						<li class="fragment"><span class="important">Dissociation programme/données</span></li>
+					</ul>
+					<aside class="notes">
+						Il faut bien comprendre qu'un programme doit pouvoir fonctionner pour plusieurs données en
+						entrée. On a donc d'un côté le
+						programme de traitement et de l'autre les données traitées
+					</aside>
+				</section>
+
+				<section>
+					<h3>La philosophie d'un informaticien</h3>
+
+					<span class="important">Analyser</span> un problème complexe d'apparence insoluble et le découper en
+					<span class="important">tâches
+						simples
+					</span> faciles à résoudre puis assembler le tout.
+
+					<p class="important-bloc fragment">Moins je code mieux je me porte</p>
+
+				</section>
+
+				<section>
+					<h2>C'est quoi python ?</h2>
+					<iframe src="https://giphy.com/embed/xT0xeAi53U24JXvxi8" width="480" height="480" frameBorder="0"
+						class=" no-print giphy-embed" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>C'est quoi python ?</h3>
+					Normalement vous le savez tous
+				</section>
+
+				<section>
+					<h3>C'est quoi python ?</h3>
+					<ul>
+						<li class="fragment">Langage de programmation</li>
+						<li class="fragment">Facile à apprendre</li>
+						<li class="fragment">Langage typé avec typage dynamique</li>
+						<li class="fragment">Programmation procédurale (la base)</li>
+						<li class="fragment">Mais orienté objet et fonctionnelle possible</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<h3>Typage dynamique</h3>
+					<p>What does walk like a duck, quack like a duck and swim like a duck ?</p>
+					<iframe src="https://giphy.com/embed/8acGIeFnqLA7S" width="480" height="480" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+							<audio data-autoplay src="./sound/Jeopardy-theme-song.mp3"></audio>
+				</section>
+
+				<section>
+					<h3>A duck</h3>
+					<audio data-autoplay src="./sound/8-bit-correct-answer.wav"></audio>
+					<p class="no print"><a href="https://commons.wikimedia.org/wiki/File:Mallard2.jpg#/media/File:Mallard2.jpg"><img class="w60"src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Mallard2.jpg/1200px-Mallard2.jpg" alt="Mallard2.jpg"></a><br><a href="http://creativecommons.org/licenses/by-sa/3.0/" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=4084391">Link</a></p>
+				</section>
+				<section>
+					<h3>C'est quoi python ?</h3>
+					<ul>
+						<li class="fragment">Très polyvalent (des modules pour un peu tout)</li>
+						<li class="fragment">Cross platform</li>
+						<li class="fragment">Compilé/interprété ou interprété</li>
+						<li class="fragment">Libre !!</li>
+						<li class="fragment">Communauté active</li>
+						<li class="fragment">"Tout le monde" l'utilise</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<iframe src="https://giphy.com/embed/3og0Iwd5oXZbEbaKzK" width="480" height="480" frameBorder="0"
+						class="no-print giphy-embed" allowFullScreen></iframe>
+				</section>
+
+			</section>
+
+			<section>
+				<h1>Les bases de python</h1>
+			</section>
+
+			<section>
+				<section>
+					<h2>
+						Les variables
+					</h2>
+				</section>
+
+				<section>
+					<h3>Les variables : instanciation</h3>
+					<pre><code data-trim data-noescape class="python">
+						variable = expression #formule générale
+						annee = 2019 #variable de type int
+						matiere = "python" #variable de type str
+						est_interssante = True #variable de type booléen
+					</code></pre>
+
+					<p class="fragment">Le symbole = n'est pas un symbole d'égalité mais de <span
+							class="important">référencement</span></p>
+
+				</section>
+
+				<section>
+					<h3>Les variables : opérateurs numériques</h3>
+					<ul>
+						<li>+ - * / : opérateur de base</li>
+						<li>** : puissance</li>
+						<li>// : division euclidienne</li>
+						<li>% : modulo</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<h3>Les variables : opérateurs booléens</h3>
+					<ul>
+						<li>== : égalité</li>
+						<li>&lt; ; &lt;= ; =&gt; ; &gt; </li>
+						<li>!= : différent</li>
+						<li>and; or; not</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Exemples</h3>
+					<pre><code data-trim data-noescape class="python">
+								annee = 2019
+								annee > 2020 #retourne false
+							</code></pre>
+				</section>
+
+
+				<section>
+					<h2>Les principaux types de données</h2>
+				</section>
+
+				<section>
+					<h3>Les types numériques</h3>
+					<pre><code data-trim data-noescape class="python">
+						interger = 42
+						float = 96.3
+						complex = 5+6j
+					</code></pre>
+
+					<p class="important fragment">Types classiques que l'on retrouve partout</p>
+				</section>
+
+				<section>
+					<h3>Précision</h3>
+					A votre avis que donne :
+					<pre><code data-trim data-noescape class="python">
+						float_1 = 0.2
+						float_2 = 0.1
+						float_3 = float_1 - float_2
+						print(float_1 - float_2)
+						print("{0:.20f}".format(float_3))
+					</code></pre>
+
+					<div class="fragment">
+						Un solution la bibliothèque decimal
+						<pre><code data-trim data-noescape class="python">
+							import decimal
+							decimal.Decimal('0.3') - decimal.Decimal('0.1')
+						</code></pre>
+					</div>
+				</section>
+
+				<section>
+					<h3>Le type booléen</h3>
+				</section>
+
+
+				<section>
+					<h3>Le type booléen</h3>
+					<p>Seulement deux valeurs, True, False</p>
+					<p class="fragment">En python tout peut s'évaluer comme un booléen</p>
+					<ul class="fragment">
+						<li><span class="green">True</span> : collection non vide, nombre non 0, variable non None</li>
+						<li><span class="red">False</span> : collection vide, nombre = 0, variable = None </li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Les chaînes de caractères</h3>
+				</section>
+
+				<section>
+					<h3>Les chaînes de caractères</h3>
+					<pre><code data-trim data-noescape class="python">
+						quote = "Avengers assemble"
+						oter_quote = 'I love you 3000'
+						multi_line = "Iron man \
+						le plus intelligent des avengers"
+						black_panther = 'T\'Challa'
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>String comme une collection</h3>
+					On peut voir un string comme une collection <span class="important">immutable</span> de strings
+					unitaires
+
+					<pre><code data-trim data-noescape class="python">
+						quote = "Avengers assemble"
+						print(quote[0]) # affiche A
+						quote[0]="" # affiche une erreur
+					</code></pre>
+					<aside class="notes">L'explication arrive dans quelques slides</aside>
+				</section>
+
+				<section>
+					<h2>Les collections</h2>
+				</section>
+
+				<section>
+					<h3>Les collections</h3>
+					<ul>
+						<li>Représentent un ensemble d'objet</li>
+						<li>Par forcément du même type</li>
+						<li>Chaque collection à des particularités</li>
+						<li>Besoin d'en maîtriser 2 :
+							<ul class="fragment">
+								<li><span class="important">list</span></li>
+								<li><span class="important">dict</span></li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Les différentes collections python</h3>
+					<pre><code data-trim data-noescape class="python">
+							# List : type multiple, doublon, mutable, référence par index
+							list = [1,2,1,"str", True]
+
+							# Tuple : type multiple, doublon, immutable, référence par index
+							tuple = (1,2,1,"str", True)
+
+							# Set : type multiple, mutable, iterable (pas d'index)
+							set = {1,2,3,"str", True}
+
+							# Dict : type multiple, mutable, référence par clef
+							dict = {"nom" : "Steve Roger"
+									, "alias" : "Captain America", "age" : 102}
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>Quelques méthodes utiles</h3>
+					<pre><code data-trim data-noescape class="python">
+							list = [1,2,1,"str", True]
+
+							# Longueur de la liste
+							len(list)
+
+							# Accéder à un élément avec son index
+							list[i]
+
+							# Accéder à une sous liste
+							list[i:j]
+
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>Quelques méthodes utiles</h3>
+					<pre><code data-trim data-noescape class="python">
+								# Modifier un élément à un index précis
+								list[i] = newValue
+
+								# Modifier une sous liste
+								list[i:j] = [newvalue]
+	
+								# Ajouter un élément à la fin
+								list.append("newElement")
+	
+								# Ajouter un élément à l'index i
+								liste.insert(i, x)
+	
+								# Supprimer le dernière élément
+								list.pop()
+							</code></pre>
+				</section>
+				<section>
+					<h3>Quelques méthodes utiles</h3>
+					<pre><code data-trim data-noescape class="python">
+							dict = {"nom" : "Steve Roger", "alias" : "Captain America", "age" : 102}
+							dict2 = {"nom" : "Robert Banner", "alias" : "hulk"}
+
+							# Accéder à un élément avec sa clef
+							dict["nom"]
+
+							# Modifier un élément avec sa clef
+							dict["nom"] = "Iron Man"
+
+							# Pour chaque clef dans dict2, met à jour dict tel que dict[clef] = dict2[clef] 
+							dict.update(dict2)
+						</code></pre>
+				</section>
+				
+				<section class="no-print">
+						<h2>Question ?</h2>
+						<iframe src="https://giphy.com/embed/xT0xeuOy2Fcl9vDGiA" width="480" height="480" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+					</section>
+			</section>
+
+
+			<section>
+
+				<section>
+					<h2>Mutabilité des objets</h2>
+				</section>
+
+				<section>
+					<h3>Définition</h3>
+					<blockquote>
+						La mutabilité d'un objet est sa capacité à être modifié après sa création. Ainsi un objet
+						mutable <span class="important">peut
+							être modifié</span> une fois créé alors qu'un objet non mutable <span class="important">ne
+							peut plus être modifié</span>.
+					</blockquote>
+
+					<div class="fragment">
+						<ul>
+							<li>Les types mutables : list, dict, set</li>
+							<li>Les types immutables : int, float, string, tuple, bool</li>
+						</ul>
+					</div>
+				</section>
+
+				<section>
+					<h3>?</h3>
+					<iframe src="https://giphy.com/embed/l3q2K5jinAlChoCLS" width="500" height="500" frameBorder="0"
+						class="no-print giphy-embed" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>Mais pourtant </h3>
+					Ce code fonctionne !!
+					<pre><code data-trim data-noescape class="python">
+							quote = "Avengers assemble"
+							quote = 'I love you 3000'
+						</code></pre> Et je modifie bien une variable de type string !!
+				</section>
+
+				<section>
+					<h3>Modifie-t-on réellement la variable ? </h3>
+					Savez-vous comment python gère les variables ?
+					<img class="plain no-print"
+						src="https://media0.giphy.com/media/TPl5N4Ci49ZQY/giphy.gif?cid=790b7611841d815faa61e2fbf574a1b8b5e79fc75b56d500&rid=giphy.gif"
+						alt="">
+				</section>
+				<section>
+					<h3>Modifie-t-on réellement la variable ? </h3>
+
+					<div class="important-bloc fragment">Notion de référence mémoire</div>
+
+				</section>
+
+				<section>
+					<h3>Référence mémoire</h3>
+					<ul>
+						<li class="fragment">Une référence pointe vers un espace mémoire</li>
+						<li class="fragment">La valeur est stockée DANS l'espace mémoire</li>
+						<li class="fragment">Quand on référence une variable via un = on la fait pointer vers un nouvel
+							espace mémoire</li>
+						<li class="fragment">Et cela même si la variable à le même nom</li>
+					</ul>
+					<div class="important-bloc fragment fragment">Un = ne change pas la valeur mais la référence du bloc
+						mémoire</div>
+
+					<aside class="notes">
+						Et il faut bien ça avec le typage dynamique
+					</aside>
+				</section>
+
+				<section>
+					<h3>Exemple, "égalité" d'integers</h3>
+					<pre><code data-trim data-noescape class="python">
+						nombre_1 = 10
+						nombre_2 = nombre_1
+						nombre_1 = 11
+						print(nombre_2)
+						# Que vaut nombre_2 ?
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Exemple, "égalité" de strings</h3>
+					<pre><code data-trim data-noescape class="python">
+						str_1 = "Avengers assemble"
+						str_2 = str_1
+						str_1 = "I love you 3000"
+						print(str_2)
+						# Que vaut str_2 ?
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Exemple, "égalité" de liste</h3>
+					<pre><code data-trim data-noescape class="python">
+						list_1 = [1,2,3]
+						list_2 = list_1
+						list_1.append(4)
+						print(list_2)
+						# Que vaut list_2 ?
+
+						list_2.append(5)
+						print(list_1)
+						# Que vaut list_1 ?
+					</code></pre>
+				</section>
+
+
+				<section>
+					<h3>Exemple, utilisation d'une fonction</h3>
+					<pre><code data-trim data-noescape class="python">
+						def increment(n):
+							n.append(4)
+
+						my_list = [1, 2, 3]
+						increment(my_list)
+						print(my_list)
+						# Que vaut my_list ?
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Exemple, explications</h3>
+					<img src="https://miro.Medium.com/max/526/1*3L57bSQ8gLucd1JEK4lrPQ.png"
+						alt="explication slide précédente">
+					<p>Source : <a
+							href="https://Medium.com/datadriveninvestor/mutable-and-immutable-python-2093deeac8d9">Medium</a>
+					</p>
+				</section>
+
+				<section>
+					<h3>Exemple, explications</h3>
+					<img src="https://miro.Medium.com/max/576/1*Ys1qM50aTx4KCGRTDdrewg.png"
+						alt="explication slide précédente">
+					<p>Source : <a
+							href="https://Medium.com/datadriveninvestor/mutable-and-immutable-python-2093deeac8d9">Medium</a>
+					</p>
+				</section>
+
+				<section>
+					<h3>Exemple, égalité de liste dans une fonction</h3>
+					<pre><code data-trim data-noescape class="python">
+						def assign_value(n, v):
+							n = v
+
+						list_1 = [1, 2, 3]
+						list_2 = [4, 5, 6]
+						assign_value(list_1, list_2)
+						print(list_1)
+						# Que vaut list_1 ?
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Exemple, explications</h3>
+					<img src="https://miro.Medium.com/max/656/1*Ed0_H11yrSd0Qyc6X7mQ5w.png"
+						alt="explication slide précédente">
+					<p>Source : <a
+							href="https://Medium.com/datadriveninvestor/mutable-and-immutable-python-2093deeac8d9">Medium</a>
+					</p>
+				</section>
+
+				<section>
+					<h3>Exemple, explications</h3>
+					<img src="https://miro.Medium.com/max/656/1*dlr6Z0toJSxlN02yytM-eQ.png"
+						alt="explication slide précédente">
+					<p>Source : <a
+							href="https://Medium.com/datadriveninvestor/mutable-and-immutable-python-2093deeac8d9">Medium</a>
+					</p>
+				</section>
+
+				<section>
+					<h3>Exemple, copie d'une liste</h3>
+					<pre><code data-trim data-noescape class="python">
+					def copy_list(l):
+						return l[:]
+						
+					my_list = [1, 2, 3]
+					new_list = copy_list(my_list)
+					# Que vaut new_list ?
+					</code></pre>
+
+				</section>
+
+				<section>
+					<h3>Exemple, explications</h3>
+					<img src="https://miro.Medium.com/max/532/1*zG2k3oFhHGY0XnukrK0b7g.png"
+						alt="explication slide précédente">
+					<p>Source : <a
+							href="https://Medium.com/datadriveninvestor/mutable-and-immutable-python-2093deeac8d9">Medium</a>
+					</p>
+				</section>
+
+
+				<section class="no-print">
+						<h3>Questions ?</h3>
+						<iframe src="https://giphy.com/embed/l0Iy8hSJalxmgTOF2" width="960" height="520" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+					</section>
+
+			</section>
+
+			<section>
+
+				<section>
+					<h2>Les structures de contrôle de l'exécution</h2>
+				</section>
+
+				<section>
+					<h3>Les structures de contrôle de l'exécution</h3>
+					<p>Pour le moment on a seulement vu de quoi faire un programme linéaire. Mais un tel programme pose
+						2 problèmes</p>
+					<ol>
+						<li class="fragment">exécution conditionnelle ?</li>
+						<li class="fragment">répéter un même code en changeant une donnée ?</li>
+					</ol>
+				</section>
+				<section>
+					<h3>if elif else</h3>
+					<p>Permet d'exécuter du code de manière conditionnelle</p>
+					<pre><code data-trim data-noescape class="python">
+						if condition1 :
+							somecode
+						elif condition2 :
+							somecode
+						elif condition3 :
+							somecode
+							...
+						else :
+							somecode
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>if elif else</h3>
+					<ul>
+						<li>Les conditions sont évaluées comme des booléens</li>
+						<li>Evaluation séquentielle des conditions (ordre important)</li>
+						<li>Exécute le bloc de la première condition vraie</li>
+						<li>Les elif sont optionnels</li>
+						<li>Le else est optionnel</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Conditions évaluées comme des booléens</h3>
+					<p>Il est inutile de faire</p>
+					<pre><code data-trim data-noescape class="python">
+							if x == True :
+							if x is True :
+							if bool(x) :
+						</code></pre>
+					<p>
+						car python va de lui même regarder si x est True ou non.
+					</p>
+				</section>
+
+				<section>
+					<h3>Exemple</h3>
+					<pre><code data-trim data-noescape class="python">
+						if x < 0 :
+							print ("x est négatif")
+						elif x%2 :
+							print ("x est positif et impair")
+						else :
+							print("x est positif est pair")
+							</code></pre>
+				</section>
+
+				<section>
+					<h3>Boucle while</h3>
+					<p>Permet d'exécuter du code <span class="important">tant qu</span>'une condition est vraie </p>
+					<pre><code data-trim data-noescape class="python">
+						while condition :
+							some code
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>Boucle while</h3>
+					<ul>
+						<li class="fragment">Assurez-vous de pouvoir sortir de la boucle</li>
+						<li class="fragment">La condition est évaluée au début de chaque itération</li>
+						<li class="fragment">Si fausse dés le début, pas de boucle</li>
+					</ul>
+
+					<div class="important-bloc fragment">Boucle à longueur variable</div>
+				</section>
+
+				<section>
+					<h3>While exemple</h3>
+
+					<pre><code data-trim data-noescape class="python">		
+							x = 3
+							count = 1
+							factoriel = 1
+							while count <= x :
+								factoriel = factoriel * count
+								count +=1
+							print ("factoriel ", x, " vaut ", factoriel)
+								</code></pre>
+				</section>
+
+
+				<section>
+					<h3>Boucle for</h3>
+					<p>Permet d'exécuter du code <span class="important">pour chaque</span> élement d'une collection</p>
+					<pre><code data-trim data-noescape class="python">
+								for element in list :
+									some code
+								</code></pre>
+				</section>
+
+				<section>
+					<h3>Boucle for</h3>
+					<ul>
+						<li class="fragment">Va exécuter du code pour tous les éléments d'une collection</li>
+						<li class="fragment">list, set, tuple, dict</li>
+						<li class="fragment">Mais aussi string</li>
+						<li class="fragment">On peut donner également une "range"</li>
+					</ul>
+					<div class="important-bloc fragment">Boucle à longueur fixe</div>
+
+				</section>
+
+				<section>
+					<h3>Boucle for exemple</h3>
+					<pre><code data-trim data-noescape class="python">
+						for lettre in "Iron Man" :
+							print(lettre)
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Boucle for exemple</h3>
+					<pre><code data-trim data-noescape class="python">
+						avengers = ["Iron Man", "Captain America", "Black Widow",
+						 "Hulk", "Thor", "Hawkeye"]
+						for avenger in avengers :
+							print(avenger)
+					</code></pre>
+				</section>
+
+
+
+				<section>
+					<h3>Boucle for exemple</h3>
+					<pre><code data-trim data-noescape class="python">
+						for i in range(5) :
+							print(i)
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>L'instruction Break</h3>
+					<p>Permet de stopper une boucle</p>
+					<pre><code data-trim data-noescape class="python">
+						avengers = ["Iron Man", "Captain America", "Black Widow",
+						 "Hulk", "Thor", "Hawkeye"]
+						i = 0
+						while True :
+							avenger = avengers[i]
+							if avenger = "Hulk" : break
+							print(avenger)
+							i +=1
+						</code></pre>
+				</section>
+
+
+				<section>
+					<h3>L'instruction Continue</h3>
+					<p>Permet de stopper une intération de boucle</p>
+					<pre><code data-trim data-noescape class="python">
+							avengers = ["Iron Man", "Captain America", "Black Widow",
+							 "Hulk", "Thor", "Hawkeye"]
+							for avenger in avengers :
+								if avenger = "Hulk" : continue
+									print(avenger)
+							</code></pre>
+				</section>
+
+				<section>
+					<h3>Break et continue</h3>
+					<ul>
+						<li class="fragment">A utiliser avec parcimonie</li>
+						<li class="fragment">Rend le code compliquer à lire</li>
+						<li class="fragment">Souvent signe que vous avez utilisé la mauvaise boucle</li>
+						<li class="fragment">Si vous avec une boucle while true il faut un break !!!</li>
+						<li class="fragment">Mais c'est une mauvaise pratique</li>
+
+					</ul>
+				</section>
+
+                <section class="no-print">
+						<h3>Des questions ???</h3>
+						<iframe src="https://giphy.com/embed/BfGSgzHlsELtu" width="480" height="480" frameBorder="0" class="no-print giphy-embed" allowFullScreen></iframe>
+					</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Les fonctions</h2>
+				</section>
+
+				<section>
+					<h3>Pourquoi faire des fonctions ?</h3>
+					<div class="important-bloc fragment">Réutilisation du code</div>
+				</section>
+
+				<section>
+					<h3>Un exemple</h3>
+					<pre><code data-trim data-noescape class="python">
+		def ma_super_fonction (param1, param2, opt_param = 0, *args
+		, keywordparam, **kwargs):
+			"""
+			Docstrings : en quelque mot ce que fait ma fonction
+			"""
+	
+			du super code
+	
+			return quelquechose
+	
+		</code></pre>
+				</section>
+
+				<section>
+					<h3>Les éléments d'une fonction</h3>
+					<ol>
+						<li class="fragment"><span class="important">def</span> : mot spécifique à la déclaration d'une
+							fonction</li>
+						<li class="fragment"><span class="important">ma_super_fonction</span> : le nom utilisé pour
+							appeler votre fonction</li>
+						<li class="fragment"><span class="important">les paramètres</span> : les données en entrée de
+							votre fonction</li>
+						<li class="fragment"><span class="important">le code de votre fonction</span> : déclarations,
+							boucles, conditions etc</li>
+						<li class="fragment"><span class="important">return</span> : ce qui sort de votre fonction, une
+							seule valeur ou un
+							tuple </li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Les éléments d'une fonction</h3>
+					<ul>
+						<li class="fragment">Attention à l'indentation !</li>
+						<li class="fragment">Les paramètres ne sont pas typés</li>
+						<li class="fragment">Le return met fin à la fonction</li>
+						<li class="fragment">Il est optionnel</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Les paramètres</h3>
+					<p>5 types de paramètres</p>
+					<ol>
+						<li class="fragment" data-fragment-index="1"><span class="fragment highlight-important" data-fragment-index="6">paramètre obligatoire (exemple : param1, param2)</span></li>
+						<li class="fragment" data-fragment-index="2"><span class="fragment highlight-important" data-fragment-index="6">paramètre optionnel (exemple opt_param = 0)</span></li>
+						<li class="fragment" data-fragment-index="3">*args, tous les paramètres positionnels supplémentaires sont mis dans un
+							tuple </li>
+						<li class="fragment" data-fragment-index="4">keyword-only parameter : passage uniquement avec le nom du paramètre. Sont
+							après les *args</li>
+						<li class="fragment" data-fragment-index="5">**kwargs, tous les arguments nommés supplémentaires sont mis dans un dict
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Exemple paramètres, paramètres optionnels </h3>
+					<pre><code data-trim data-noescape class="python">
+					def multiplication (a, b=2):
+						produit = a * b	
+						return produit
+					
+					produit (5) # retourne 10
+					produit (5,6) # retourne 30 
+					</code></pre>
+
+					<div class="important-bloc">Le cas le plus usuel</div>
+				</section>
+
+				<section>
+					<h3>Exemple *args</h3>
+					<pre><code data-trim data-noescape class="python">
+						def somme (*nombres):
+							return sum(nombres)
+						
+						somme (5) # retourne 5
+						somme (1,2,3,4,5,6,7,8,9,10) # retourne 55
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>Exemple keyword-only parameter</h3>
+					<pre><code data-trim data-noescape class="python">
+						def somme (a,*, b, c=3):
+							return a+b+c
+						
+						somme (5) # raise type error car il manque b
+						somme (5,6) # raise type error car il manque b
+						somme (5, b=6) # retourne 14
+						somme (5, b=6, c=7) # retourne 18
+						</code></pre>
+				</section>
+
+				<section>
+						<iframe src="https://giphy.com/embed/TgF6xfH8V0mZcUyneP" width="960" height="540" frameBorder="0"
+								class="giphy-embed" allowFullScreen></iframe>
+		
+						<aside class="notes">Le cours va vraiment commencer donc si vous avez quelques question go !</aside>
+		
+					</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Les modules</h2>
+				</section>
+
+				<section>
+					<h3>Les modules</h3>
+
+					<p>Les modules sont des fichiers .py qui contiennent du code python. Ces fichiers peuvent être
+						appelés par d'autres fichiers
+						pour utiliser leurs méthodes, variables, etc.
+					</p>
+					<p class="fragment">Fonctionne comme l'import de fichier avec Latex</p>
+				</section>
+
+				<section>
+					<h3>Les modules</h3>
+
+					<p>Il existe des modules stantards (bibliothèques) livrés avec une distribution python (random, os,
+						math, sys ...)</p>
+					<p class="fragment">Mais également des bibliothèques disponibles sur internet (pyPi, numPy, pandas,
+						flask ...)</p>
+				</section>
+
+				<section>
+					<h3>Les modules</h3>
+					<div class="important-bloc">Décomposer son code en module qui disposent d'une unité de sens permet
+						un code plus maintenant
+						et lisible</div>
+
+				</section>
+
+				<section>
+					<h3>Les modules utilisation</h3>
+					<pre><code data-trim data-noescape class="python">
+							import sys # importe tout le module sys
+
+							from math import pi, sin # importe seulement pi et sin
+							</code></pre>
+				</section>
+				<section>
+						<iframe src="https://giphy.com/embed/pOA9ByTiSMrk8dV1JN" width="960" height="540" frameBorder="0"
+								class="giphy-embed" allowFullScreen></iframe>
+					</section>
+			</section>
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/CF93EZqOxjdHG" width="480" height="364" frameBorder="0"
+					class="no-print giphy-embed" allowFullScreen></iframe>
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>

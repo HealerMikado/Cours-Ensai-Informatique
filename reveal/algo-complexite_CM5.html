@@ -1,0 +1,878 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<section>
+					<h1>Algorithmique et complexité</h1>
+					<h2>Format de données</h2>
+					<p>Pépin Rémi, Ensai, 2019</p>
+					<img src="img/logo pyhton.png" alt="">
+				</section>
+				<section>
+					<h3>Les objectifs du cours</h3>
+					<ul>
+						<li>Découvrir des structures élémentaires de données et leurs implémentations</li>
+						<li>Découvrir la notion de table de hachage et fonction hachage</li>
+						<li>Mieux comprendre le fonctionnement de certains mécanismes courants d'optimisation d'accès
+							aux données</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Le plan</h3>
+					<ol style="font-size: xx-large;">
+						<li>Introduction
+							<ol>
+								<li>Pourquoi étudier les structures de données ?</li>
+								<li>Opérations élémentaires</li>
+							</ol>
+
+						</li>
+						<li>
+							Les structures de données
+							<ol>
+								<li>Liste</li>
+								<li>Pile</li>
+								<li>File</li>
+								<li>Liste chaînée</li>
+							</ol>
+						</li>
+						<li>
+							Table de hachage
+							<ol>
+								<li>Table adressage directe</li>
+								<li>Fonction de hachage</li>
+								<li>Table de hachage
+									<ol>
+										<li>Table chaînée</li>
+										<li>Table adressage ouvert</li>
+										<li>Hachage parfait</li>
+									</ol>
+								</li>
+							</ol>
+						</li>
+
+
+					</ol>
+				</section>
+			</section>
+
+
+			<section>
+				<section>
+					<h2>Introduction</h2>
+				</section>
+
+				<section>
+					<h3>Pourquoi étudier les structures de données ?</h3>
+					<p class="important-bloc">
+						Mettre en place la structures de données avec la complexité la plus faible pour les opérations
+						les plus
+						courantes.
+					</p>
+					<div class="fragment">
+						<p>
+							Le but
+						</p>
+						<p class="important-bloc">
+							Complexité \(\Theta(1)\) &nbsp; pour les opérations les plus courantes
+						</p>
+					</div>
+
+				</section>
+
+				<section>
+					<h3>Quelles opérations ?</h3>
+				</section>
+
+				<section>
+					<h3>Le crud</h3>
+					<ul>
+						<li><span class="important">C</span>reate</li>
+						<li><span class="important">R</span>ead</li>
+						<li class="fragment fade-out"><span class="important">U</span>pdate</li>
+						<li><span class="important">D</span>elete</li>
+					</ul>
+					<aside class="notes">
+						Dans le read je mets lire mais surtout rechercher une donnée particulière. L'update nous
+						intéresse pas dans ce cours.
+					</aside>
+				</section>
+
+				<section>
+					<h3>Autres opérations intéressantes</h3>
+					<ul>
+						<li>Minimum/Maximum</li>
+						<li>Sucesseurs/Prédécesseurs</li>
+					</ul>
+				</section>
+			</section>
+
+
+			<section>
+				<section>
+					<h2>Structures élémentaires</h2>
+				</section>
+
+				<section>
+					<h3>La liste</h3>
+				</section>
+
+				<section>
+					<h3>La liste</h3>
+					<p>
+						Indexation des éléments
+					</p>
+					<ul>
+						<li>Recherche par index : \(\Theta(1)\)</li>
+						<li>Append / pop last : \(\Theta(1)\)</li>
+						<li>Insert : \(\Theta(n)\)</li>
+						<li>Delete : \(\Theta(n)\)</li>
+						<li>Tri : \(\Theta(n\log(n))\)</li>
+					</ul>
+				</section>
+				<section>
+					<h3>La liste bilan</h3>
+					<ul>
+						<li>Format de base proposé par python
+						</li>
+						<li>Pas de notion de suivant/précédent autre que par index</li>
+						<li>Extraction de sous liste</li>
+						<li>Recherche, tri possibles</li>
+						<li>Utilise une séquence d'espaces mémoires</li>
+					</ul>
+					<p class="important-bloc fragment">Format polyvalent qui répond à beaucoup de besoins, mais pas
+						optimisé pour tous les besoins
+					</p>
+				</section>
+
+
+				<section>
+					<h3>La pile</h3>
+				</section>
+
+				<section>
+					<h3>La pile</h3>
+					<p>Structures <span>LIFO</span></p>
+					<ol>
+						<li>On <span class="important">empile</span> des objets</li>
+						<li>Seul l'élément le plus haut est accessible</li>
+						<li>Insertion élement : \(\mathcal{O}(1)\)</li>
+						<li>Suppresion élement : \(\mathcal{O}(1)\)</li>
+						<li>Lecture : \(\mathcal{O}(1)\)</li>
+					</ol>
+					<aside class="notes">
+						Structure qui ne permet de de recherche en profondeur
+					</aside>
+				</section>
+
+				<section>
+					<h3>Implementation d'une pile</h3>
+					<pre><code data-trim data-noescape class="python">
+						class Pile:
+							def __init__(self):
+								self.__pile = []
+						
+							def is_empty(self):
+								return len(self.__pile) == 0
+						
+							def add_element(self, element):
+								self.__pile.append(element)
+						
+							def get_element(self):
+								return self.__pile.pop()
+							</code></pre>
+				</section>
+
+				<section>
+					<h3>La pile bilan</h3>
+					<ul>
+						<li>Pas de notion de tri, recherche</li>
+						<li>Empilage des données</li>
+						<li>Last In, First Out (LIFO)</li>
+					</ul>
+					<p class="important-bloc fragment">Format simple efficace pour le passage de données entre
+						processus, ou pour
+						inverser l'ordre des données entre étapes
+					</p>
+				</section>
+
+
+				<section>
+					<h3>La file</h3>
+				</section>
+
+				<section>
+					<h3>La file</h3>
+					<p>Structures <span>FIFO</span></p>
+					<ol>
+						<li>On <span class="important">enfile</span> des objets</li>
+						<li>Seul l'élément le plus bas est accessible</li>
+						<li>Insertion élement : \(\mathcal{O}(1)\)</li>
+						<li>Suppresion élement : \(\mathcal{O}(1)\)</li>
+						<li>Lecture : \(\mathcal{O}(1)\)</li>
+					</ol>
+					<aside class="notes">
+						Structure qui ne permet de de recherche en profondeur
+					</aside>
+				</section>
+
+				<section>
+					<h3>Implementation d'une file</h3>
+					<pre><code data-trim data-noescape class="python">
+							class File:
+								def __init__(self):
+									self.__file = []
+								
+								def is_empty(self):
+									return len(self.__file) == 0
+							
+								def add_element(self, element):
+									self.__file.append(element)
+							
+								def get_element(self):
+									return self.__file.pop(0)
+								</code></pre>
+				</section>
+
+				<section>
+					<h3>Un petit problème</h3>
+					<pre><code data-trim data-noescape class="python">
+self.__file.pop(0)
+						</code></pre>
+					<p>
+						Est un grand \(\mathcal{O}(n)\) et pas un \(\mathcal{O}(1)\)
+					</p>
+					<p class="fragment">Une solution est d'utiliser deux piles pour faire notre file</p>
+				</section>
+
+				<section>
+					<h3>Deux piles pour une file</h3>
+					<pre><code data-trim data-noescape class="python">
+						class QueueTwoStacks():
+    
+							def __init__(self):
+								self.__pile_1 = []
+								self.__pile_2 = []
+						
+							def is_empty(self):
+
+								return len(self.__pile_1) == 0 and len(self.__pile_2) == 0
+						
+							def enfiler(self, item):
+								self.__pile_1.append(item)
+						
+							def defiler(self):
+								if self.is_empty :
+									raise IndexError("On ne peux pas défiler une file vide!")
+								if len(self.__pile_2) == 0:
+									while len(self.__pile_1) > 0:
+										last_stack_1_item = self.__pile_1.pop()
+										self.__pile_2.append(last_stack_1_item)
+								return self.__pile_2.pop()
+							</code></pre>
+				</section>
+
+				<section>
+					<h3>Complexité du transpilage </h3>
+					La <span class="important">complexité amortie</span> du transpilage est un \(\Theta(1)\). Donc c'est
+					bon ! (démonstration et explication en TD)
+				</section>
+
+				<section>
+					<h3>La file bilan</h3>
+					<ul>
+						<li>Pas de notion de tri, recherche</li>
+						<li>Enfilage des données</li>
+						<li>First In, First Out (FIFO)</li>
+					</ul>
+					<p class="important-bloc fragment">Format simple efficace pour le passage de données entre
+						processus, et pour
+						garder l'ordre des données entre étapes
+					</p>
+				</section>
+
+				<section>
+					<h3>Les listes chaînées</h3>
+				</section>
+
+				<section>
+					<h3>Les listes chaînées</h3>
+					<ul>
+						<li>Chaque objet connait le suivant (et précédent)</li>
+						<li>Simplement chaînée si connait seulement le suivant</li>
+						<li>Doublement chainée si connait le suivant et précédent</li>
+						<li>Peut-être triée ou nom</li>
+						<li>Peut-être circulaire</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<h3>Implementation d'une liste chaînées</h3>
+					Voir code sur moodle
+				</section>
+
+				<section>
+					<h3>Les listes chaînées</h3>
+					<ul>
+						<li>Recheche en \(\mathcal{O}(n)\) dans le pire cas </li>
+						<li>Insertion et suppression en \(\mathcal{O}(1)\) </li>
+						<li>Peu performante par indice</li>
+						<li>Extrêment performante par "objet"</li>
+					</ul>
+				</section>
+
+				<section style="font-size : smaller">
+					<h3>Comparatif</h3>
+					<table>
+						<tr>
+							<th></th>
+							<th>Liste<br></th>
+							<th>Pile<br></th>
+							<th>File<br></th>
+							<th>Liste chaînée</th>
+						</tr>
+						<tr>
+							<td>Ajout first/last</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+						</tr>
+						<tr>
+							<td>Ajout ième avec index</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td></td>
+							<td></td>
+							<td><span class="red">\(\mathcal{O}(n)\)</span></td>
+						</tr>
+						<tr>
+							<td>Ajout avant / après élément</td>
+							<td><span class="red">\(\mathcal{O}(n)\)</span></td>
+							<td></td>
+							<td></td>
+							<td>\(\mathcal{O}(1)\)</td>
+						</tr>
+						<tr>
+							<td>Suppression</td>
+							<td><span class="red">\(\mathcal{O}(n)\)</span></td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+						</tr>
+						<tr>
+							<td>get_first<br></td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td></td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+						</tr>
+						<tr>
+							<td>get_last</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td></td>
+							<td><span class="red">\(\mathcal{O}(n)\)</span>/\(\mathcal{O}(1)\)</td>
+						</tr>
+						<tr>
+							<td>get ième élément</td>
+							<td>\(\mathcal{O}(1)\)</td>
+							<td></td>
+							<td></td>
+							<td><span class="red">\(\mathcal{O}(n)\)</span></td>
+						</tr>
+						<tr>
+							<td>get avant/après élément</td>
+							<td><span class="red">\(\mathcal{O}(n)\)</span></td>
+							<td></td>
+							<td></td>
+							<td>\(\mathcal{O}(1)\)</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h3>Conclusion</h3>
+					<p class="important-bloc">
+						Pas de format magique. Chaque format à un intérêt.
+					</p>
+				</section>
+
+				<section>
+					<h3>Un regret</h3>
+					<iframe src="https://giphy.com/embed/mBaNKEmk9SUKs" width="480" height="370" frameBorder="0"
+						class="giphy-embed no-print" allowFullScreen></iframe>
+				</section>
+				<section>
+					<h3>Un regret</h3>
+					<p class="important-bloc">
+						Pas de \(\Theta(1)\) pour la recherche, l'insertion, la suppresion
+					</p>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Table de hachage</h2>
+				</section>
+				<section>
+					<h3>Réfléchissons au problème</h3>
+					<p>On cherche une structure qui permet</p>
+					<ul>
+						<li>Insertion rapide</li>
+						<li>Suppresion rapide</li>
+						<li class="fragment highlight-important">Recherche rapide</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Pourquoi la recherche prend autant de temps ?</h3>
+					<iframe src="https://giphy.com/embed/3oEjHSuTCk0TBeLcGs" width="480" height="330" frameBorder="0"
+						class="giphy-embed no-print" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>Obliger de chercher</h3>
+					<p>
+						Décorrélation entre la donnée et sa "position"
+					</p>
+					<ul class="fragment">
+						<li>Liste : index</li>
+						<li>Pile et file : ordre d'arrivée</li>
+						<li>Liste chainée : précédent / suivant</li>
+					</ul>
+					<p class="important fragment">Besoin de mécanisme liant donnée et position</p>
+				</section>
+
+				<section>
+					<h3>Des idées ?</h3>
+					<iframe src="https://giphy.com/embed/8acGIeFnqLA7S" width="480" height="480" frameBorder="0"
+						class="giphy-embed no-print" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>Pour la suite</h3>
+					<ul>
+						<li>Données constitué de plusieurs champs (ex un livre a un titre, un auteur et un
+							isbn)</li>
+						<li>Un champ qui sera la <span class="important">clef</span> de nos données</li>
+						<li>Optimiser la recherche de nos données quand on dispose de ce champ</li>
+						<li>Exemple avec le formalisme SQL et l'isbn comme clef
+							<pre><code data-trim data-noescape class="sql">
+								SELECT * FROM livre
+									WHERE isbn = 9781626765037
+							</code></pre>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3> Un exemple simple table à adressage direct</h3>
+				</section>
+
+				<section>
+					<h3>Table à adressage direct</h3>
+					<ul>
+						<li>Soit \(\mathcal{U} \subset \mathbb{N}\) l'univers des clefs possible <em>pas trop grand</em>
+						</li>
+						<li>Pour chaque valeur on <span class="important">connait</span> une clef numérique entière
+							<span class="important">unique</span> (exemple clef primaire en BdD) </li>
+						<li>On note \(\mathcal{K}\) l'univers des clefs utilisées</li>
+						<li>On appelle données satellites les données associées à une clef</li>
+					</ul>
+					<p class="fragment important">On stocke les données dans une liste et la clef sert d'index pour
+						retrouver la donnée</p>
+				</section>
+
+				<section>
+					<h3>Exemple d'implémentation</h3>
+
+					<pre><code data-trim data-noescape class="python">
+						class AdressageDirect:
+
+							def __init__(self, size):
+								 self.__list = [None]*size
+						
+							def get_element(self, key):
+								return self.__list[key]
+						
+							def add_element(self, data):
+								# Je suppose que la clef est l'élément 0 de data
+								self.__list[data[0]] = data
+						
+							def delete_element(self, data):
+								self.__list[data[0]] = None
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Conclusion</h3>
+					<p class="important-bloc">Toutes les opérations sont en \(\Theta(1)\)</p>
+					<div class="fragment">
+						Par contre comment on fait quand on a pas de clef ?? Comment faire quand \(\mathcal{U} \) est
+						très grand ??
+					</div>
+				</section>
+
+				<section>
+					<h3>Fonction de hachage</h3>
+				</section>
+
+				<section>
+					<h3>Fonction de hachage, principe</h3>
+					<p><span class="important">Coder chaque clef k par une valeur numérique</span> avec \(U\)
+						univers des clefs et \(M\) univers des clef hachées et </p>
+					\[|U| \ggg |M|\]
+					<div class="green-box">
+
+						<ul>
+							<li> <span class="red">Inconvenient</span> h ne peut pas être une bijection !
+							</li>
+							<li>Donc on peut avoir des collisions : \(h(k) = h(k′)\) pour \(k \neq k′\)</li>
+							<li>L’efficacité de la méthode réside dans les techniques de résolution des
+								collisions.</li>
+						</ul>
+					</div>
+
+				</section>
+
+				<section>
+					<h3>Fonction de hachage, définition</h3>
+					<p>Une fonction de hachage \(h\) est une transformation d'un
+						espace \(U\) (univers des clefs) dans un espace \(M\) avec \(|U| \gt |M|\) avec les propriétés
+						suivantes : </p>
+					<div class="green-box">
+						<ul>
+							<li>Déterministe : si \( k= k′ \) alors \( h(k) = h(k′) \)</li>
+							<li>Limite les collisions : cas ou \( k \neq k′ \) mais \( h(k) = h(k′) \) </li>
+							<li>Rapide à calculer : \(\mathcal{O}(1)\)</li>
+						</ul>
+
+					</div>
+				</section>
+
+				<section>
+					<h3>Fonction de hachage, méthode de la division</h3>
+					Méthode de la division :
+					\[h(k)\equiv k_{[m]}\]
+					<p class="note">m premier "loin" d'une puissance de 2</p>
+					<div class="fragment">
+						<p>Exemple :</p>
+						\[h(k)\equiv k_{[701]}\]
+					</div>
+
+				</section>
+				<section>
+					<h3>Fonction de hachage, méthode de la multiplication</h3>
+
+					<p>On prend la partie entière du produit de k par 0 &lt; A &lt; 1 et on la multiplie par k</p>
+					\[h(k) = \lfloor m ( kA - \lfloor kA \rfloor ) \rfloor\]
+
+				</section>
+
+				<section>
+					<h3>Fonction de hachage, hachage cryptographique</h3>
+					<p>
+						Vérifier l'intégrité de données, de mots de passe ... Plusieurs méthodes
+					</p>
+					<ul>
+						<li>SHA-1, 2, 3</li>
+						<li>MD5</li>
+						<li>RIPEMD-160</li>
+						<li>...</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Table de hachage</h3>
+					<ul>
+						<li>Soit \(\mathcal{U}\) et \(h\) une fonction de hachage telles que : \[\mathcal{U}: h \mapsto
+							\lbrace 0, 1, ... , m-1 \rbrace\]
+						</li>
+						<li>Pour chaque valeur on calcule une valeur numérique \(h(k_i) \in \lbrace 0, 1, ... , m-1
+							\rbrace\ \) </li>
+					</ul>
+					<p class="fragment important">On stocke les données dans une table de hachage (T) et l'index est
+						déterminé par le
+						hache de la clef</p>
+				</section>
+
+				<section>
+					<h3>Si aucune collision</h3>
+					<ul>
+						<li>Insertion :\(\Theta(1)\)</li>
+						<li>Suppresion :\(\Theta(1)\)</li>
+						<li>Recherche :\(\Theta(1)\)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>La gestion des collisions</h3>
+					<p>Cas \( x \neq y \) mais \( h(x) = h(y) \)</p>
+					<p>Deux stratégies</p>
+					<ul>
+						<li>Mettre les données dans une même alvéole de T</li>
+						<li>Trouver une autre alvéole de vide</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Hachage avec chaînage</h3>
+				</section>
+
+				<section>
+					<h3>Plusieurs données dans une alévole</h3>
+					<p>On veut suppresion, insertion, recherche rapide, et on n'a pas d'index</p>
+					<p class="fragment">
+						Liste chaînée pour gérer les collisions
+					</p>
+					<p class="important-bloc fragment">Hachage avec chaînage</p>
+				</section>
+				<section>
+
+					<h3>
+						Analyse du hachage par chaînage
+					</h3>
+					<ul>
+						<li>Insertion :\(\Theta(1)\) grâce aux propriétés des listes chainées</li>
+						<li>Suppresion :\(\Theta(1)\) si on a déjà l'élément</li>
+					</ul>
+					<p class="important-bloc">Quid de la recherche ?</p>
+				</section>
+
+				<section>
+					<h3>Pire cas</h3>
+					<p>On cherche séquentiellement dans une alvéole. Pire cas 1 seule alvéole</p>
+					\[h(k_i) \in \lbrace 0 \rbrace\ \]
+					<p class="fragment">Recherche \(\Theta(n)\) </p>
+					<p class="fragment important">Pour une fois on ne s'intéresse pas au pire des cas</p>
+				</section>
+
+				<section>
+					<h3>Le cas moyen</h3>
+					<p class="green-box">Hachage uniforme simple => toutes les clefs sont equiprobables</p>
+					<div class="fragment">
+						<p>Pour \(j \in \lbrace 0, 1, ..., m-1 \rbrace\) notons, \(n_j\) la longeur de la liste T[j] de
+							sorte que</p>
+						\[n = n_0 + n_1 + ... +n_{m-1}\]
+						<p>et</p>
+						\[\forall n_i , \mathbb{E}(n_i) = \frac{n}{|\mathcal{M}|} = \alpha \]
+						avec \(\alpha\) le facteur de remplissage
+					</div>
+
+				</section>
+
+				<section>
+					<h3>Le cas moyen</h3>
+					On peut montrer (TD) que le temps de recherche dans le cas moyen est un
+					<span class="important">
+						\(\Theta(1+\alpha)\)
+					</span>
+				</section>
+
+				<section>
+					<h3>Adressage ouvert</h3>
+				</section>
+
+				<section>
+					<h3>Adressage ouvert</h3>
+					Au lieu d'accumuler les données au même hache dans la même alvéole on va chercher une autre alvéole
+					vide et insérer la donnée.
+
+					<p class="important-bloc">
+						Au lieu d'avoir une seule alvéole possible, notre fonction de hachage va nous donner une
+						séquence de clef à vérifier.
+					</p>
+					<p>
+						<span class="red">Inconvenient :</span> il faut être sur qu'on va avoir assez de place dans la
+						table de hachage
+					</p>
+				</section>
+
+				<section>
+					<h3>Séquence de sondage</h3>
+					<p>Notre fonction de hachage devient</p>
+					\[h : \mathcal{U} \times \lbrace0,1,..,m-1\rbrace \mapsto \lbrace0,1,..,m-1\rbrace\]
+					<p>Et il faut que</p>
+					\[\langle h(k,0), h(k,1), ... , h(k,m-1) \rangle\]
+					<p>soit une permutation de </p>
+					\[\langle 0, 1, ... , m-1 \rangle\]
+					<aside class="notes">
+						Donc maintenant notre fonction prend deux arguments, un élément de U, mais aussi le nombe
+						d'élément déjà regardé
+					</aside>
+				</section>
+
+				<section>
+					<h3>Code python</h3>
+
+					Voir code sur moodle
+				</section>
+
+				<section>
+					<h3>Stratégie de sondage</h3>
+					<ul>
+						<li>Sondage linéaire
+							\[h(k,i) \equiv (h'(k)+i)_{[m]} \]
+						</li>
+						<li>Sondage quadratique
+							\[h(k,i) \equiv (h'(k)+c_1i+c_2i^2)_{[m]} \]
+						</li>
+						<li>Double hachage
+							\[h(k,i) \equiv (h_1(k)+ih_2(k))_{[m]} \]
+
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Recherche dans adressage ouverts</h3>
+					<ol>
+						<li class="fragment">On hache la clef pour avoir un index</li>
+						<li class="fragment">L'élément dans l'avéole est-il celui cherché ?
+							<ul>
+								<li>Oui : c'est bon !</li>
+								<li>Non : on prend l'élément suivant de notre stratégie de sondage jusqu'à trouver
+									l'élément ou une alvéole vide</li>
+							</ul>
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Quid des suppressions ?</h3>
+					<p>Avec cette stratégie une suppresion en vidant l'alvéole peut créer des recherches infructueuses
+					</p>
+					<p class="important-bloc fragment">Besoin de marquer les alvéoles supprimer avec un marqueur
+						spécifique.</p>
+				</section>
+
+				<section>
+					<h3>Hachage parfait</h3>
+					<iframe src="https://giphy.com/embed/MARFSIQQNQVWw" width="960" height="520" frameBorder="0"
+						class="giphy-embed no-print" allowFullScreen></iframe>
+				</section>
+				<section>
+					<h3>Hachage parfait le principe</h3>
+					<ol>
+						<li>On hache les clefs vers nos \(m\) alévéoles</li>
+						<li>Chaque alvéole est une table de hachage également</li>
+					</ol>
+				</section>
+				<section>
+					<h3>Hachage parfait le principe</h3>
+					<ol>
+						<li>On défini \(h\) comme fonction primaire</li>
+						<li>Chaque alvéole de notre table de hachage primaire, on a une fonction de hachage unique
+							\(h_j\) que l'on stocke dans
+							l'alvéole qui hache une nouvelle fois la donnée </li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Hachage parfait le principe</h3>
+					<ul>
+						<li>
+							Intuitivement mémoire en \(\mathcal{O}(n^2)\)
+						</li>
+						<li class="fragment">Si clefs statiques, possible de choisir les \(h_j\) pour qu'en moyenne ce
+							soit un \(\mathcal{O}(n)\) (admis)</li>
+					</ul>
+					<aside class="notes">n nombre d'élément</aside>
+				</section>
+
+				<section>
+					<h3>Hachage parfait utilité</h3>
+					Extrêmement efficace si l'on connait <span class="important">à l'avance</span> les clefs pour
+					déterminer les fonctions de hachages.
+					Sinon on n'est pas sur de ne pas avoir de collisions
+				</section>
+
+				<section>
+					<h3>Conclusion table de hachage</h3>
+					<ul>
+						<li>
+							Bien utilisée, elle peuvent accélérer considérablement les temps de recherche
+						</li>
+						<li>Vous en utilisez sans le savoir avec des dictionnaires pythons </li>
+						<li>On peut en utiliser en SQL également pour accélérer certaines recherches</li>
+					</ul>
+					<p class="important-bloc">Arbitrage temps de calcul - mémoire</p>
+				</section>
+			</section>
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/3o6gE1UZd3eksiVYSA" width="900" height="500" frameBorder="0"
+					class="giphy-embed no-print" allowFullScreen></iframe>
+
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>
