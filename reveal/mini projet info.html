@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>moni projet info java</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>Mini projet info java 2A</h1>
+				<em>Cette présentation est sans gif</em>
+			</section>
+
+				<section>
+					<h3>Pourquoi ?</h3>
+					<ul>
+						<li>Historiquement cours pour attaché en juin</li>
+						<li>L'an dernier aucun élève ne valide examen analyste-développeur</li>
+						<li>Baisse du niveau de conception logiciel à cause de python</li>
+					</ul>
+				</section>
+				<section>
+					<h3>
+						Les objectifs
+					</h3>
+					<ul>
+						<li>Conception logiciel</li>
+						<li>Java</li>
+						<li>Outils de développement</li>
+						<li>Travail en groupe</li>
+					</ul>
+					<div class="important-bloc fragment">
+						Créer une dynamique de groupe pour l'an prochain, revoir des notions utiles pour l'an prochain
+						et vous permettre de tous valider l'examen d'analyste-développeur
+					</div>
+				</section>
+
+				<section>
+					<h3>Peu de temps mais beaucoup à faire</h3>
+					<ul>
+						<li>2 semaines : fin le 16 juin (extensible si vous voulez continuer pour le plaisir)</li>
+						<li>Restitution le 18 juin </li>
+						<li>Privilégiez la conception et les fonctionnalités "noyaux" (l'IHM c'est le bonus du bonus)</li>
+						<li>Renforcer vos connaissances et en acquerir de nouvelles</li>
+					</ul>
+					<div class="fragment important-bloc">
+						Vous n'allez pas pouvoir tout faire (et ce n'est pas le but). Priorisez vos travaux mais expérimentez de nouvelles choses !
+					</div>
+				</section>
+
+				<section>
+					<h3>Les groupes</h3>
+					<ul>
+						<li>Des groupes déjà faits ?</li>
+						<li>Besoin de faire les groupes ?</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Quelques démos</h3>
+					<ul>
+						<li>Spring boot</li>
+						<li>IntelliJ</li>
+						<li>TDD</li>
+					</ul>
+				</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			history: true,
+			slideNumber: 'c/t',
+			width: 1080,
+			height: 720,
+			pdfSeparateFragments: false,
+			// Hide cursor if inactive
+			hideInactiveCursor: true,
+			// Time before the cursor is hidden (in ms)
+			hideCursorTime: 500,
+
+			// Transition styl
+			transition: 'slide', // none/fade/slide/convex/concave/zoom
+			math: {
+				// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+				config: 'TeX-AMS_HTML-full'
+			},
+			dependencies: [
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+				{ src: 'lib/js/classList.js' },
+				{ src: 'plugin/math/math.js', async: true },
+				{ src: '../reveal.js/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+				{ src: 'plugin/reveald3/reveald3.js' }
+			]
+		});
+	</script>
+</body>
+
+</html>

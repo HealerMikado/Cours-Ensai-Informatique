@@ -1,0 +1,1100 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Projet informatique</title>
+    <link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/mine.css">
+    <link rel="stylesheet" href="css/simple-grid.css">
+
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>
+                <section>
+                    <h1>Complèment info 2A, CM3</h1>
+                    <p>Pépin Rémi, Ensai, 2019</p>
+                    <p>remi.pepin@ensai.fr</p>
+                    <img src="img/logo pyhton.png" alt="">
+                </section>
+
+                <section>
+                    <h3>Le plan</h3>
+                    <ol style="font-size: xx-large;">
+                        <li>Formats données
+                            <ol>
+                                <li>Formats tabulés</li>
+                                <ol>
+                                    <li>Positionnel</li>
+                                    <li>Séparateur</li>
+                                </ol>
+                                <li>eXtended Markup Language</li>
+                                <li>JavaScript Object Notation</li>
+                            </ol>
+                        </li>
+                        <hr>
+                        <li>
+                            Sécurité informatique
+                            <ol>
+                                <li>Définition</li>
+                                <li>Injection SQL/de donnée</li>
+                                <li>Gestion de mots de passe</li>
+                                <li>Cryptage</li>
+                                <li>Fonction de hashage</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </section>
+
+            </section>
+
+            <section>
+                <section>
+                    <h2>
+                        Les formats de données
+                    </h2>
+
+                    <aside class="notes">Il existe des tas de format de données. Aucun n'est vraiment meilleur que les autres,
+                        chacun à un but précis, c'est tout
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Tabulé vs non tabulé ?</h3>
+                    <aside class="notes">C'est le vrai débat derière SQL, NO SQL</aside>
+                    <ul>
+                        <li>Tabulé : donnée sous forme de tableaux</li>
+                        <li>Non tabulé : le reste (graph, clef-valeur ...), <span class="important">permettent de faire des arbres</span></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Les formats tabulés</h3>
+                    <p>Deux types</p>
+                    <ul class="fragment">
+                        <li>Les formats positionnels</li>
+                        <li>Les formats avec séparateur</li>
+                    </ul>
+                    <aside class="notes">C'est les formats de prédilection pour stocker des tableaux</aside>
+                </section>
+                <section>
+                    <h2>Format postionnels</h2>
+                </section>
+
+                <section>
+                    <h3>Les formats positionnels</h3>
+                    <ul>
+                        <li>Une ligne = une donnée</li>
+                        <li>On repère une colonne par un intervalle de caractères</li>
+                        <li>Pas d'entête</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Format postionnels, exemple</h3>
+                    <pre><code data-trim data-noescape>
+                    1Tony Stark  Iron Man       Armure      Avenger
+                    2Steve RogersCaptain AmericaBouclier    Avenger
+                    3Logan       Wolverine      RégénerationX-men
+                </code></pre>
+                    <aside class="notes">
+                        1 : id 2-14 : nom 15 - 30 : alias 31-33 : pouvoir 34-41 : équipe
+                    </aside>
+                </section>
+                <section>
+                    <h3>Format postionnels, les limites</h3>
+                    <ul>
+                        <li>Besoin de connaitre le format à l'avance !</li>
+                        <li>Besoin de remplir/tronquer</li>
+                        <li>Pas ultra lisible</li>
+                        <li>Pour arbre besoin d'autres fichiers</li>
+                    </ul>
+                    <div class="important-bloc fragment">Très forte adhérence au format du fichier</div>
+                    <aside class="notes">
+                        Pour s'assurer de la tailles des colonnes souvent on utilise des codes d'une nomenclature. Gestion des données à tailles
+                        variables (nom, prénom ...) ultra dificile ...
+                    </aside>
+                </section>
+                <section>
+                    <h2>Les formats avec séparateur</h2>
+
+                </section>
+
+                <section>
+                    <h3>Les formats avec séparateur</h3>
+                    <ul>
+                        <li>Une ligne = une donnée</li>
+                        <li>Caractère spéciale pour séparer les colonnes (, ; \t)</li>
+                        <li>Entête pour nom colonne (optionnel)</li>
+                        <li>Caractère "d'inclusion"</li>
+                    </ul>
+                    <aside class="notes">
+                        caracètre d'inclusion : permet de séparer texte de chiffre et caractère de séparation. besoin d'échaper ce caractère si dans
+                        le texte
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Les formats avec séparateur, exemple</h3>
+
+                    <pre><code data-trim data-noescape>
+                    id;name;alias;power;equipe
+                    1;"Tony Stark";"Iron Man"; "Armure, intelligence, argent"; "Avenger"
+                    2;"Steve Rogers"; "Captain America"; "Bouclier, serum super soldat"; "Avenger"
+                    3;"Logan";"Wolverine"; "Régéneration, squelette adamantium"; "X-men, X-force, Avenger"
+                </code></pre>
+
+                    <aside class="notes">Quid des listes ? On peut bien utiliser un caractère spécial, mais c'est pas commun,
+                        faire des colonnes spécifiques, mais on se limite .. Bref c'est pas top !</aside>
+
+                </section>
+
+
+                <section>
+                    <h3>Le CSV les inconvénients</h3>
+                    <ul>
+                        <li class="fragment">Entêtes statiques</li>
+                        <li class="fragment">Tout est chaine de caractère</li>
+                        <li class="fragment">Difficile de faire des listes</li>
+                        <li class="fragment">Pour arbre besoin d'autres fichiers</li>
+
+                    </ul>
+
+                    <div class="important-bloc fragment">Format tabulaire par excellence</div>
+                    <aside class="notes">
+                        Si besoin de faire des arbres, besoin de plusieurs table, avec des jointures => BDD Je ne dit pas que le CSV c'est nul, mais
+                        rapidement on arrive aux limites. C'est bien pour des tableaux aux colonnes fixes. Pour le reste
+                        moyen !
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Un peu de code, lecture de CSV</h3>
+                    <pre><code data-trim>
+                            import csv
+
+                            #Ouvrir le fichier en lecture
+                            with open('./test.csv', 'r') as csvfile:
+                                #Définition du reader
+                                csvreader = csv.reader(csvfile, delimiter=';')
+                                #Lecture ligne par ligne
+                                for row in csvreader:
+                                    for column in row:
+                                        print(column)
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h3>Un peu de code, écriture de CSV</h3>
+                    <pre><code data-trim>
+                                import csv
+
+                                #Ouvrir le fichier en écriture
+                                with open('./test2.csv', 'w',  newline='') as csvfile:
+                                    #Définition de writer
+                                    csvwriter = csv.writer(csvfile, delimiter=',',)
+                                    #Ecriture d'une ligne
+                                    csvwriter.writerow(['nom', 'prénom', 'age'])
+                            </code></pre>
+                </section>
+
+                <section>
+                    <h2>e<span>X</span>tended <span>M</span>arkup <span>L</span>anguage</h2>
+                </section>
+                <section>
+                    <h3>e<span>X</span>tended <span>M</span>arkup <span>L</span>anguage</h3>
+                    <ul>
+                        <li class="fragment">Format à balise
+                            <pre><code data-trim>
+                                <alias>Iron Man</alias>
+                            </code></pre>
+                        </li>
+                        <li class="fragment">Encapsulation
+                            <pre><code data-trim>
+                                <heros>
+                                    <alias>Iron Man</alias>
+                                </heros>
+                            </code></pre>
+                        </li>
+                        <li class="fragment">
+                            Listes
+                            <pre><code data-trim>
+                                <heros>
+                                    <alias>Iron Man</alias>
+                                    <pouvoir>Armure</pouvoir>
+                                    <pouvoir>Intelligence</pouvoir>
+                                    <pouvoir>Argent</pouvoir>
+                                </heros>
+                            </code></pre>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>XML attributs dans balise</h3>
+                    <pre><code data-trim>
+                                <heroz>
+                                    <heros id=1>
+                                        <alias>Iron Man</alias>
+                                        <pouvoir>Armure</pouvoir>
+                                        <pouvoir>Intelligence</pouvoir>
+                                        <pouvoir>Argent</pouvoir>
+                                    </heros>
+                                    <heros id=2>
+                                            <alias>Captain America</alias>
+                                            <pouvoir>Serum Super soldat</pouvoir>
+                                            <pouvoir>Bouclier</pouvoir>
+                                    </heros>
+                                </heroz>
+                            </code></pre>
+                </section>
+
+                <section>
+                    <h3>XML, Schéma - XSD </h3>
+                    <pre><code data-trim>
+                            <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                            <xs:element name="heroz">
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="heros" maxOccurs="unbounded" minOccurs="0">
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element type="xs:string" name="nom"/>
+                                        <xs:element type="xs:string" name="alias"/>
+                                        <xs:element type="xs:string" name="pouvoir" maxOccurs="unbounded" minOccurs="0"/>
+                                        <xs:element type="xs:integer" name="age" minOccurs="0"/>
+                                      </xs:sequence>
+                                      <xs:attribute type="xs:byte" name="id" use="optional"/>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:schema>
+                        </code></pre>
+                    <aside class="notes">
+                        Un schema XSD permet de définir le schéma du fichier, et donc de tester un fichier avant de le traiter ! Personne n'écrit
+                        un XSD à la main ! cela ce génère automatiquement !!!
+                    </aside>
+                </section>
+                <section>
+                    <h3>XML, XPath</h3>
+                    <ul>
+                        <li>Un XML représente un arbre</li>
+                        <li>Permet de récupérer toutes les branches/feuilles selon un critère de selection</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>XPath, exemple</h3>
+                    Comment récupérer les titres des articles du <a href="https://www.lemonde.fr/rss/une.xml">RSS du Monde
+                    </a> ?
+                    <pre><code data-trim>
+                        from lxml import etree
+                        import urllib.request
+
+
+                        opener = urllib.request.build_opener()
+                        tree = etree.parse(opener.open('https://www.lemonde.fr/rss/une.xml'))
+                        titres = tree.xpath('//item/title')
+                        for titre in titres:
+                            print(titre.text.encode("utf-8"))
+                        </code></pre>
+                </section>
+                <section>
+                    <h3>XML, limite</h3>
+                    &lt;inconvenient&gt;verbeux&lt;/inconvenient&gt;
+                    <p class="fragment">Mais pas si grave car cela se compresse bien</p>
+                </section>
+
+                <section>
+                    <h3>Un peu de code, lecture de XML</h3>
+                    <pre><code data-trim>
+                                from lxml import etree
+
+                                #Convertion du xml en arbre
+                                tree = etree.parse("test.xml")
+                                #On va chercher toutes les personne dans personnes
+                                for personne in tree.xpath("/personnes/personne"):
+                                    print(personne.find('nom').text)
+                            </code></pre>
+                </section>
+
+                <section>
+                    <h3>Un peu de code, écriture de XML</h3>
+                    <pre><code data-trim>
+                                    from lxml import etree
+
+                                    personnes = etree.Element("personnes")
+                                    personne = etree.SubElement(personnes, "personne")
+                                    personne.set("id", "3")
+                                    
+                                    nom = etree.SubElement(personne, "nom")
+                                    nom.text = "Stone"
+                                    
+                                    prenom = etree.SubElement(personne, "prenom")
+                                    prenom.text = "Emma"
+                                    
+                                    profession = etree.SubElement(personne, "profession")
+                                    profession.text = "Actrice"
+                                    
+                                    print(etree.tostring(personnes, pretty_print=True).decode('utf8'))
+                                </code></pre>
+                </section>
+                <section>
+                    <h2>Java Script Object Notation (Json)</h2>
+                </section>
+
+                <section>
+                    <h3>Java Script Object Notation (Json)</h3>
+                    <ul>
+                        <li class="fragment">Système clef-valeur</li>
+                        <li class="fragment">Imbrication</li>
+                        <li class="fragment">Liste</li>
+                        <li class="fragment">Proche dict python</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Json exemple</h3>
+                    <pre><code data-trim>
+                        {
+                            "Héros" : [
+                                {
+                                    "nom": "Tony Stark",
+                                    "alias": "Iron Man",
+                                    "age" : 49,
+                                    "pouvoirs" : ["Armure", "Argent", "Intelligence"],
+                                    "isAlive" : true
+                                },
+                                {
+                                    "nom": "Steve Rogers",
+                                    "alias": "Captain America",
+                                    "isAlive" : true,
+                                    "pouvoirs" : ["Serum super soldat", "Bouclier"]
+                                }
+                            ]
+                        }
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>Json Schema ?</h3>
+                    <ul>
+                        <li class="fragment">Pas nativement</li>
+                        <li class="fragment">Mais travail en cours <a href="https://json-schema.org">https://json-schema.org</a></li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Json, limite ?</h3>
+                    <ul>
+                        <li>Pas de commentaire nativement</li>
+                        <li>Pas de schema nativement</li>
+                        <li>Sécurité faible</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Un peu de code, lecture de json</h3>
+                    <pre><code data-trim>
+                                import json
+
+                                example = '{"nom": "Tony Stark", "alias": "Iron Man"}'
+                                avenger = json.loads(example)
+                                print(avenger['nom'])
+                            </code></pre>
+                </section>
+
+                <section>
+                    <h3>Un peu de code, écriture de json</h3>
+                    Ecriture de dictionnaire
+                    <pre><code data-trim>
+                                    import json
+
+                                    avenger = {"nom": "Tony Stark", "alias": "Iron Man", "age": 49}
+                                    print(json.dumps(avenger))
+
+                                </code></pre> Ecriture d'objet custom
+                    <pre><code data-trim>
+                                        from json import JSONEncoder
+
+                                        class MyEncoder(JSONEncoder):
+                                                def default(self, o):
+                                                    # On retourne le dictionnaitre de l'objet.
+                                                    # Moyen de faire d'autres chose
+                                                    return o.__dict__ 
+                                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Les autres formats</h3>
+                    <ul>
+                        <li>RDF (web sémantique, graph)</li>
+                        <li>yml (json like)</li>
+                        <li>Trivial Graph Format (tgf)</li>
+                        <li>Et sûrement plein d'autres !</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Un format pour le diriger tous</h3>
+                    <p>A votre avis ?</p>
+                </section>
+
+                <section>
+                    <h1>NON</h1>
+                    <p class="fragment">Chaque format à des avantages et inconvénients !</p>
+                </section>
+
+                <section>
+                    <h3>Chaque format à des avantages</h3>
+                    <ul>
+                        <li>csv : tableaux</li>
+                        <li>xml : arbre, vérification du schéma</li>
+                        <li>json : arbre, léger</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Any question ?</h3>
+                    <iframe src="https://giphy.com/embed/ATt7p8OO4mvvO" width="900" height="500" frameBorder="0" class="no-print giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+
+            </section>
+
+            <section>
+                <section>
+                    <h2>Sécurité informatique</h2>
+                </section>
+
+                <section>
+                    <h3>C'est quoi la sécurité informatique pour vous ?</h3>
+                    <iframe src="https://giphy.com/embed/5rxQIyJPRrzdimF0Cr" width="960" height="534" frameBorder="0" class="no-print giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>4 pilliers de la sécurité info</h3>
+                    <ul>
+                        <li>Confidentialité</li>
+                        <li>Authentification</li>
+                        <li>Intégrité</li>
+                        <li>Disponibilité</li>
+                    </ul>
+                    <aside class="notes">
+
+
+                    </aside>
+                </section>
+                <section>
+                    <h3>Deux bonus</h3>
+                    <ul>
+                        <li>Traçabilité</li>
+                        <li>Non-répudiation</li>
+                    </ul>
+
+                </section>
+                <section>
+                    <h3>Confidentialité</h3>
+                    Seules les personnes autorisées peuvent avoir accès aux informations qui leur sont destinées (notions de droits ou permissions).
+                    Tout accès indésirable doit être empêché.
+                    <p class="fragment important">Mécanismes associés : gestion des droits (annuaires, rôles ...)</p>
+                </section>
+                <section>
+                    <h3>Authentification</h3>
+                    Les utilisateurs doivent prouver leur identité par l'usage de code d'accès.
+
+                    <p class="fragment important">Mécanismes associés : authentification faible (idep, mdp), forte (données
+                        biométriques, multi facteurs)</p>
+
+                </section>
+                <section>
+                    <h3>Intégrité</h3>
+                    Les données doivent être celles que l'on attend, et ne doivent pas être altérées de façon fortuite, illicite ou malveillante.
+                    <p class="fragment important">Mécanisme associé : signature électronique</p>
+
+                </section>
+                <section>
+                    <h3>Disponibilité</h3>
+                    L'accès aux ressources du système d'information doit être permanent et sans faille durant les plages d'utilisation prévues.
+                    Les services et ressources sont accessibles rapidement et régulièrement.
+                    <p class="fragment important">Mécanisme associé : redondance des serveurs</p>
+
+                </section>
+                <section>
+                    <h3>Traçabilité</h3>
+                    Garantie que les accès et tentatives d'accès aux éléments considérés sont tracés et que ces traces sont conservées et exploitables.
+                    <p class="fragment important">Mécanisme associé : journalisation</p>
+
+                </section>
+                <section>
+                    <h3>La non-répudiation</h3>
+                    Aucun utilisateur ne doit pouvoir contester les opérations qu'il a réalisées dans le cadre de ses actions autorisées et aucun
+                    tiers ne doit pouvoir s'attribuer les actions d'un autre utilisateur.
+                    <p class="fragment important">Mécanismes associés : traçabilité + authentification + intégrité</p>
+
+                    </li>
+
+                </section>
+                <section>
+                    <h2>Les failles informatiques</h2>
+                </section>
+                <section>
+                    <h3>Trop de failles !!!</h3>
+                    <ul>
+                        <li class="fragment">Failles physique "bas niveau"</li>
+                        <li class="fragment">Failles physique "haut niveau"</li>
+                        <li class="fragment"><span class="fragment highlight-important">Injection SQL</span></li>
+                        <li class="fragment"><span class="fragment highlight-important">Injection de données</span></li>
+                        <li class="fragment">Faille XSS</li>
+                        <li class="fragment">Exécution de code</li>
+                        <li class="fragment">...</li>
+                    </ul>
+                    <aside class="notes">
+                        <ul>
+                            <li>Failles physique "bas niveau" : coupure électrique, innondation salle serveur</li>
+                            <li>Failles physique "haut niveau" : accès physique à une machine</li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h3>De quoi faut-il se méfier ?</h3>
+                    <img class="plain w80 no-print" src="https://66.media.tumblr.com/5fca28d9ff6a46e62aaa6ec391077f26/tumblr_mseaykBEjV1sg0a6co1_500.gif"
+                        alt="">
+                </section>
+                <section>
+
+                    <p class="fragment important-bloc">De vos utilisateurs</p>
+                </section>
+                <section>
+                    <h2>Exemple de failles, les injections SQL et de données</h2>
+                    <img class="no-print w80" src="https://imgs.xkcd.com/comics/exploits_of_a_mom.png" alt="injection sql">
+
+                </section>
+                <section>
+                    <h3>Injection SQL</h3>
+                    Consiste à saisir du SQL pour exécuter une autre requête que celle prévue.
+                    <div class="fragment">
+                        <p class="important">Problèmes</p>
+                        <ul>
+                            <li>Confidentialité</li>
+                            <li>Authentification</li>
+                            <li>Intégrité</li>
+                            <li>Disponibilité</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Exemple : s'authentifier sans mot de passe</h3>
+                    Requete d'authentification
+                    <pre><code data-trim>
+                        SELECT * FROM user 
+                            WHERE name='input_name' 
+                            AND mdp='input_mdp';
+                        </code></pre>
+                </section>
+                <section>
+                    <h3>Exemple : s'authentifier sans mot de passe</h3>
+                    <p>Saisie</p>
+                    <ul>
+                        <li>Rémi</li>
+                        <li>mon_super_password</li>
+                    </ul>
+                    <pre><code data-trim>
+                            SELECT * FROM user 
+                                WHERE name='Rémi' 
+                                AND mdp='mon_super_password';
+                            </code></pre>
+                    <p class="fragment important-bloc">Cas classique</p>
+
+                </section>
+                <section>
+                    <h3>Exemple : s'authentifier sans mot de passe</h3>
+                    <p>Saisie</p>
+                    <ul>
+                        <li>Rémi</li>
+                        <li>' OR 1=1; --</li>
+                    </ul>
+                    <pre><code data-trim>
+                                SELECT * FROM user 
+                                    WHERE name='Rémi' 
+                                    AND mdp='' OR 1=1; --';
+                                </code></pre>
+                    <p class="fragment important-bloc">Connection sans mdp</p>
+
+                </section>
+                <section>
+                    <h3>Exemple : supprimer une table</h3>
+                    <p>Saisie</p>
+                    <ul>
+                        <li>Rémi</li>
+                        <li>'; DROP TABLE user CASCADE; --</li>
+                    </ul>
+                    <pre><code data-trim>
+                                    SELECT * FROM user 
+                                        WHERE name='Rémi' 
+                                        AND mdp=''; DROP TABLE user CASCADE; --;
+                                    </code></pre>
+                    <p class="fragment important-bloc">Bye bye la table user</p>
+
+                </section>
+                <section>
+                    <h3>Comment se protéger ?</h3>
+                    <ul>
+                        <li class="fragment">Échapper les caractères spéciaux</li>
+                        <li class="fragment">Utiliser une requête préparée</li>
+                    </ul>
+                    <p class="fragment important-bloc">La bibliothèque que vous utilisez ne fait que de l'échappement de
+                        caractères spéciaux.
+
+                    </p>
+                    <aside class="notes">La seconde solution est mieux que la première mais psycopg2 ne semble pas la proposer
+                        simplement. Donc il faut la connaitre, mais savoir que c'est la première solution qui va être faite.
+                    </aside>
+                </section>
+                <section>
+                    <h3>Injection de données</h3>
+                    Consiste à saisir des données malvaillante dans un format particulier à l'intérieur de données attendues par l'application
+                    pour modifier le comportement de l'application.
+                    <div class="fragment">
+                        <p class="important">Problèmes</p>
+                        <ul>
+                            <li>Confidentialité</li>
+                            <li>Authentification</li>
+                            <li>Intégrité</li>
+                            <li>Disponibilité</li>
+                        </ul>
+                    </div>
+                    <aside class="notes">L'injection de données est en soit un regroupement de différentes faille, XXE, code
+                        injection etc. Mais bon ici on va voir une version simple, ajouter plusieurs données d'un coup
+                    </aside>
+                </section>
+                <section>
+                    <h3>Exemple d'injection via json</h3>
+
+                    <ul>
+                        <li class="fragment">Webservice de creation d'utilisateur</li>
+                        <li class="fragment">Stockage des utilisateur dans un json</li>
+                        <li class="fragment">
+                            <pre><code data-trim>
+                                        {
+                                            "name":"",
+                                            "mdp":"",
+                                            ("isAdmin": True)
+                                        }
+                                        </code></pre>
+                        </li>
+                    </ul>
+                    <aside class="notes">Pour insérer des données on prend seulement la valeur du champ que l'on converti
+                        en string et on l'insère entre ""
+                    </aside>
+
+                </section>
+
+
+                <section>
+                    <h3>Exemple d'injection via json</h3>
+
+                    <pre><code data-trim>
+                                {
+                                    "name":"Rémi",
+                                    "mdp":"monSuperMDP756"
+                                }
+                            </code></pre>
+                    <p class="fragment important-bloc">Cas classique</p>
+                </section>
+                <section>
+                    <h3>Exemple d'injection via json</h3>
+
+                    <pre><code data-trim>
+                                    {
+                                        "name":"attaquant\", \"isAdmin\":True ",
+                                        "mdp":"monSuperMDP756"
+                                    }
+                                </code></pre>
+
+                    <p class="fragment">
+                        Dans notre fichier cela donne
+                    </p>
+
+                    <pre class="fragment"><code data-trim>
+                                        {
+                                            "name":"attaquant",
+                                            "isAdmin":True,
+                                            "mdp":"monSuperMDP756",
+                                        }
+                                        </code></pre>
+                    <p class="fragment important-bloc">Obtention de droit d'admin !</p>
+
+                    <aside class="notes">
+                        Besoin des \" pour échapper les " du json. Mais si on caste cela en texte basiquement il vont disparaitre
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Comment se protéger ?</h3>
+                    <ul>
+                        <li class="fragment">Ne jamais manipuler de données brutes</li>
+                        <li class="fragment">Échapper les caractères spéciaux</li>
+                        <li class="fragment">Vérifier vos données</li>
+                    </ul>
+                    <p class="fragment important-bloc">Les bibliothèques de manipulation de Json python font cela pour vous
+                        !
+
+                    </p>
+                    <aside class="notes">Alors pourquoi en parler si les bibliothèques le font déjà ? Car il faut que vous
+                        connaissiez les pb ! Et ensuite que vous compreniez que les bibliothèques vous simplifie la vie !
+                        Genre vraiment ! Alors utilisez les et ne faites pas tout à la main !!!!
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>To sum up : injection</h3>
+                    <ul>
+                        <li class="fragment">Ne jamais faire confiance aux utilisateurs, vérifier / nettoyer leurs inputs</li>
+                        <li class="fragment">Ne jamais faire confiance aux utilisateurs, vérifier / nettoyer leurs inputs</li>
+                        <li class="fragment">Ne jamais faire confiance aux utilisateurs, vérifier / nettoyer leurs inputs</li>
+                        <li class="fragment">Ne jamais faire confiance aux utilisateurs, vérifier / nettoyer leurs inputs</li>
+                        <li class="fragment">Ne jamais faire confiance aux utilisateurs, vérifier / nettoyer leurs inputs</li>
+                </section>
+
+                <section>
+                    <h2>Gestion des mots de passe</h2>
+                </section>
+                <section>
+                    <h3>Votre application doit-elle stocker des mots de passe en clair?</h3>
+                    <iframe src="https://giphy.com/embed/23BST5FQOc8k8" width="800" height="400" frameBorder="0" class="no-print fragment giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+                <section>
+                    <h3>Votre application doit-elle connaitre le mot de passe d'un utilisateur pour l'authentifier ?
+                    </h3>
+                    <iframe src="https://giphy.com/embed/GPXk9AQTB0aXu" width="400" height="400" frameBorder="0" class="no-print fragment giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>????</h3>
+                    <iframe src="https://giphy.com/embed/kQOxxwjjuTB7O" width="900" height="500" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                </section>
+
+                <section>
+                    <h3>Hasher le mot de passe</h3>
+                    <ul>
+                        <li class="fragment">Hashage du mot de passe => cypher</li>
+                        <li class="fragment">Stockage du cypher en base</li>
+                        <li class="fragment">Quand besoin de comparer on hashe le mdp saisi</li>
+                        <li class="fragment">Et on compare les cyphers</li>
+                    </ul>
+                    <div class="important-bloc fragment">Authentification sans persister les mots de passe !!!!</div>
+                    <aside class="notes">
+                        C'est tellement simple et sécurisé ! Mais pas tous le site le font ... Un site qui vous renvoi votre mdp le garde en mémoire
+                        (ou du moins le moyen de le déchiffrer) <br> Dans la vraie vie on rajoute
+                        un "sel" au mdp avec de le hacher. C'est une valeur aléatoire calculé pour chaque utilisateur que
+                        l'on va rajouter au mdp avant de le hacher. Cela rend une attaque en force brute plus couteuse.
+                    </aside>
+                </section>
+                <section>
+                    <iframe src="https://giphy.com/embed/Pk4ldVR0sCHgA" width="900" height="700" frameBorder="0" class="giphy-embed no-print"
+                        allowFullScreen></iframe>
+                </section>
+                <section>
+                    <h3>Ajouter du sel pour plus de sécurité</h3>
+                    <iframe src="https://giphy.com/embed/l4Jz3a8jO92crUlWM" width="900" height="500" frameBorder="0" class="no-print giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+
+                <section>
+                  <img class="no-print w60"src="https://i.imgflip.com/3acxa9.jpg" title="made at imgflip.com"/>
+                </section>
+                <section>
+                    <h2>Fonction de hashage</h2>
+                </section>
+
+                <section>
+                    <h3>Fonction de hashage</h3>
+                    <div class="important-bloc">Associe à un message en entrée de longueur variable une valeur de hashage
+                        de longueur fixe
+                    </div>
+
+                </section>
+
+                <section>
+                    <h3 class="no-print">Schema</h3>
+                </section>
+
+                <section>
+                    <p>La fonction doit respecter les propriétés suivantes</p>
+                    <ul>
+                        <li class="fragment">Déterministe : deux messages identiques ont le même hash</li>
+                        <li class="fragment">La valeur de hashage doit se calculer "très rapidement"</li>
+                        <li class="fragment">Forte variance : deux messages proches ont des hash très différents</li>
+
+                        <li class="fragment">Il est impossible, pour une valeur de hashage donnée, de construire un message
+                            ayant cette valeur de hachage</li>
+                        <li class="fragment">Il est impossible de modifier un message sans changer sa valeur de hashage
+                        </li>
+                        <li class="fragment">Il est impossible de trouver deux messages différents ayant la même valeur de
+                            hashage</li>
+                    </ul>
+                    <aside class="notes">
+                        Par impossible on entend dans un temps réaliste avec les moyens de calculs actuels
+                        <br>
+                        <ul>
+                            <li>résistance à la préimage: pour toute valeur de hachage h, il devrait être difficile de trouver
+                                un message m tel que hachage(m) = h. Cette notion est liée à la notion de fonction à sens
+                                unique. Les fonctions qui n'ont pas cette propriété sont vulnérables aux attaques de préimage
+                                (en anglais, preimage attacks) ;
+                            </li>
+                            <li>résistance à la seconde préimage (en anglais, second preimage resistance) pour tout message
+                                m1, il devrait être difficile de trouver un message différent m2 tel que hachage(m1) = hachage(m2).
+                                Les fonctions qui n'ont pas cette propriété sont vulnérables aux attaques de seconde préimage
+                                (en anglais, second-preimage attacks) ;</li>
+                            <li>résistance aux collisions il doit être difficile de trouver deux messages différents m1 et
+                                m2 tels que hachage(m1) = hachage(m2). Une telle paire de messages est appelée une collision
+                                de hachage cryptographique. Pour obtenir cette propriété, il faut une valeur de hachage au
+                                moins deux fois plus longue que celle requise pour obtenir la résistance à la préimage. Si
+                                la clé n'est pas assez longue, une collision peut être trouvée par une attaque des anniversaires.
+                            </li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Plusieurs algorithmes</h3>
+                    <ul>
+
+                        <li>MD5</li>
+                        <li>SHA-1</li>
+                        <li>SHA-2</li>
+                        <li>SHA-3</li>
+                        <li>RIPEMD-160</li>
+                        <li>Whirlpool</li>
+                        <li>...</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Applications multiples</h3>
+                    <ul>
+
+                        <li>Vérification de l'intégrité d'un fichier</li>
+                        <li>Signature électronique</li>
+                        <li>Vérification de mdp (avec ajout de sel)</li>
+                        <li>Identification de fichier (git)</li>
+                        <li>Table de hashage pour accès rapide aux données</li>
+                        <li>...</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Exemple de hashage de mdp</h3>
+
+                    <pre><code data-trim>
+                    import hashlib
+                     
+                    def hash_password(password, idep):
+                        salt = idep
+                        return hashlib.sha256(salt.encode() + password.encode()).hexdigest()
+                        
+                    print(hash_password("mon_super_password", "remi"))
+                </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>To sum up : fonction de hashage</h3>
+                    <ul>
+                        <li class="fragment">Fonction à sens unique</li>
+                        <li class="fragment">Entrée taille variable sortie taille fixe</li>
+                        <li class="fragment">Rapide à calculer</li>
+                        <li class="fragment">Impossible à inverser</li>
+                    </ul>
+                </section>
+
+            </section>
+            <section>
+                <h3>To sum up the security part</h3>
+                <ul>
+                    <li class="fragment">Toujours vérifier les inputs</li>
+                    <li class="fragment">Ne jamais faire confiance aux utilisateurs</li>
+                    <li class="fragment">Plusieurs niveaux de sécurité</li>
+                    <li class="fragment">Pas besoin de stocker les mots de passe en clair</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Question</h3>
+                <iframe src="https://giphy.com/embed/6wcympMVVZxOGZc2ph" width="900" height="500" frameBorder="0" class="no-print giphy-embed"
+                    allowFullScreen></iframe>
+            </section>
+
+            <section>
+                <h3>The end</h3>
+                <iframe src="https://giphy.com/embed/Y4vbdZ9r8hf0pqBxOS" width="480" height="480" frameBorder="0" class="no-print giphy-embed"
+                    allowFullScreen></iframe>
+            </section>
+            <section>
+                <section>
+                    <h2>Notion de cryptage (Bonus)</h2>
+                </section>
+                <section>
+                    <h3>Notion de cryptage</h3>
+
+                    <ul>
+                        <li class="fragment">Sujet bien trop vaste pour ce cours</li>
+                        <li class="fragment">Sujet bien trop compliqué pour ce cours</li>
+                        <li class="fragment">Seulement les notions de base</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>C'est quoi crypter un message ?</h3>
+                    <p class="fragment">Le rendre incompréhensible à qui ne dispose pas de la <span class="important">clef</span>
+                        de déchiffrement</p>
+                </section>
+
+                <section>
+                    <h3>Deux grandes typologies</h3>
+                    <ul>
+                        <li class="fragment">Cryptage symétrique : la clef sert à chiffrer / déchiffrer</li>
+                        <li class="fragment">Cryptage asymétrique : une clef pour chiffrer une pour déchiffrer</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="no-print">Schéma cryptage symétrique (dessin)</h3>
+                </section>
+
+                <section>
+                    <h3>Avantage cryptage symétrique</h3>
+                    Egalité des deux parties. Chacun peut écrire, lire avec la clef.
+                </section>
+
+                <section>
+                    <h3>
+                        Inconvénients cryptage symétrique
+                    </h3>
+                    <ul>
+                        <li class="fragment">Beaucoup de clefs</li>
+                        <li class="fragment">Comment on échange les clefs ?</li>
+                        <li class="fragment">Si la clef devient publique, la cryptage n'est plus 💀</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3 class="no-print">Schéma cryptage asymétrique (dessin)</h3>
+                </section>
+
+                <section>
+                    <h3>Avantages cryptage asymétrique</h3>
+                    <ul>
+                        <li class="fragment">La clef publique peut être diffusée sans risque</li>
+                        <li class="fragment">Si le cryptage est cassé, il suffit de regénérer des clefs</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>
+                        Inconvénients cryptage asymétrique
+                    </h3>
+                    <ul>
+                        <li class="fragment">Asymétrie des rôles</li>
+                        <li class="fragment">Il faut faire confiance à la clef publique</li>
+                    </ul>
+                </section>
+
+
+                <section>
+                    <h3>Exemple de cryptage</h3>
+                    <ul>
+                        <li class="fragment">Code César (décallage de l'alphabet)</li>
+                        <li class="fragment">Chiffre de Vigenère (matrice de lettre + clef)</li>
+                        <li class="fragment">Enigma ( ¯\_(ツ)_/¯ )</li>
+                        <li class="fragment"><span class="fragment hightlight-important"></span>Fonction de hachage cryptographique
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Exemple d'utilisation de cryptage</h3>
+                    <p class="fragment">Le HTTPS</p>
+                </section>
+
+                <section>
+                    <h3>To sum up : cryptage</h3>
+                    <ul>
+                        <li class="fragment">Crytage symétrique/assymétrique</li>
+                        <li class="fragment">Rendre illisible un message à qui n'a pas la clef</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Question ?</h3>
+                    <iframe src="https://giphy.com/embed/tKwAHuwjcHkV0eLzcO" width="960" height="540" frameBorder="0" class="no-print giphy-embed"
+                        allowFullScreen></iframe>
+                </section>
+            </section>
+            <section>
+                <h3>The real end</h3>
+                <iframe src="https://giphy.com/embed/Y4vbdZ9r8hf0pqBxOS" width="480" height="480" frameBorder="0" class="no-print giphy-embed"
+                    allowFullScreen></iframe>
+            </section>
+
+
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+        });
+
+    </script>
+
+</body>
+</html>

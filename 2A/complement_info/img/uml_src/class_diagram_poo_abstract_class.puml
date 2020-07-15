@@ -1,0 +1,36 @@
+@startuml
+scale 2
+abstract class AbastractSource << abstract >> {
+    String name
+    Date start_collect
+    Date end_collect
+    String input_file
+
+    common_process()
+    {abstract} custom_process()
+    process()
+
+}
+
+class Survey {
+    custom_process()
+}
+
+class Census {
+    custom_process()
+}
+
+class Webscrapping {
+    custom_process()
+}
+
+class AdministrativeFile {
+    custom_process()
+}
+
+AbastractSource <|-- Survey
+AbastractSource <|-- Census
+AbastractSource <|-- Webscrapping
+AbastractSource <|-- AdministrativeFile
+
+@enduml

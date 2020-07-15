@@ -1,0 +1,694 @@
+<!doctype html>☺
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>Algorithmique et complexité</h1>
+				<h2>Récursivité</h2>
+				<p>Pépin Rémi, Ensai, 2019</p>
+				<img src="img/logo pyhton.png" alt="">
+			</section>
+
+			</section>
+			<section>
+				<h1>Récursivité</h1>
+				<iframe src="https://giphy.com/embed/wt0bJ5t4cgxm3b8AC4" width="480" height="360" frameBorder="0"
+					class="giphy-embed no-print" allowFullScreen></iframe>
+			</section>
+			<section>
+
+				<section>
+					<h2>L'exemple que tout le monde utilise : la fonction factorielle</h2>
+				</section>
+
+				<section>
+					<h3>La fonction factorielle</h3>
+					<script type="math/tex; mode=display">
+						\left\lbrace \begin{array}{ccccl}
+						f(0) & = & 1  & \\
+						f(1) & = & 1  & \\
+						f(n) & = & f(n-1)  \times   n &\text{si $n  \gt 1$}
+						\end{array}\right.					</script>
+				</section>
+
+				<section>
+					<h3>Comment coder ça ?</h3>
+				</section>
+
+				<section>
+					<h3>Deux solutions</h3>
+
+					<ul>
+						<li>Méthode itérative</li>
+						<li>Méthode récursive</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Méthode itérative : principe</h3>
+					Découper un problème en n sous problèmes similaires, puis les résoudre les uns à la suite des
+					autres de la même façon </span>.
+					<div class="important-bloc fragment">Utilisation des boucles</div>
+				</section>
+
+				<section>
+					<h3>Méthode itérative : le code</h3>
+					<pre><code data-trim data-noescape class="python">
+						def facto_iter(a):
+							facto = 1
+							for i in range(1, a + 1):
+								facto = facto * i
+							return facto
+							</code></pre>
+				</section>
+
+				<section>
+					<h3>Méthode récursive : principe</h3>
+					Résoudre un problème en le découpant en sous problèmes similaires que l'on va résoudre de la même
+					façon jusqu'à trouver un problème simple à résoudre.
+					<div class="important-bloc fragment">Utilisation de fonctions récursives</div>
+				</section>
+
+				<section>
+					<h3>Méthode récursive : le code</h3>
+					<p>On sait que</p>
+					<script type="math/tex; mode=display">
+					f(n) =  f(n-1)  \times   n 
+					</script>
+					<div class="fragment">
+						<p>Ce qui devient</p>
+						<pre><code data-trim data-noescape class="python">
+								def facto_rec (a):
+									return a * facto_rec (a-1)
+						</code></pre>
+					</div>
+				</section>
+
+				<section>
+					<h3>Run the code</h3>
+				</section>
+
+				<section>
+					<h3>Les conditions d'arrêt</h3>
+					<p>Tel quel notre programme tourne jusqu'à saturation de la <span class="important">pile</span></p>
+					<p class="fragment">Il faut lui dire quand s'arrêter</p>
+					<pre class="fragment"><code data-trim data-noescape class="python">
+							def facto_rec (a):
+								if a == 0 :
+									return 1
+								else :
+									return a * facto_rec (a-1)
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Forme générale</h3>
+					<p>Une fonction récursive doit posséder</p>
+					<ul>
+						<li class="fragment">Une cas récursif</li>
+						<li class="fragment">Une condition d'arrêt</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Forme générale</h3>
+					<pre class=><code data-trim data-noescape class="python">
+						def fct_rec (a):
+							if cdt_arret :
+								# On sort de la récursion : 
+								# ie on n'appelle plus la fonction
+								return something  
+							else :
+								# On reste dans la récursion :
+								# ie on appelle la fonction à un moment
+								somecode()
+								fct_rec (b)
+								somecodebis()
+								return some_other_thing
+				</code></pre>
+				</section>
+
+				<section>
+					<h3>Une fonction qui s'appelle elle même ?</h3>
+				</section>
+
+				<section>
+					<h3>Un exemple pratique !</h3>
+				</section>
+
+				<section>
+					<h3>Comment ça marche ?</h3>
+					<ul>
+						<li class="fragment">Différence entre le code de la fonction et l'exécution</li>
+						<li class="fragment">Une fonction est un objet python stocké en mémoire (parties fixes +
+							variables)</li>
+						<li class="fragment">Pour l'exécuter python va chercher l'objet en mémoire</li>
+						<li class="fragment">Et passe les paramètres </li>
+						<li class="fragment important">Même définition mais différentes fonctions exécutées</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Fonction as object</h3>
+					<p>En python, une fonction est un <span class="important">objet</span></p>
+					<ul>
+						<li class="fragment">Attributs</li>
+						<li class="fragment">Méthodes</li>
+						<li class="fragment">Peut-être un argument de fonction</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Fonction as object</h3>
+					<pre class=><code data-trim data-noescape class="python">
+					def dummy_function(element):
+						element = element + 1
+						return element
+					
+					print(type(dummy_function))
+					
+					def apply_function (nombre, function):
+						return  function(nombre)
+					
+					print(apply_function(1,dummy_function))
+				</code></pre>
+				</section>
+
+			</section>
+			<section>
+				<section>
+					<h2>D'autres exemples</h2>
+				</section>
+				<section>
+					<h3>Récursivité croisée</h3>
+					<pre class=><code data-trim data-noescape class="python">
+					def pair(n):
+						if n-1 :
+							return impair(n-1)
+						else :
+							return "pair"
+						
+					def impair(n):
+						if n-1 :
+							return pair(n-1)
+						else :
+							return "impair"
+				</code></pre>
+				</section>
+
+				<section>
+					<h3>Récursivité imbriquée</h3>
+
+					Soit la fonction de Ackermann définie par :
+					<script type="math/tex; mode=display">
+						\left\lbrace \begin{array}{cccl}
+						A(1,n) & = & n+1  & \\
+						A(m,0) & = & A(m-1,1)  & \\
+						A(m,n) & = & A(m-1, A(m,n-1))   &\text{si $m,n  \gt 0$}
+						\end{array}\right.					</script>
+				</section>
+
+				<section>
+					<h3>Récursivité imbriquée</h3>
+					<pre class=><code data-trim data-noescape class="python">
+						def ackermann(M, N):
+							if not M:
+								return N + 1
+							else:
+								if not N:
+									return ackermann(M - 1, 1)
+								else:
+									return ackermann(M - 1, (ackermann(M, N - 1)))
+				</code></pre>
+				</section>
+
+				<section>
+					<h3>Récursivité multiple</h3>
+					Soit la fonction coefficient binomial définie par :
+					<script type="math/tex; mode=display">
+						\left\lbrace \begin{array}{cccccl}
+						\binom{n}{0} & = & 1  & \\
+						\binom{0}{p} & = & 1  & \\
+						\binom{n}{p} & = & \binom{n-1}{p-1}  & + & \binom{n-1}{p} &\text{si $m,p  \gt 0$}
+						\end{array}\right.					</script>
+				</section>
+
+				
+				<section>
+					<h3>Récursivité multiple</h3>
+					<pre class=><code data-trim data-noescape class="python">
+						def coef_binomial(n, p):
+							if n > p > 0:
+								return coef_binomial(n - 1, p - 1) + coef_binomial(n - 1, p)
+							else:
+								return 1
+				</code></pre>
+				</section>
+			</section>
+
+			<section>
+				<h3>Des questions ?</h3>
+			</section>
+			<section>
+
+				<section>
+					<h2>
+						La pile
+					</h2>
+				</section>
+
+				<section>
+					<h3>C'est quoi la pile</h3>
+
+					<ul>
+						<li class="fragment">Mémoire des fonctions appelées</li>
+						<li class="fragment">Structure Last In - First Out (LIFO)</li>
+						<li class="fragment important">Permet de toujours savoir où l'on se trouve !</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Voir la pile</h3>
+					<pre><code data-trim data-noescape class="python">
+						def print_stack():
+							for tid, frame in sys._current_frames().items():
+							# skip this frame
+							frame = frame.f_back
+							while frame:
+								code = frame.f_code
+								print("File {}, line {}, in {}".format(
+								code.co_filename,
+								frame.f_lineno,
+								code.co_name,
+								))
+								frame = frame.f_back
+						  
+						def bar():
+							print_stack()
+						  
+						def foo():
+							bar()
+						  
+						def main():
+							foo()
+						  
+						if __name__ == '__main__':
+							main()
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Autre façon : avoir une erreur</h3>
+					<pre><code data-trim data-noescape class="python">
+					def bar():
+						print_stack()
+					
+					def foo():
+						bar()
+					
+					def main():
+						foo()
+					
+					if __name__ == '__main__':
+						main()
+				</code></pre>
+				</section>
+
+				<section>
+					<h3>Autre façon : avoir une erreur</h3>
+					<pre><code data-trim data-noescape>
+Traceback (most recent call last):
+	File "stack_error.py", line 11, in <module>
+		main()
+	File "stack_error.py", line 8, in main
+		foo()
+	File "stack_error.py", line 5, in foo
+		bar()
+	File "stack_error.py", line 2, in bar
+		print_stack()
+NameError: name 'print_stack' is not defined
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Autre façon : avoir une erreur</h3>
+
+					Python (et d'autres langages) affiche la pile en cas d'erreur. <span class="important">Utilisez la
+						pour débugger votre
+						programme !</span>
+				</section>
+
+				<section>
+					<h3>A votre avis, qu'elle est le problème majeur de la récursivité ?
+					</h3>
+					<img class="plain w40" src="https://miro.medium.com/max/661/1*KcVIy-BMNuJ7H6wh4yS8kw.png"
+						alt="la pile">
+					<p>Source : <a
+							href="https://medium.com/@williambdale/recursion-the-pros-and-cons-76d32d75973a">Medium</a>
+					</p>
+				</section>
+
+				<section>
+					<h3>La mémoire et la pile !</h3>
+					<ul>
+						<li class="fragment">Chaque fonction va consommer un peu de mémoire, ce qui n'est pas top !</li>
+						<li class="fragment">Mais la pile à une limite elle aussi (paramétrable)</li>
+						<li class="fragment">Et votre OS à lui aussi une limite (~ ordre du millier, fixe)</li>
+						<li class="fragment important">On peut pas faire de la récurisivité infinie 
+							<img class ="plain icon"src="https://img.icons8.com/color/50/000000/boring.png">
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Les avantages de la récursivité</h3>
+					<img class="plain w60"
+						src="https://cdn-media-1.freecodecamp.org/images/1*QrQ5uFKIhK3jQSFYeRBIRg.png"
+						alt="algo recurisivité">
+					<p>Source : <a
+							href="https://www.freecodecamp.org/news/how-recursion-works-explained-with-flowcharts-and-a-video-de61f40cb7f9/">freecodecamp</a>
+					</p>
+				</section>
+
+				<section>
+					<h3>Les avantages de la récursivité</h3>
+					<ul>
+						<li>Solution élégante</li>
+						<li>Très claire (pour qui est familier avec)</li>
+						<li>Donc facile à débugger</li>
+						<li>Très pratique pour naviguer dans un graphe</li>
+						<li class="important fragment">Permet de réduire la complexité d'un algo</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Deux astuces d'optmisation</h3>
+					<ul>
+						<li>Tail call optimization</li>
+						<li>Mémorisation</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Tail call optimization</h3>
+					Optmisation qui permet de limiter l'espace mémoire d'une fonction récursive. On stocke juste l'appel à la fonction
+					et pas le résultat intermédiaire. 
+					<p class="fragment red">Pas implémenté en python</p>
+					<p class="fragment green">Possible de le faire soi même</p>
+				</section>
+
+				<section>
+					<h3>Mémorisation</h3>
+					Optmisation qui permet d'accélerer une fonction récursive. On stocke les résultas intermédiaires
+					que l'on va réutiliser
+					<p class="fragment red">Obligation de le faire soi même</p>
+					<p class="fragment green">Mais c'est simple</p>
+
+				</section>
+
+				<section>
+					<h3>Mémorisation</h3>
+					<pre><code data-trim data-noescape class="python">
+						cache = {}
+						def fibonacci_opt(n):
+							if n in cache:
+								return cache[n]
+							
+							if n < 2 :
+								value = 1
+							else :
+								value = fibonacci_opt(n-1) + fibonacci_opt(n-2)
+							
+							cache[n]= value
+							return value
+							</code></pre>
+				</section>
+			</section>
+
+			
+			<section>
+				<section>
+					<h2>Diviser-pour-régner</h2>
+					<a
+						href="https://commons.wikimedia.org/wiki/File:Merge_sort_algorithm_diagram.svg#/media/File:Merge_sort_algorithm_diagram.svg"><img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Merge_sort_algorithm_diagram.svg/1200px-Merge_sort_algorithm_diagram.svg.png"
+							class="plain w40" alt="Merge sort algorithm diagram.svg"></a>
+					<p>Source : <a href="https://en.wikipedia.org/wiki/Merge_sort">Wikiepdia</a></p>
+
+				</section>
+
+				<section>
+					<h3>Diviser-pour-régner : le principe</h3>
+					<ol>
+						<li>
+							<p><span class="important">Diviser</span> le problème en sous instances plus petites du
+								problèmes</p>
+						</li>
+						<li>
+							<p><span class="important">Régner</span> en résolvant les sous problèmes de manière
+								récursive ou les résoudre si taille
+								réduite </p>
+						</li>
+						<li>
+							<p><span class="important">Combiner</span> les solutions pour produire la solution du
+								problème originel</p>
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Petit aparté</h3>
+					La philosophie de diviser un problème en sous instances plus simples pour les résoudre et combiner les résultats se retrouve dans
+					le calcul distribué => <span class="important">map-reduce</span>
+				</section>
+
+				<section>
+					<h3>Les algo célèbres</h3>
+					<ul>
+						<li>Problème du sous-tableau maximal</li>
+						<li>Tri-Fusion</li>
+						<li>Algo de Strassen : multiplication de matrices</li>
+						<li>Algo de Karatsuba : multiplication de grands nombres </li>
+					</ul>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h2>Sous-tableau maximal</h2>
+				</section>
+
+				<section>
+					<h3>Le problème</h3>
+					Extraire un sous tableau avec la somme la plus grande
+					<table>
+						<tr>
+							<td>13</td>
+							<td>-3</td>
+							<td>-25</td>
+							<td>20</td>
+							<td>-3</td>
+							<td>-16</td>
+							<td>-23</td>
+							<td><span class="fragment highlight-important" data-fragment-index="1">18</span>
+							</td>
+						</tr>
+						<tr>
+							<td><span class="fragment highlight-important" data-fragment-index="1">20</span></td>
+							<td><span class="fragment highlight-important" data-fragment-index="1">-7</span></td>
+							<td><span class="fragment highlight-important" data-fragment-index="1">12</span></td>
+							<td>-5</td>
+							<td>-22</td>
+							<td>15</td>
+							<td>-4</td>
+							<td>7</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Solution basique</h3>
+					Tester tous les sous-tableaux. Au maximum \(O(n^2)\) calculs.
+					<p class="fragment">Possible de faire mieux ?</p>
+
+				</section>
+
+				<section>
+					<h3>
+						Divisons le problème en trois
+					</h3>
+					<p>Si on coupe le tableau en deux :</p>
+					<ul>
+						<li class="fragment highlight-green" data-fragment-index="1">Sous taleau maximum à droite</li>
+						<li class="fragment highlight-green" data-fragment-index="1">Sous taleau maximum à gauche</li>
+						<li class="fragment highlight-important-purple" data-fragment-index="1">Sous tableau à cheval
+							sur les deux parties</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Problème du "tableau milieu"</h3>
+					Trouver le tableau à la somme max contenant le "milieu"
+					<p>Comment faire ça ?</p>
+
+					<aside class="notes">Faire un dessin</aside>
+				</section>
+
+				<section>
+					<h3>Problème du "tableau milieu"</h3>
+					<pre><code data-trim data-noescape class="python" style="max-height: 600px;">
+						import math						
+						def trouver_sous_tableau_milieu(tableau):
+							somme_gauche = None
+							somme = 0
+							tableau_size = len(tableau)
+							milieu = math.trunc(len(tableau)/2)-1
+							# initialisation gauche
+							max_gauche = milieu
+							somme_gauche = tableau[milieu]
+							for i in range(milieu, -1, -1): #sens inverse
+								somme +=tableau[i]
+								if  somme > somme_gauche :
+									somme_gauche = somme
+									max_gauche = i
+							# initialisation droite
+							max_droite = milieu+1
+							somme_droite = tableau[milieu+1]
+							somme = 0
+							for i in range(milieu +1, tableau_size):
+								somme += tableau[i]
+								if somme_droite is None or somme > somme_droite :
+									somme_droite = somme
+									max_droite = i
+							return tableau[max_gauche: max_droite+1]
+						</code></pre>
+				</section>
+
+
+				<section>
+					<h3>Résolution finale</h3>
+					<pre><code data-trim data-noescape class="python">
+						def trouver_sous_tableau_max(tab):
+						  if len(table) == 1 : # cas terminal
+						    return tab
+						  else : # cas récursif
+						    milieu = len(tab)/2
+						    tab_gauche = trouver_sous_tableau_max(tab[:milieu])
+						    tab_droit = trouver_sous_tableau_max(tab[milieu:])
+						    tab_milieu = troouver_sous_tableau_milieu(tab)
+						  if tab_gauche > tab_droit and tab_gauche > tab_milieu :
+						    return tab_gauche
+						  elif tab_droit > tab_gauche and tab_droit > tab_milieu :
+						    return tab_droit;
+						  else :
+						    return tab_milieu
+						</code></pre>
+				</section>
+
+				<section>
+					<h3>Conclusion</h3>
+					<ul>
+						<li>
+							Complexité de l'algo basique : \(\Theta(n^2)\)
+						</li>
+						<li>
+							Complexité de l'algo diviser-pour-regner \(\Theta(nln_2(n))\)
+						</li>
+					</ul>
+					<aside class="notes">On verra les notations au prochain CM</aside>
+				</section>
+
+				<section>
+					<h3>Est-ce vraiment un gros gain ?</h3>
+					<img src="./img/algo_comp/comparaison_tableau_max.png" alt="">
+
+				</section>
+
+			</section>
+			<section>
+				<section>
+					<h2>Bilan récursivité</h2>
+					<ul>
+						<li class="fragment green">Code très compact</li>
+						<li class="fragment green">Limite les redondances</li>
+						<li class="fragment green">Peut permettre de réduire la complexité d'un algo (diviser-pour-régner)</li>
+						<li class="fragment red">Consomme mémoire + pile</li>
+						<li class="fragment red">Python n'est pas optmisé pour en faire</li>
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/CF93EZqOxjdHG" width="480" height="364" frameBorder="0"
+					class="no-print giphy-embed" allowFullScreen></iframe>
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>

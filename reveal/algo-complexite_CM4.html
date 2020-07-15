@@ -1,0 +1,826 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<section>
+					<h1>Algorithmique et complexité</h1>
+					<h2>Analyse d'algorithmes récursifs</h2>
+					<p>Pépin Rémi, Ensai, 2019</p>
+					<img src="img/logo pyhton.png" alt="">
+				</section>
+				<section>
+					<h3>Le plan</h3>
+					<ol>
+						<li>Retour sur le sous tableau maximum</li>
+						<li>Méthode par substitution</li>
+						<li>Arbre et calculs récursifs</li>
+						<li>Master theorem</li>
+						<li>Conclusions</li>
+					</ol>
+				</section>
+			</section>
+
+
+			<section>
+				<section>
+					<h2>Quelques rappels</h2>
+				</section>
+
+				<section>
+					<h3>Complexité en espace</h3>
+					<div class="important-bloc">Combien de mémoire ai-je besoin pour que mon algorithme fonctionne ?
+					</div>
+					<p class="fragment">Unité élémentaire : bit, octet ...</p>
+					<p class="fragment red">Si vous n'avez pas assez de mémoire vive, votre programme va planter
+					</p>
+					<aside class="notes">Ou ralentir car il va écrire sur le disque</aside>
+				</section>
+				<section>
+					<h3>Complexité en temps</h3>
+					<div class="important-bloc">Combien de calculs vais-je réaliser ?</div>
+					<p class="fragment">Unité élémentaire : affectation, opérations simples</p>
+					<p class="fragment red">Au pire votre algo prend un temps infini
+					</p>
+				</section>
+
+				<section>
+					<h3>Complexité en temps</h3>
+					<iframe src="https://giphy.com/embed/WDPLRcY6U0NmE" width="960" height="400" frameBorder="0"
+						class="giphy-embed no-print" allowFullScreen></iframe>
+				</section>
+
+				<section>
+					<h3>Quel cas étudier ?</h3>
+					<ul>
+						<li>Pire : coût maximal</li>
+						<li>Moyen : coût en moyenne</li>
+						<li>Meilleur : coût dans le meilleur cas</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>Le plus simple à calculer, on peut dimensionner notre systeme</li>
+							<li>Moyen : besoin d'info sur les données.</li>
+							<li>Mieux : coût dans le meilleur cas. Peut aider dans des cas particuliers</li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h3>Le pire \(\mathcal{O}\), le mieux \(\Omega\) et le moyen \(\Theta\)</h3>
+					<ul>
+						<li style=" margin: 0.5em" class="fragment highlight-important">
+							\(f(N) = \mathcal{O}(g(N))\) ssi \[\exists c \gt 0,
+							\exists
+							N_0,\forall N \gt N_0, f(N) \leq cg(N) \] </li>
+						<hr>
+						<li style=" margin: 0.5em" class="">\(f(N) = \Omega(g(N))\) ssi \[g(N) =
+							\mathcal{O}(f(N)) \] </li>
+						<hr>
+						<li style=" margin: 0.5em" class="">\(f(N) = \Theta(g(N))\) ssi \[f(N) =
+							\mathcal{O}(g(N))~et~f(N) =
+							\Omega(g(N))\] </li>
+
+					</ul>
+				</section>
+
+				<section>
+					<h3>Séquences</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\langle \text{instruction1} \rangle & T_1(N)\\
+					\langle \text{instruction2} \rangle & T_2(N)\\
+					\end{array}
+					\right \}
+					T(N) = T_1(N) + T_2(N)
+					\]
+				</section>
+
+				<section>
+					<h3>Condition</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\text{if} ~ \langle \text{condition} \rangle &\\
+					~~~\langle \text{instruction1} \rangle & T_1(N)\\
+					\text{else} ~ &\\
+					~~~\langle \text{instruction2} \rangle & T_2(N)\\
+					\end{array}
+					\right \}
+					T(N) = max(T_1(N) + T_2(N))
+					\]
+				</section>
+				<section>
+					<h3>Boucle for</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\text{for i in range (0,p)} &\\
+					~~~\langle \text{instruction} \rangle & T_i(N)\\
+					\end{array}
+					\right \}
+					T(N) = \sum_{i=0}^{p-1}T_i(N)
+					\]
+				</section>
+
+				<section>
+					<h3>Boucle while</h3>
+					\[
+					\left.
+					\begin{array}{ll}
+					\text{while} ~ \langle \text{condition} \rangle &\\
+					~~~\langle \text{instruction} \rangle & T_i(N)\\
+					\end{array}
+					\right \}
+					T(N) = \sum_{i=0}^{nb\_iter}T_i(N)
+					\]
+
+					<p>Besoin de connaitre (ou majorer) le nombre d'itération</p>
+				</section>
+				<section>
+					<h3>Et pour les fonctions récursives ?</h3>
+					<img src="https://i.imgur.com/MLQx2kD.gif" alt="" class="plain no-print w60">
+				</section>
+			</section>
+
+			<section>
+
+				<section>
+					<h2>Retour sur le problème sous tableau à la somme maximale</h2>
+				</section>
+
+				<section>
+					<h3>Le problème</h3>
+					Extraire un sous tableau avec la somme la plus grande
+					<table>
+						<tr>
+							<td>13</td>
+							<td>-3</td>
+							<td>-25</td>
+							<td>20</td>
+							<td>-3</td>
+							<td>-16</td>
+							<td>-23</td>
+							<td><span class="fragment highlight-important" data-fragment-index="1">18</span>
+							</td>
+						</tr>
+						<tr>
+							<td><span class="fragment highlight-important" data-fragment-index="1">20</span></td>
+							<td><span class="fragment highlight-important" data-fragment-index="1">-7</span></td>
+							<td><span class="fragment highlight-important" data-fragment-index="1">12</span></td>
+							<td>-5</td>
+							<td>-22</td>
+							<td>15</td>
+							<td>-4</td>
+							<td>7</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>
+						Divisons le problème en trois
+					</h3>
+					<p>Si on coupe le tableau en deux :</p>
+					<ul>
+						<li class="fragment highlight-green" data-fragment-index="1">Sous tableau maximum à droite</li>
+						<li class="fragment highlight-green" data-fragment-index="1">Sous tableau maximum à gauche</li>
+						<li class="fragment highlight-important-purple" data-fragment-index="1">Sous tableau à cheval
+							sur les deux parties</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>
+						Changement de notation
+					</h3>
+					<ul>
+						<li> \(T(n)\) le temps d'éxecution de fonction d'extraction du sous tableau maximal pour une
+							entrée de taille n</li>
+						<li>\(f(n)\) le temps d'extraction du sous tableau milieu pour une entrée de taille n</li>
+					</ul>
+					<div class="fragment">
+						<div class="important">
+							\[T(n) = 2 \times T(\frac{n}{2}) + f(n)\]
+						</div>
+							<p style="font-size : smaller ; font-style:italic ;">Note : ceci est vraie si n est
+								une puissance de 2 uniquement</p>
+
+					</div>
+				</section>
+
+				<section>
+					<h3>
+						Complexité de \(f(n)\)
+					</h3>
+					On parcours un tableau de taille \(n\), au pire \(n\) opérations éléméntaires
+					<div class="fragment important">\[f(n) = \Theta(n)\]</div>
+				</section>
+
+				<section>
+					<h3>
+						Changement de notation
+					</h3>
+					<ul>
+						<li> \(T(n)\) le temps d'éxecution de fonction d'extraction du sous tableau maximal</li>
+					</ul>
+					<div class="important">
+						\[T(n) = 2 \times T(\frac{n}{2}) + \Theta(n)\]
+					</div>
+					ou
+					<div class="important">
+						\[T(n) = 2 \times T(\frac{n}{2}) + cn\]
+					</div>
+				</section>
+				<section>
+					<h3>
+						Arbre récursif
+					</h3>
+					<div class="fig-container" data-file="d3-fig/tree_tableau_max.html"></div>
+					<!-- path to the html file with visualization code -->
+				</section>
+				<section>
+					<h3>
+						Arbre récursif
+					</h3>
+					<ul>
+						<li>\(\log_2(n)+1\) niveaux (avec feuilles)</li>
+						<li>Temps d'exécution cn par niveau</li>
+						<li class="fragment">Total \(cn \times \log_2(n) + cn\)</li>
+						<li class="fragment important">\(\Theta(n\log_2(n))\)</li>
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Calcul de la complexité dans le cas récursif simple</h2>
+				</section>
+
+				<section>
+					<h3>Fonction récursive</h3>
+					Pour une entrée de taille \(n\)
+					<ul>
+						<li>Découpage en \(a\) sous problèmes</li>
+						<li>Traiter une entrée de taille \(n\) prend \(T(n)\)</li>
+						<li>Chaque sous problème à une entrée de taille \(\frac{n}{b}\)</li>
+						<li>Un traitement non recusif pour une entrée \(n\), \(f(n)\) </li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Forme général de la complexité</h3>
+					<div class="important-bloc">
+						\[T(n) = a \times T(\frac{n}{b}) + f(n)\]
+					</div>
+				</section>
+
+				<section>
+					<h3>Exemple multiplication de matrices</h3>
+					\(n\) : nb lignes des matrices
+					<ul>
+						<li>Découpage en 8 multiplications</li>
+						<li>Chaque sous problème à une entrée de taille \(\frac{n}{2}\)</li>
+						<li>Découpage + matrices intermédiaires : \(\Theta(n^2)\)</li>
+					</ul>
+					<div class="important-bloc fragment">
+						\[T(n) = 8 \times T(\frac{n}{2}) + cn^2\]
+					</div>
+				</section>
+
+				<section>
+					<h3>Complexité ?</h3>
+					<p>À partir de là comment calculer la complexité ?</p>
+					<ul>
+						<li class="fragment">Vous connaissez déjà la complexité avec l'équation <img class="plain icon"
+								src="https://img.icons8.com/cute-clipart/128/000000/kawaii-egg.png"></li>
+						<li class="fragment">Vous ne la connaissez pas et vous pleurez <img class="plain icon"
+								src="https://img.icons8.com/cute-clipart/128/000000/sad.png"></li>
+						<li class="fragment"><span class="fragment highlight-important">
+								Vous ne la connaissez pas et vous réfléchissez<img class="plain icon"
+									src="https://img.icons8.com/color/128/000000/iron-man.png">
+							</span>
+					</ul>
+				</section>
+
+				<section>
+					<h3>3 méthodes</h3>
+					<ul>
+						<li>Méthode par substitution (vérifie une intuition)</li>
+						<li>Méthode de l'arbre récursif (graphique) / calculs récursifs (calculs)</li>
+						<li>Théorème général/master theorem </li>
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Méthode par substitution</h2>
+				</section>
+
+				<section>
+					<h3>Le principe</h3>
+					<ol>
+						<li>Conjecturer une complexité</li>
+						<li>La vérifier par récurrence mathématique</li>
+					</ol>
+					<div class="important-bloc fragment">On va supposer de la forme, la subsituer dans la formule et
+						vérifier si elle est vraie</div>
+				</section>
+
+				<section>
+					<h3>Problème majeur</h3>
+					<div class="important-bloc">
+						Nécessite une formule par trop complexe pour avoir une intuition.
+					</div>
+				</section>
+
+				<section>
+					<h3>Exemple</h3>
+					<div class="important-bloc">
+						\[T(n) = 2 \times T(\lfloor\frac{n}{2}\rfloor) + n\]
+					</div>
+					<p class="fragment">
+						On divise en 2 sous problèmes de taille \(\lfloor\frac{n}{2}\rfloor\), donc il faut \(\log_2(n)\) découpage
+						avant n=1,
+						et à à chaque fois on a un problème de compelxité n à résoudre
+					</p>
+					<p class="fragment important">
+						Intuition : la complexité est en \(\Theta(n\log_2(n))\)
+					</p>
+
+				</section>
+
+				<section style="font-size: smaller;">
+					<h3>Vérification</h3>
+
+					Vérifions \(T(n) \leq an\log_2(n)\)
+					<div class="fragment">
+						\[
+						\begin{align*}
+						T(n) &\leq 2\lfloor\frac{n}{2}\rfloor + n \\
+						T(n) &\leq 2(a\lfloor\frac{n}{2}\rfloor \log_2(\lfloor\frac{n}{2}\rfloor)) + n \\
+						T(n)&\leq an\log_2(\frac{n}{2}) + n\\
+						T(n)&\leq an\log_2(n) - an\log_2(2)+ n\\
+						T(n)&\leq an\log_2(n) - an+ n\\
+						T(n)&\leq an\log_2(n)\\
+						\end{align*}
+						\]
+					</div>
+					<div class="fragment important-bloc">
+							\[T(n)\leq an\log_2(n)\]
+					</div>
+				</section>
+
+				<section>
+					<h3>Cas initial</h3>
+					<p>On a besoin d'un premier cas pour initier notre récurrence.</p>
+					<p class="fragment">Comme on cherche des comportements asymptotiques pour \( \forall n \gt n_0 \) pas
+						obligation de regarder n=1.</p>
+					<ul class="fragment">
+						<li>\(T(1) = 0\) avec notre formule or \(T(1) = 1\) ...</li>
+						<li>\(T(2) = 4 \leq 2a\log_2(2)\) si \(c \gt2\) </li>
+					</ul>
+					<p class="fragment important ">On fixe \(c \gt2\)</p>
+				</section>
+
+				<section>
+					<h3>Attention aux pièges !</h3>
+					Si on considère
+					<div class="important-bloc">
+						\(T(n) = T(\lfloor\frac{n}{2}\rfloor) + T(\lceil\frac{n}{2}\rceil) + n\)
+					</div>
+					qui est la vraie equation de récurence du temps de la recherche du sous tableau max
+				</section>
+				<section>
+					<h3>Attention aux pièges !</h3>
+					Avec notre hypothèse précédente on ne peut pas conclure, besoin de la reformuler
+				</section>
+
+				<section>
+					<h3>Attention aux pièges</h3>
+					<p>
+						Si on reprend
+					</p>
+					\[T(n) = 2 \times T(\lfloor\frac{n}{2}\rfloor) + n\]
+					<p>Et que l'on conjecture \(T(n)\leq cn\), on arrive à : </p>
+					\[T(n) \leq cn + n\]
+					<p class="important">Qui ne permet pas de conclure cas n'est pas l'hypothèse de base !</p>
+
+				</section>
+
+				<section>
+					<h3>Subtilité</h3>
+					On peut retirer des termes d'ordres inférieurs pour conclure. Par exemple
+					\[T(n) = T(\lfloor\frac{n}{2}\rfloor) + T(\lceil\frac{n}{2}\rceil) + 1\]
+					et que l'on conjecture
+					\[T(n) = \mathcal{O}(n)\]
+					\[T(n) = cn\]
+
+				</section>
+
+				<section>
+					<h3>Subtilité</h3>
+					\[
+					\begin{align*}
+					T(n) &\leq T(\lfloor\frac{n}{2}\rfloor) + T(\lceil\frac{n}{2}\rceil) + 1 \\
+					T(n) &\leq c\lfloor\frac{n}{2}\rfloor + c\lceil\frac{n}{2}\rceil +1\\
+					T(n) &\leq cn +1\\
+					\end{align*}
+					\]
+					<p class="fragment red">On ne peux pas conclure</p>
+				</section>
+
+				<section>
+					<h3>Subtilité</h3>
+					Mais \(cn-d = \mathcal{O}(n)\) également.
+					\[
+					\begin{align*}
+					T(n) &\leq T(\lfloor\frac{n}{2}\rfloor) + T(\lceil\frac{n}{2}\rceil) + 1 \\
+					T(n) &\leq c(\lfloor\frac{n}{2}\rfloor-d) + (c\lceil\frac{n}{2}\rceil-d) +1\\
+					T(n) &\leq cn -2d +1\\
+					T(n) &\leq cn -d\\
+					\end{align*}
+					\]
+					tant que \(d \geq 1\)
+				</section>
+
+
+
+				<section>
+					<h3>Bilan de la méthode par subsitution</h3>
+
+					<ul>
+						<li>Besoin d'une hypothèse</li>
+						<li>Permet facilement de majorer / minorer brutalement</li>
+						<li>Attention aux pièges</li>
+						<li>Si on a du mal à conclure on peut ajouter à notre hypothèse des termes d'ordres
+							inférieurs
+						</li>
+
+					</ul>
+					<div class="important-bloc fragment">
+						<p>Demande de la rigueur !</p>
+					</div>
+				</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>Méthode récursive</h2>
+				</section>
+
+				<section>
+					<h3>Rappel sur les sommes</h3>
+					<p>Somme d'une suite géométrique</p>
+					\[\sum_{i=0}^{n}a^i = \frac{a^{n+1}-1}{a-1}\]
+					<p>En particulier</p>
+					\[\sum_{i=0}^{n}a = \frac{n(n+1)}{2}\]
+					\[\sum_{i=0}^{n}2^i = 2^{n+1}-1\]
+
+				</section>
+
+				<section>
+					<h3>Fusion tri</h3>
+					<a
+						href="https://commons.wikimedia.org/wiki/File:Merge_sort_algorithm_diagram.svg#/media/File:Merge_sort_algorithm_diagram.svg"><img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Merge_sort_algorithm_diagram.svg/1200px-Merge_sort_algorithm_diagram.svg.png"
+							class="plain w50" alt="Merge sort algorithm diagram.svg"></a>
+					<p>Source : <a href="https://en.wikipedia.org/wiki/Merge_sort">Wikiepdia</a></p>
+				</section>
+
+				<section>
+					<h3>Principe du tri fusion</h3>
+					<ol>
+						<li>On coupe le tableau en deux</li>
+						<li>On trie les deux sous tableaux récursivement</li>
+						<li>Puis on combine les deux tableaux triés
+						</li>
+					</ol>
+					<p class="fragment green-box">Comme les tableaux sont triés besoin de scanner
+						chaque élément une fois
+					</p>
+				</section>
+
+				<section>
+					<h3>Fusion tri : pseudo code</h3>
+					<pre><code data-trim data-noescape class="python" style="max-height: 600px;">
+							def tri_fusion(tableau):
+								if len(tableau) > 1 :
+									tableau_1 = tri_fusion(tableau[:n//2])
+									tableau_2 = tri_fusion(tableau[n//2:])
+									tableau = fusion(tableau_1,tableau_2)
+							return tableau
+								</code></pre>
+
+					<p class="fragment">
+						Fusion : \(\Theta(n)\)
+					</p>
+				</section>
+
+				<section>
+					<h3>Equation de la récursivité</h3>
+					<div class="important-bloc">
+						\[T(n) = 2 \times T(\frac{n}{2}) + cn\]
+					</div>
+					<p class="green-box fragment">Même que la recheche du sous tableau maximum</p>
+
+				</section>
+
+				<section>
+					<h3>
+						Arbre récursif du tri fusion
+					</h3>
+					<div class="fig-container" data-file="d3-fig/tree_tableau_max.html"></div>
+					<!-- path to the html file with visualization code -->
+				</section>
+				<section>
+					<h3>Résultat de l'arbre</h3>
+					<p class="fragment important">\(\Theta(n\log_2(n))\)</p>
+				</section>
+
+				<section>
+					<h3>Et avec des calculs</h3>
+					<div style="font-size : smaller">
+						\[
+						\begin{align*}
+						T(n) &= 2 \times T(\frac{n}{2}) + cn \\
+						& = 4 \times T(\frac{n}{4}) + cn + cn \\
+						& = 8 \times T(\frac{n}{8}) + 3cn\\
+						& = ...\\
+						& = \sum_{i=1}^{\log_2(n)}cn + 2^{\log_2(n)} \times T(1)\\
+						& = cn\log_2(n) + cn\\
+						& = \Theta(n\log_2(n))\\
+						\end{align*}
+						\]
+					</div>
+
+				</section>
+
+				<section>
+					<h3>Conclusion</h3>
+					<div class="important-bloc">Complexité du tri fusion \(\Theta(n\log_2(n))\)</div>
+					Tri par insertion \(\Theta(n^2)\)
+					<p class="fragment" style="font-style: italic">Note : on peut trier une liste d'entiers bornée avec une complexité de
+						\(\Theta(n)\) si on procède par un tri par dénombrement</p>
+				</section>
+
+				<section>
+					<h3>Conclusion sur la méthode</h3>
+					<div class="important-bloc">
+						L'abre n'est pas une preuve, mais peut être un bonne méthode pour faire émerger une hypothèse
+						que l'on vérifie avec la méthode de substitution
+					</div>
+					<div class="important-bloc"> Les calculs sont une preuve ! </div>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Théorème général / Master theorem</h2>
+				</section>
+
+				<section>
+					<h3>Théorème général</h3>
+					<div class="important-bloc">
+						\[T(n) = a \times T(\frac{n}{b}) + f(n)\]
+					</div>
+					<p>avec</p>
+					<ul>
+						<li>\(a \geq 1\)</li>
+						<li>\(b \geq 1\)</li>
+						<li>\(f(n)\) positive asymptotiquement</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Théorème général</h3>
+					<div class="green-box">
+						\[T( n) = a \times T(\frac{n}{b}) + f(n)\]
+
+					</div>
+					<div class="important-bloc" style="width: 120%; margin-left: -10% !important;">
+						<ol>
+							<li>
+								si \(\exists \epsilon>0, f(n) = \mathcal{O}(n^{\log_b(a) - \epsilon})\) &nbsp; alors
+								\(T(n) =
+								\Theta(n^{\log_b(a)})\)
+							</li>
+							<hr>
+							<li>
+								si \(f(n) = \Theta(n^{\log_b(a)})\) alors \(T(n) = \Theta(n^{\log_b(a)} \times
+								\log_2(n))\)
+							</li>
+							<hr>
+							<li>
+								si \(\exists \epsilon>0, f(n) = \Omega(n^{\log_b(a) + \epsilon})\)
+								et \(\exists c \lt 1, \exists n_0, \forall n > n_0, a \times f(\frac{n}{b}) \leq c
+								\times f(n) \) alors \(T(n) =
+								\Theta(f(n))\)
+							</li>
+						</ol>
+					</div>
+
+				</section>
+
+				<section>
+					<h3>Explications</h3>
+					<p>
+						La complexité d'une fonction récursive est déterminée par la complexité max de
+					</p>
+					<ul>
+						<li>Partie récursive ( \(n^{\log_b(a)} \) )</li>
+						<li>Partie fixe ( \(f(n)\))</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Explications</h3>
+
+					<p>Si :</p>
+					<ul>
+						<li>\(n^{\log_b(a)} >> f(n) \) => cas 1 : \(\Theta(n^{\log_b(a)})\) </li>
+						<li>\(f(n) >> n^{\log_b(a)} \) => cas 3 : \(\Theta(f(n))\)</li>
+						<li>\(f(n) \thickapprox n^{\log_b(a)} \) => cas 3 : multiplication par un facteur log
+							\(\Theta(n^{\log_b(a)} \times\log_2(n))\)</li>
+
+					</ul>
+				</section>
+				<section>
+					<h3>Subtilité</h3>
+
+					<ul>
+						<li>Dans le cas 1, \(f(n)\) doit être <span class="important">polynomialement</span> plus petite
+							que \(n^{\log_b(a)}\) </li>
+						<li>Dans le cas 3, \(f(n)\) doit être <span class="important">polynomialement</span> plus grande
+							que \(n^{\log_b(a)}\) </li>
+					</ul>
+					<div class="important-bloc fragment">Ne couvre pas tous les cas => cas de dominations non polynomiales</div>
+				</section>
+				<section>
+					<h3>Exemple cas 2</h3>
+					<div class="green-box">
+						\[T(n) = 2 \times T(\frac{n}{2}) + \Theta(n)\]
+
+					</div>
+					<p class="important">Encadrement de \(f(n)\)</p>
+					\[\log_2(2) = 1\]
+					<p>
+						Donc
+					</p>
+					\[f(n) = \Theta(n^{\log_b(a)})\]
+					<p class="important">
+						Donc
+					</p>
+					<div class="important-bloc">
+						\[T(n) = \Theta(n\times
+						\log_2(n))\]
+
+					</div>
+				</section>
+
+				<section>
+					<h3>Exemple cas 1</h3>
+					<div class="green-box">
+						\[T(n) = 8 \times T(\frac{n}{2}) + \Theta(n^2)\]
+					</div>
+					<p class="important">Domination de \(f(n)\)</p>
+					\[f(n) = \Theta(n^2) = \mathcal{O}(n^2) =\mathcal{O}(n^{\log_2(8)-1})\]
+					<p class="important">
+						Donc
+					</p>
+					<div class="important-bloc">
+						\[T(n) = \Theta(n^{\log_2(8)}) = \Theta(n^{3})\]
+					</div>
+				</section>
+
+
+				<section style="font-size: smaller;">
+					<h3>Exemple cas 3</h3>
+					<div class="green-box">
+						\[T(n) = 3 \times T(\frac{n}{4}) + \Theta(n\lg(n))\]
+					</div>
+					<p class="important">Minoration de \(f(n)\)</p>
+					\[n^{\log_b(a)} = \mathcal{O}(n^{0.793})\]
+					\[n\lg(n) = \Omega(n^{0.793+0.2}) \]
+					<p class="important">Condition de régularité</p>
+					\[af(\frac{n}{b}) = 3(n/4)\lg(n/4)\leq\frac{3}{4} n\lg n = c(f(n)) \text{&nbsp; pour &nbsp;}
+					c=\frac{3}{4} \]
+					<p class="important">
+						Donc
+					</p>
+					<div class="important-bloc">
+						\[T(n) = \Theta(n \lg n)\]
+					</div>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Conclusion</h2>
+				</section>
+
+				<section>
+					<h3>Conclusion</h3>
+					<div class="important-bloc">
+						Du fait de leur proximité avec la récurrence mathématique méthodes spécifiques
+					</div>
+				</section>
+
+				<section>
+					<h3>Les limites</h3>
+					<ul>
+						<li>Seulement récursivité simple</li>
+						<li>Le master theorem ne résoud pas tout</li>
+						<li>Intuition pour substitution</li>
+						<li>Bien compter pour les calculs</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Cas des récursivité "complexes"</h3>
+					<ul>
+						<li class="fragment red">Le master theorem ne fonctionne pas</li>
+						<li class="fragment green">Par contre les calculs (et l'arbre) oui</li>
+						<li class="fragment green">Ainsi que la substitution mais dur de trouver une conjecture</li>
+					</ul>
+
+				</section>
+			</section>
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/uWYjSbkIE2XIMIc7gh" width="384" height="480" frameBorder="0"
+					class="giphy-embed no-print" allowFullScreen></iframe>
+
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+@startuml
+scale 2
+class Source {
+    String name
+    Date start_collect
+    Date end_collect
+    String input_file
+    String type
+
+    process()
+
+}
+
+note "type : survey, census, webscrapping, administrative" as N 
+N.Source
+
+note "process() : structure if/elif/else" as M
+M..Source
+
+
+@enduml

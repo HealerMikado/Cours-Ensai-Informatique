@@ -1,0 +1,505 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Algorithmique et compléxité</title>
+	<link rel="icon" href="img/ensai_logo_transparent.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/mine.css">
+
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<section>
+					<h1>Algorithmique et complexité</h1>
+					<h2>Parallélisation</h2>
+					<p>Pépin Rémi, Ensai, 2019</p>
+					<img src="img/logo pyhton.png" alt="">
+				</section>
+				<section>
+					<h3>Les objectifs du cours</h3>
+					<ul>
+						<ol>
+							<li>Découvrir le concept de parallélisation</li>
+							<li>D2couvrir les limites de ce procédé</li>
+							<li>Voir des exemples</li>
+						</ol>
+					</ul>
+				</section>
+				<section>
+					<h3>Le plan</h3>
+					<ol style="font-size: xx-large;">
+						<li>Introduction</li>
+						<li>Architecture d'un ordinateur</li>
+						<li>Un exemple : Fibonacci parallélisé</li>
+						<li>La parallélisation en pratique</li>
+					</ol>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>Introduction</h2>
+				</section>
+
+				<section>
+					<h3>Qu'est ce que la parallélisation</h3>
+					<p class="important-bloc">
+						C'est un ensemble de techniques logicielles et matérielles permettant l'exécution simultanée de
+						séquences d'instructions « indépendantes » sur plusieurs unités de calcul
+
+					</p>
+				</section>
+
+				<section>
+					<h3>Pourquoi paralléliser ?</h3>
+					<ul>
+						<li>Traitements séquentiels trop longs</li>
+						<li>Données trop volumineuses</li>
+						<li>Optimiser les ressources</li>
+						<li>"horizontal scaling"</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Typologie de parallélisation</h3>
+					<ul>
+						<li>Mémoire partagée <span class="note">(chaque unité à accès à la même mémoire)</span></li>
+						<li>Mémoire distribuée <span class="note">(chaque unité à sa propre mémoire)</span></li>
+						<li>Modéle hybride <span class="note">(mémoire partagée en différent noeud, chaque noeud est un
+								modèle de mémoire partagée)</span></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Attention</h3>
+					<ul>
+						<li>D'abord bien optimiser le code séquentiel</li>
+						<li>Ne pas dénaturer le code en le parallélisant</li>
+						<li>"Race condition"</li>
+						<li>Plus de calculs pour le même résultats</li>
+					</ul>
+					<p class="important-bloc fragment">
+						Tout n'est pas parallélisable
+					</p>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>L'arhitecture d'un ordinateur</h2>
+				</section>
+
+				<section>
+					<h3>Composants principaux</h3>
+					<ul>
+						<li>CPU : unité de calcul</li>
+						<li>Mémoire RAM : mémoire rapide volatile</li>
+						<li>SSD, HDD : mémoire lente pérène</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Zoom sur le CPU</h3>
+					<a
+						href="https://www.lesnumeriques.com/cpu-processeur/face-a-face/35474d2cec6ad10daddad3ef51e07266d2e55967">Comparateur
+						CPU</a>
+				</section>
+				<section>
+					<h3>Coeur physique, coeur logique</h3>
+					<ul>
+						<li>Coeur physique : unité de calcul physique</li>
+						<li>Coeur logique : unité de calcul logique</li>
+					</ul>
+					<p class="important">Un coeur physique peut être découpé en plusieurs coeurs logiques
+						(hyper-threading)</p>
+				</section>
+
+				<section>
+					<h3>Utilité</h3>
+					<ul>
+						<li>Vie courante : discord, spotify, skype, 10 000 onglets firefox ...
+						</li>
+						<li>Vie profesionnelle : applications de rendus, gros traitements stat</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Utilité</h3>
+					Parallélisation du travail, donc réduction du temps de calculs.
+
+					<p class="important">On peut espérer avec k threads on divise le temps par k</p>
+				</section>
+
+				<section>
+					<h3>
+						Deux points d'attentions
+					</h3>
+					<ul>
+						<li>L'ordonnanceur : "chef d'orchestre"</li>
+						<li>Mémoire commune : attention aux "race conditions" et "deadlock"</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>L'ordonnanceur</h3>
+					<ul>
+						<li>Alloue les coeurs aux threads</li>
+						<li>Organise l'ordonnancement des threads
+							<ul>
+								<li>LIFO</li>
+								<li>FIFO</li>
+								<li>Switch avec timeout</li>
+							</ul>
+						</li>
+					</ul>
+					<p class="important-bloc fragment">
+						Un changement de thread est couteux en temps. Les changements doivent
+						être les plus rares possible
+					</p>
+				</section>
+
+				<section>
+					<h3>Race conditions</h3>
+					<p>
+						Que donne ce code à votre avis ?
+
+					</p>
+					<p>Fichier race_condition
+					</p>
+				</section>
+
+				<section>
+					<h3>Race conditions explication</h3>
+					<ol>
+						<li>Mémoire partagée</li>
+						<li>A l'instant \(i\) un thread \(T_1\) accède à la valeur x</li>
+						<li>Il l'incrémente de 1</li>
+						<li>A l'instant \(i'\) un thread \(T_2\) accède à la valeur x</li>
+						<li>Il l'incrémente de 1</li>
+						<li>A \(i''\), \(T_1\) change la valeur de x avec la valeur calculée</li>
+						<li>A \(i'''\), \(T_2\) change la valeur de x avec la valeur calculée</li>
+						<li>Le travail de \(T_1\) est perdu</li>
+					</ol>
+				</section>
+
+				<section>
+					<h3>Un problème du parallélisme</h3>
+					<p class="important-bloc">
+						Code non déterministe
+					</p>
+				</section>
+			</section>
+
+
+			<section>
+				<section>
+					<h2>Un exemple : Fibonacci parallélisé</h2>
+				</section>
+
+				<section>
+					<h3>Pseudo code théorique</h3>
+					<pre><code data-trim data-noescape class="python">
+						def parallele_fib(n):
+							if n < 2 :
+								return 1
+							else :
+								x = spawn parallele_fib(n-1)
+								y = paralléle_fib(n-2)
+								sync
+								return x+y
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>L'arbre de calculs</h3>
+				</section>
+
+				<section>
+					<h3>Performance</h3>
+					<ul>
+						<li>Travail total : 17 unités de temps (comme avant)</li>
+						<li>Temp execution : 8 unité de temps (gain de 50%)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Un petit problème</h3>
+					<p>
+						Si le pseudo code est simple, la mise en place est compliquée
+					</p>
+					<ul>
+						<li>Passer données entre thread</li>
+						<li>Générer des threads dans des threads</li>
+					</ul>
+					<p class="important fragment">Pas d'implémentation simple en python de ce pseudo code</p>
+				</section>
+
+
+			</section>
+
+			<section>
+				<section>
+					<h2>Mesure des performances</h2>
+				</section>
+
+				<section>
+					<h3>Nos métriques</h3>
+					<ul>
+						<li>Le travail total</li>
+						<li>Le temps d'exécution</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Notations</h3>
+					<ul>
+						<li>\(P\) nombre de processeurs</li>
+						<li>\(T_P\) le temps d'exécution pour \(P\) processeurs </li>
+						<li>\(T_1\) le temps d'exécution pour 1 processeur </li>
+						<li>\(T_{\infty}\) si on avait 1 processeurs par strand</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Accélération</h3>
+
+					<p class="important-bloc">
+						\(A_p = T_1/T_p\)
+					</p>
+
+					<ul>
+						<li>Cas idéal : \(A_p = P\)</li>
+						<li>Cas général : \(A_p = \Theta(P)\)</li>
+						<li>Cas extrèmement rare (superlinéarité) : \(A_p > P\)</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h2>Le parallélisme</h2>
+					<p class="important-bloc">
+						\(Para = T_1/T_{\infty}\)
+					</p>
+					<ul>
+						<li>Accélération maximale</li>
+						<li>Nombre moyen d'opération en parallèle lors du chemin critique</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Le relachement</h2>
+					<p class="important-bloc">
+						\(R_p = \frac{T_1}{PT_{\infty}}\)
+					</p>
+					<ul>
+						<li>Si \(R_p \in [0,1]\) : on ne peux pas atteindre une accelération linéare</li>
+						<li>Si \(R_p > 1\) : c'est le travail par processeur qui nous limite, donc augmenter le nombre produit de bons résultats</li>
+					</ul>
+				</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>La parallélisation en pratique</h2>
+				</section>
+
+
+				<section>
+					<h3>Qu'est ce que l'on peut paralléliser</h3>
+					<p class="important-bloc">Les calculs indépendants</p>
+					<ul>
+						<li>Les boucles</li>
+						<li>Les séquences indépendantes </li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Complexité</h3>
+					Si vous avez \(\langle T_1, T_2, ..., T_n\rangle\) instructions parallèles
+					<ul>
+						<li>Temps exécution = \(\max_{0>i\geq n}(T_i)\)</li>
+						<li>Mémoire = \(\sum_{0>i\geq n}(T_i)\)</li>
+						<li>Nombre calculs = \(\sum_{0>i\geq n}(T_i)\)</li>
+					</ul>
+				</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>Parallélisation dans la pratique</h2>
+				</section>
+				<section>
+					<h2>Map-reduce</h2>
+				</section>
+				<section>
+					<h3>Qu'est ce que c'est ?</h3>
+					<p class="important-bloc">Découpage d'un traitemement important en petit
+						traitements exécutés en parallèles (map) puis fusionnés pour produire
+						le résultat final (reduce)
+					</p>
+				</section>
+
+				<section>
+					<h3>Exemple</h3>
+					<p>On souhaite compter le nombre de mot et de lettre dans un fichier</p>
+					<ul>
+						<li>On découpe le fichier blocs</li>
+						<li>On fait passer chaque bloc une fonction map() qui retourne:
+							<ul>
+								<li>L'un compte le nombre de mots : ("mots", X)</li>
+								<li>L'autre le nombre de lettre : ("lettres", Y)</li>
+							</ul>
+						</li>
+						<li>Puis une fonction reduce collecte le nombre de mots et les sommes, et une autre
+							fait de même pour les lettres
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>En pratique</h3>
+					
+				</section>
+
+				<section>
+					<h3>Map</h3>
+					<p>Prend en entrée une donnée et retourne une liste de couples clef-valeur (exemple nombre de mot, nombre de lettre)
+					</p>
+
+				</section>
+
+				<section>
+					<h3>Reduce</h3>
+					<p>Aggrège les résultats d'une caractéristique en sortie des fonctions map
+					</p>
+				</section>
+
+				<section>
+					<h2>
+						Pipeline de traitemement
+					</h2>
+
+				</section>
+
+				<section>
+					<h3>Pipeline classique</h3>
+					<ol>
+						<li>Acquisition</li>
+						<li>Traitement</li>
+						<li>Valorisation</li>
+					</ol>
+					<p>
+						Avec fichiers qui arrivent par lots indépendants
+					</p>
+				</section>
+
+				<section>
+					<h3>Architecture envisageable 1</h3>
+					<ul>
+						<li>Chaque lot déclenche le pipeline</li>
+						<li>Plusieurs pipelines en parallèle</li>
+						<li>Si aucun processeur de libres, les lots sont mis dans une pile en entendant</li>
+					</ul>
+				</section>
+				<section>
+						<h3>Architecture envisageable 2</h3>
+						<ul>
+							<li>On intercale des piles entre les traitements</li>
+							<li>Quand un traitement commence il dépile la pile précédente</li>
+							<li>Quand un traitement se termine il rempli la pile suivante</li>
+							<li>L'ordonnanceur choisi quel traitement lancer</li>
+						</ul>
+					</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>Bilan</h2>
+				</section>
+				<section>
+					<h3>Bilan</h3>
+					<ul>
+						<li>Procédé permettant de réduire le temps global de calcul</li>
+						<li>Mais pas le nombre de calculs</li>
+						<li>Dur à mettre en place</li>
+						<li>Uniquement si le problème si prète</li>
+						<li>Les outils que l'on utilise l'implémente pour nous</li>
+						<li>Parallélisme "micro" : instructions en parallèle dans le code</li>
+						<li>Parallélisme "macro" : modules en parallèle</li>
+
+					</ul>
+				</section>
+			</section>
+
+
+			<section>
+				<h2>The end</h2>
+				<iframe src="https://giphy.com/embed/ULHclikJ78DZe" width="960" height="540" frameBorder="0"
+					class="giphy-embed no-print" allowFullScreen></iframe>
+
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/search/search.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			center: true,
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+		});
+
+	</script>
+
+</body>
+</html>
