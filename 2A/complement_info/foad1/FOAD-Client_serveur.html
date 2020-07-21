@@ -1,0 +1,712 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>FOAD 1</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --node-fill: #ECECFF; --node-border: #CCCCFF; --cluster-fill: #ffffde; --cluster-border: #aaaa33; --note-fill: #fff5ad; --note-border: #aaaa33; --mermaid-color: var(--text-color); }
+.label { font-family: var(--mermaid-font-family); color: rgb(51, 51, 51); }
+.label text { fill: rgb(51, 51, 51); }
+.node rect, .node circle, .node ellipse, .node polygon { fill: var(--node-fill); stroke: rgb(147, 112, 219); stroke-width: 1px; }
+.node .label { text-align: center; }
+.node.clickable { cursor: pointer; }
+.arrowheadPath { fill: var(--text-color); }
+.edgePath .path { stroke: var(--text-color); stroke-width: 1.5px; }
+.edgeLabel { background-color: rgb(232, 232, 232); text-align: center; }
+.cluster rect { fill: var(--cluster-fill); stroke: var(--cluster-border); stroke-width: 1px; }
+.cluster text { fill: var(--text-color); }
+div.mermaidTooltip { position: absolute; text-align: center; max-width: 200px; padding: 2px; font-family: var(--mermaid-font-family); font-size: 12px; background: var(--cluster-fill); border: 1px solid var(--cluster-border); border-radius: 2px; pointer-events: none; z-index: 100; }
+.actor { stroke: var(--node-border); fill: var(--node-fill); }
+text.actor { fill: black; stroke: none; }
+.actor-line { stroke: grey; }
+.messageLine0 { stroke-width: 1.5; stroke: var(--text-color); }
+.messageLine1 { stroke-width: 1.5; stroke: var(--text-color); }
+#arrowhead { fill: var(--text-color); }
+.sequenceNumber { fill: white; }
+#sequencenumber { fill: var(--text-color); }
+#crosshead path { fill: var(--text-color)  !important; stroke: var(--text-color)  !important; }
+.messageText { fill: var(--text-color); stroke: none; }
+.labelBox { stroke: var(--node-border); fill: var(--node-fill); }
+.labelText { fill: black; stroke: none; }
+.loopText { fill: black; stroke: none; }
+.loopLine { stroke-width: 2; stroke: var(--node-border); }
+.note { stroke: var(--cluster-border); fill: rgb(255, 245, 173); }
+.noteText { fill: black; stroke: none; font-family: var(--mermaid-font-family); font-size: 14px; }
+.activation0 { fill: rgb(244, 244, 244); stroke: rgb(102, 102, 102); }
+.activation1 { fill: rgb(244, 244, 244); stroke: rgb(102, 102, 102); }
+.activation2 { fill: rgb(244, 244, 244); stroke: rgb(102, 102, 102); }
+.mermaid-main-font { font-family: var(--mermaid-font-family); }
+.section { stroke: none; opacity: 0.2; }
+.section0 { fill: rgba(102, 102, 255, 0.49); }
+.section2 { fill: rgb(255, 244, 0); }
+.section1, .section3 { fill: white; opacity: 0.2; }
+.sectionTitle0 { fill: var(--text-color); }
+.sectionTitle1 { fill: var(--text-color); }
+.sectionTitle2 { fill: var(--text-color); }
+.sectionTitle3 { fill: var(--text-color); }
+.sectionTitle { text-anchor: start; font-size: 11px; font-family: var(--mermaid-font-family); }
+.grid .tick { stroke: lightgrey; opacity: 0.3; shape-rendering: crispedges; }
+.grid .tick text { font-family: var(--mermaid-font-family); }
+.grid path { stroke-width: 0; }
+.today { fill: none; stroke: red; stroke-width: 2px; }
+.task { stroke-width: 2; }
+.taskText { text-anchor: middle; font-family: var(--mermaid-font-family); }
+.taskText:not([font-size]) { font-size: 11px; }
+.taskTextOutsideRight { fill: black; text-anchor: start; font-size: 11px; font-family: var(--mermaid-font-family); }
+.taskTextOutsideLeft { fill: black; text-anchor: end; font-size: 11px; }
+.task.clickable { cursor: pointer; }
+.taskText.clickable { cursor: pointer; font-weight: bold; fill: rgb(0, 49, 99) !important; }
+.taskTextOutsideLeft.clickable { cursor: pointer; font-weight: bold; fill: rgb(0, 49, 99) !important; }
+.taskTextOutsideRight.clickable { cursor: pointer; font-weight: bold; fill: rgb(0, 49, 99) !important; }
+.taskText0, .taskText1, .taskText2, .taskText3 { fill: white; }
+.task0, .task1, .task2, .task3 { fill: rgb(138, 144, 221); stroke: rgb(83, 79, 188); }
+.taskTextOutside0, .taskTextOutside2 { fill: black; }
+.taskTextOutside1, .taskTextOutside3 { fill: black; }
+.active0, .active1, .active2, .active3 { fill: rgb(191, 199, 255); stroke: rgb(83, 79, 188); }
+.activeText0, .activeText1, .activeText2, .activeText3 { fill: black !important; }
+.done0, .done1, .done2, .done3 { stroke: grey; fill: lightgrey; stroke-width: 2; }
+.doneText0, .doneText1, .doneText2, .doneText3 { fill: black !important; }
+.crit0, .crit1, .crit2, .crit3 { stroke: rgb(255, 136, 136); fill: red; stroke-width: 2; }
+.activeCrit0, .activeCrit1, .activeCrit2, .activeCrit3 { stroke: rgb(255, 136, 136); fill: rgb(191, 199, 255); stroke-width: 2; }
+.doneCrit0, .doneCrit1, .doneCrit2, .doneCrit3 { stroke: rgb(255, 136, 136); fill: lightgrey; stroke-width: 2; cursor: pointer; shape-rendering: crispedges; }
+.milestone { transform: rotate(45deg) scale(0.8, 0.8); }
+.milestoneText { font-style: italic; }
+.doneCritText0, .doneCritText1, .doneCritText2, .doneCritText3 { fill: black !important; }
+.activeCritText0, .activeCritText1, .activeCritText2, .activeCritText3 { fill: black !important; }
+.titleText { text-anchor: middle; font-size: 18px; fill: black; font-family: var(--mermaid-font-family); }
+g.classGroup text { fill: rgb(147, 112, 219); stroke: none; font-family: var(--mermaid-font-family); font-size: 10px; }
+g.classGroup text .title { font-weight: bolder; }
+g.classGroup rect { fill: var(--node-fill); stroke: rgb(147, 112, 219); }
+g.classGroup line { stroke: rgb(147, 112, 219); stroke-width: 1; }
+.classLabel .box { stroke: none; stroke-width: 0; fill: var(--node-fill); opacity: 0.5; }
+.classLabel .label { fill: rgb(147, 112, 219); font-size: 10px; }
+.relation { stroke: rgb(147, 112, 219); stroke-width: 1; fill: none; }
+#compositionStart { fill: rgb(147, 112, 219); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#compositionEnd { fill: rgb(147, 112, 219); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#aggregationStart { fill: var(--node-fill); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#aggregationEnd { fill: var(--node-fill); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#dependencyStart { fill: rgb(147, 112, 219); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#dependencyEnd { fill: rgb(147, 112, 219); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#extensionStart { fill: rgb(147, 112, 219); stroke: rgb(147, 112, 219); stroke-width: 1; }
+#extensionEnd { fill: rgb(147, 112, 219); stroke: rgb(147, 112, 219); stroke-width: 1; }
+.commit-id, .commit-msg, .branch-label { fill: lightgrey; color: lightgrey; font-family: var(--mermaid-font-family); }
+.pieTitleText { text-anchor: middle; font-size: 25px; fill: var(--text-color); font-family: var(--mermaid-font-family); }
+.slice { font-family: var(--mermaid-font-family); }
+g.stateGroup text { fill: rgb(147, 112, 219); stroke: none; font-size: 10px; font-family: var(--mermaid-font-family); }
+g.stateGroup text { fill: rgb(147, 112, 219); stroke: none; font-size: 10px; }
+g.stateGroup .state-title { font-weight: bolder; fill: black; }
+g.stateGroup rect { fill: var(--node-fill); stroke: rgb(147, 112, 219); }
+g.stateGroup line { stroke: rgb(147, 112, 219); stroke-width: 1; }
+.transition { stroke: rgb(147, 112, 219); stroke-width: 1; fill: none; }
+.stateGroup .composit { fill: white; border-bottom: 1px; }
+.state-note { stroke: var(--cluster-border); fill: rgb(255, 245, 173); }
+.state-note text { fill: black; stroke: none; font-size: 10px; }
+.stateLabel .box { stroke: none; stroke-width: 0; fill: var(--node-fill); opacity: 0.5; }
+.stateLabel text { fill: black; font-size: 10px; font-weight: bold; font-family: var(--mermaid-font-family); }
+.node text { font-size: 14px; }
+div.mermaidTooltip { position: absolute; text-align: center; max-width: 200px; padding: 2px; font-family: var(--mermaid-font-family); font-size: 12px; background: var(--cluster-fill); border: 1px solid var(--cluster-border); border-radius: 2px; pointer-events: none; z-index: 100; }
+#write .md-diagram-panel .md-diagram-panel-preview div { width: initial; }
+
+
+:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 32px; padding-right: 32px; padding-bottom: 0px; break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none 0s ease 0s; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; margin-top: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+svg[id^="mermaidChart"] { line-height: 1em; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+mark .md-meta { color: rgb(0, 0, 0); opacity: 0.3 !important; }
+
+
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow: auto hidden; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; overflow-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { overflow-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    padding-bottom: .3em;
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+   padding-bottom: .3em;
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border-top: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table tr th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr th:first-child,
+table tr td:first-child {
+    margin-top: 0;
+}
+table tr th:last-child,
+table tr td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #E6F0FE;
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+#extensionStart  { fill: white; }
+#extensionEnd  { fill: white; }
+
+</style>
+</head>
+<body class='typora-export os-windows' >
+<div  id='write'  class = 'is-node first-line-indent'><h1><a name="les-échanges-sur-le-web-et-larchitecture-client-serveur" class="md-header-anchor"></a><span>Les échanges sur le web et l&#39;architecture client-serveur</span></h1><p><span>Ce document couvre les connaissances de bases que vous êtes sensé avoir à la fin de ce cours sur des notions de base d&#39;internet et du web et de l&#39;échange de données sur le web. Comme tout outil, savoir comment il fonctionne vous permettra de mieux l&#39;utiliser et de savoir ce qui est possible et impossible avec. </span></p><blockquote><p>⌛️<span> La lecture du document et des différentes vidéos devrait vous prendre environ une heure et quart. C&#39;est le temps passé l&#39;an dernier pour couvrir les même notions en cours. Des espaces pour prendre des notes sont disponibles dans ce document si vous voulez y ajouter des informations (il vous faudra par contre l&#39;imprimer sous forme de pdf pour conserver vos notes ce qui vous fera perdre les vidéos).</span></p><p><span>Une fois ce FOAD fait vous devrez tester vos connaissances avec un QCM sur Moodle. Une note de 15/20 est attendue pour le valider, vous pouvez faire ce QCM plusieurs fois. </span><strong><span>S&#39;il n&#39;est pas validé, un malus d&#39;un point sera appliqué sur votre note du module.</span></strong></p></blockquote><h2><a name="le-web-websvg" class="md-header-anchor"></a><span>Le web </span><img src="web.svg" referrerpolicy="no-referrer"></h2><h3><a name="img-srcinternetsvg-styleheight1em-internet-et-le-web-websvg" class="md-header-anchor"></a><img src="internet.svg" style="height:1em;" /><span>Internet et le web </span><img src="web.svg" referrerpolicy="no-referrer"></h3><p><span>Si dans la vie de tous les jours, l&#39;internet et le web sont souvent considérés comme des notions interchangeables, il n&#39;en est rien, et le web et internet sont bien deux choses différentes.</span></p><blockquote><p><img src="internet.svg" style="height:1em;" /><span> </span><strong><span>Internet</span></strong><span> : l&#39;internet ou l&#39;inter-connexion des réseaux, ou réseau des réseaux désigne l&#39;ensemble des infrastructures physiques et protocoles logiques qui permettent l&#39;inter-connexion des réseaux et l&#39;échange des données sans présupposer de leur type. </span></p><p><img src="web.svg" referrerpolicy="no-referrer"><span> </span><strong><span>Le web</span></strong><span> : le web est une des applications d&#39;internet, mais elle n&#39;est pas la seule. Le web désigne l&#39;échange d&#39;information décrite dans des documents, historiquement des pages HTML (</span><strong><span>H</span></strong><span>yper</span><strong><span>T</span></strong><span>ext </span><strong><span>M</span></strong><span>arkup </span><strong><span>L</span></strong><span>anguage). Mais ce n&#39;est pas la seule application du web. Les mails avec le SMTP (</span><strong><span>S</span></strong><span>imple </span><strong><span>M</span></strong><span>essage </span><strong><span>T</span></strong><span>ransfer </span><strong><span>P</span></strong><span>rotocole, les chats IRC (</span><strong><span>I</span></strong><span>nternet </span><strong><span>R</span></strong><span>elay </span><strong><span>C</span></strong><span>hat), le </span><em><span>peer-to-peer</span></em><span> avec BitTorrent sont d&#39;autres services qui utilisent internet.</span></p><p><span>Pour simplifier internet désigne les infrastructure dans lesquels les données circulent alors que le web désigne les pages qui sont liées les unes aux autres par des liens hypertexte et la manière de le récupérer. Donc le web dépend internet, mais la réciproque est fausse.</span></p></blockquote><iframe src="https://www.youtube.com/embed/CX_HyY3kbZw" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><textarea rows="5" name="description" style="width:100%; style=" text-align:="" center;"="">            Notes internet vs web
+</textarea><p>&nbsp;</p><h3><a name="le-protocole-http-et-https-img-src3499791-certificate-https-ssl107639svg-styleheight1em-" class="md-header-anchor"></a><span>Le protocole HTTP et HTTPS </span><img src="3499791-certificate-https-ssl_107639.svg" style="height:1em;" /></h3><p><span>Le web est fondamentalement lié au protocole HTTP (</span><strong><span>H</span></strong><span>yper</span><strong><span>T</span></strong><span>ext </span><strong><span>T</span></strong><span>ransfer </span><strong><span>P</span></strong><span>rotocol).</span></p><blockquote><p>📖<span> </span><strong><span>Protocole</span></strong><span> : un protocole informatique défini l&#39;ensemble des règles qui vont définir des échanges. Il normalise la communication et donne un cadre à respecter pour rendre la communication possible entre une multitude d&#39;éléments différents car ils suivent les même règles.</span></p></blockquote><p><span>Le HTTP est un protocole qui fonctionne sur le principe de requête - réponse. Un client demande une ressource à un serveur (c&#39;est la requête), et le serveur lui fournit s&#39;il le peut (c&#39;est la réponse).</span></p><iframe src="https://www.youtube.com/embed/eesqK59rhGA" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><blockquote><p>❗️<span> Il est dit dans la vidéo que le HTTP est </span><em><span>connectionless</span></em><span> </span><strong><span>ce n&#39;est pas vrai</span></strong><span>. Ce qu&#39;il faut comprendre c&#39;est qu&#39;il n&#39;y a pas de canal de communication qui s&#39;ouvre entre les deux et que les communications sont toujours des couples de demandes - réponses. </span></p></blockquote><iframe src="https://www.youtube.com/embed/hExRDVZHhig?start=35" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><iframe src="https://www.youtube.com/embed/dut9EnbFym0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><textarea rows="5" name="description" style="width:100%;">            Note http, https
+</textarea><p><span>Pour sécuriser les échanges le HTTP a dû évoluer pour devenir le HTTPS (</span><strong><span>H</span></strong><span>yper</span><strong><span>T</span></strong><span>ext </span><strong><span>T</span></strong><span>ransfer </span><strong><span>P</span></strong><span>rotocol </span><strong><span>S</span></strong><span>ecure). Le principe est simple, on garde le principe du HTTP mais on chiffre les données échangé grâce à l&#39;ajout d&#39;une couche de sécurité (SSL pour </span><strong><span>S</span></strong><span>ecure </span><strong><span>S</span></strong><span>ockets </span><strong><span>L</span></strong><span>ayer,  ou TSL pour </span><strong><span>T</span></strong><span>ransport </span><strong><span>L</span></strong><span>ayer </span><strong><span>S</span></strong><span>ecurity). La théorie de la cryptographie est assez complexe, mais il n&#39;y a pas besoin d&#39;être un expert du domaine pour comprendre comment le HTTPS fonctionne et les choix de ce protocole. </span></p><p><span>Il existe deux grands types de chiffrement :</span></p><ul><li><span>Le symétrique 🔐;</span></li><li><span>Et le asymétrique 🔑🔒🗝.</span></li></ul><p><span>Dans les deux cas le principe général consiste </span><strong><span>à prendre un message le transformer pour le rendre impossible à comprendre pour toutes personne qui n&#39;a pas la clef de déchiffrement</span></strong><span> (on parle alors de </span><em><span>cypher</span></em><span>). Un message correctement crypté pourrait être affiché dans la rue sans que quiconque à part les personnes qui dispose de la clef de déchiffrement ne puisse le comprendre. Fondamentalement le cryptage consiste juste à rendre illisible un message sauf pour quelques personnes.  La clef de déchiffrement peut être un objet physique (un clef, la machine enigma), une connaissance spécifique (le décalage de caractère dans le code césar) ou une fonction mathématique (fonction cryptographique). Ce n&#39;est donc pas un précédé informatique par nature. Mais l&#39;informatique excelle dans ce domaine car elle permet de réaliser rapidement des calculs complexes.</span></p><h4><a name="chiffrement-symétrique-🔐" class="md-header-anchor"></a><span>Chiffrement symétrique 🔐</span></h4><p><span>Dans le chiffrement symétrique l&#39;émetteur du message et le récepteur dispose de la même clef qui leur permet à la fois de chiffrer et de déchiffrer les données. On pourrait croire que le problème de ce fonctionnement c&#39;est que dans un système à </span><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.394ex" height="1.41ex" viewBox="0 -504.6 600 607.1" role="img" focusable="false" style="vertical-align: -0.238ex;"><defs><path stroke-width="0" id="E1-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E1-MJMATHI-6E" x="0" y="0"></use></g></svg></span><script type="math/tex">n</script><span> machines, il faut </span><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.184ex" height="3.861ex" viewBox="0 -1208.2 2662.3 1662.6" role="img" focusable="false" style="vertical-align: -1.055ex;"><defs><path stroke-width="0" id="E2-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E2-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path stroke-width="0" id="E2-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path><path stroke-width="0" id="E2-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path stroke-width="0" id="E2-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path stroke-width="0" id="E2-MJMAIN-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g transform="translate(120,0)"><rect stroke="none" width="2422" height="60" x="0" y="220"></rect><g transform="translate(60,581)"><use transform="scale(0.707)" xlink:href="#E2-MJMATHI-6E" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E2-MJMAIN-28" x="600" y="0"></use><use transform="scale(0.707)" xlink:href="#E2-MJMATHI-6E" x="989" y="0"></use><use transform="scale(0.707)" xlink:href="#E2-MJMAIN-2212" x="1589" y="0"></use><use transform="scale(0.707)" xlink:href="#E2-MJMAIN-31" x="2367" y="0"></use><use transform="scale(0.707)" xlink:href="#E2-MJMAIN-29" x="2867" y="0"></use></g><use transform="scale(0.707)" xlink:href="#E2-MJMAIN-32" x="1462" y="-531"></use></g></g></svg></span><script type="math/tex">\frac{n(n-1)}{2}</script><span>clefs (donc un </span><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.061ex" height="2.811ex" viewBox="0 -906.7 2609.6 1210.2" role="img" focusable="false" style="vertical-align: -0.705ex;"><defs><path stroke-width="0" id="E3-MJMAIN-398" d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM610 339Q610 428 590 495T535 598T463 651T384 668Q332 668 289 638T221 566Q168 485 168 339Q168 274 176 235Q189 158 228 105T324 28Q356 16 388 16Q415 16 442 24T501 54T555 111T594 205T610 339ZM223 263V422H263V388H514V422H554V263H514V297H263V263H223Z"></path><path stroke-width="0" id="E3-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path stroke-width="0" id="E3-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E3-MJMAIN-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path stroke-width="0" id="E3-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E3-MJMAIN-398" x="0" y="0"></use><use xlink:href="#E3-MJMAIN-28" x="778" y="0"></use><g transform="translate(1167,0)"><use xlink:href="#E3-MJMATHI-6E" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E3-MJMAIN-32" x="848" y="513"></use></g><use xlink:href="#E3-MJMAIN-29" x="2220" y="0"></use></g></svg></span><script type="math/tex">\Theta(n^2)</script><span> clefs). Mais en fait non, ce n&#39;est pas un réel problème. La grande difficulté se pose sur l&#39;échange des clefs. </span><strong><span>En effet il faut s&#39;assurer qu&#39;on arrive à échanger toutes ces clefs de manière sécurisée</span></strong><span>. Car si une clef est compromise entre deux machines, un attaquant va pouvoir lire les communications (car la clef sert à déchiffrer) et insérer ses propres messages entre elles (car la clef permet de chiffrer également). Si vous voulez mettre ce genre de communication avec des amis vous pouvez par exemple vous échanger des clefs USB avec un code qui sert à chiffrer/déchiffrer, mais imaginez le calvaire si, quand vous voulez accéder à un site sécurisé, vous deviez attendre une clef USB avec la clef de chiffrement ! (en plus l&#39;échange postal n&#39;est pas le plus sécurisé du monde). C&#39;est clairement intenable et ne permet pas à des milliards d&#39;équipement de communiquer entre eux. </span></p><h4><a name="chiffrement-asymétrique--🔑🔒🗝" class="md-header-anchor"></a><span>Chiffrement asymétrique  🔑🔒🗝</span></h4><p><span>Le chiffrement asymétrique quand à lui permet de résoudre ce problème. Au lieu d&#39;avoir une clef entre émetteur et récepteur, le récepteur dispose de deux clefs, une clef dite publique et une clef dite privée. Chacune de ces clefs a un rôle bien précis. </span><strong><span>La clef publique permet uniquement de chiffrer un message, alors que la clef privé va le déchiffrer</span></strong><span>. Cela permet de rendre la clef publique accessible à tous car elle ne permet que de déchiffrer des données. Ainsi l&#39;émetteur va demander au récepteur sa clef publique, chiffrer son message et lui envoyer. Ce message peut être intercepté par tous sans risque car seul le récepteur peut le déchiffrer (théoriquement). Par contre si le récepteur veut répondre, il ne peut pas le faire de manière sécurisée. En effet s&#39;il chiffre la réponse avec sa clef publique, l&#39;émetteur ne pourra pas lire la réponse. Mais au moins on a un chiffrement dans un sens.</span></p><p><span>On pourrait imaginer alors qu&#39;émetteur et récepteur aient un couple clef publique, clef privée, mais ce n&#39;est pas la solution retenue pour le HTTPS. Avez-vous une idée pourquoi ce système ne serait pas bon ?</span><sup class='md-footnote'><a href='#dfref-footnote-1' name='ref-footnote-1'>1</a></sup><span> </span></p><h4><a name="fonctionnement-du-https-img-src3499791-certificate-https-ssl107639svg-styleheight1em-" class="md-header-anchor"></a><span>Fonctionnement du HTTPS </span><img src="3499791-certificate-https-ssl_107639.svg" style="height:1em;" /></h4><p><span>La solution retenue pour le HTTPS est de faire un </span><strong><span>échange en deux temps, d&#39;abord asymétrique puis symétrique</span></strong><span>. Le client (que j&#39;appelais émetteur avant) va demander la clef publique su serveur (récepteur). Le clef publique sera contenu dans le certificat du serveur. Le certificat est en quelque sorte sa carte d&#39;identité. Un organisme tiers de confiance (autorité de certification) valide l&#39;identité du serveur. C&#39;est la même chose avec une carte d&#39;identité. Un état sert d&#39;organisme tiers en &quot;validant&quot; votre identité légale. L&#39;émetteur va aller vérifier auprès de l&#39;autorité de certification si ce certificat est véridique (pour éviter l&#39;usurpation d&#39;identité de serveur).</span></p><p><span>Si l&#39;autorité valide le certificat, le client va ensuite générer une clef secrète et l&#39;envoyer au serveur en la chiffrant  avec la clef publique. Ce message ne peut être déchiffré que par le récepteur, donc il peut transiter tranquillement sur internet. Une fois qu&#39;il a déchiffré la clef générée, le serveur utilise la clef pour générer la clef de session qui va servir à chiffrer les futurs échanges. Le client va lui aussi déterminer la clef de session avec la clef secrète qu&#39;il a généré. À partir de maintenant les échanges seront chiffrés de manière symétrique entre client et serveur. </span></p><blockquote><p><span>🕵️‍♀️🕵️‍♂️ La clef de session à une durée de vie assez courte, donc si vous vous faites voler votre ordinateur, aucun risque de ce côté. Par contre pour vos mots de passe enregistrés dans votre navigateur c&#39;est une autre histoire. Utilisez plutôt un gestionnaire de mot de passe comme keypass.</span></p></blockquote><p><span>Rassurer vous, tout ça est fait automatiquement par votre navigateur ou les bibliothèque que vous allez utiliser. Mais il est important de comprendre ce qu&#39;il se passe, car par moment on peut aller sur des sites où notre navigateur nous alerte sur le certificat du site (autosigné, périmé). Cela n&#39;est pas forcément grave quand on comprend le problème. Dernière chose, un certificat est payant. Par extrêmement cher, mais pas gratuit pour autant.</span></p><blockquote><p><img src="aN0X3YK_460swp.webp" referrerpolicy="no-referrer"></p><p><span>Par exemple utiliser un certificat autosigné consiste à dire &quot;Moi, Rémi Pépin, confirme que je suis bien Rémi Pépin&quot;. Si vous me faite confiance, vous n&#39;aller pas remettre ma parole en doute. Il arrive assez souvent que les entreprises génèrent des certificats autosignés pour les services en cours de développement accessible uniquement depuis leurs réseaux internes. Et les navigateurs web s&#39;ils ne sont pas configurés correctement vont vous signaler un problème de sécurité car le serveur dit &quot;Moi, serveurX, confirme que je suis bien serveurX&quot;. À vous de déterminer si vous faite confiance à ce serveur. Si c&#39;est un service internet à une entreprise la réponse est en général oui, si c&#39;est un service accessible sur le web, la réponse est généralement non.</span></p></blockquote><p><span>Pour vous aider à comprendre le processus, voici un diagramme de séquence simplifié d&#39;un échange avec le protocole HTTPS. Voyez bien que l&#39;échange se produit en 2 temps. D&#39;abord client et serveur se mettent d&#39;accord sur la clef de session et ensuite elle est utilisée pour les échanges.</span></p><div class="md-diagram-panel"><svg id="mermaidChart1" width="674" xmlns="http://www.w3.org/2000/svg" height="748" viewBox="-116 -8 674 748" style="height: 788px;"><rect x="-108" y="528" fill="rgb(255, 0,0, .1)" width="391" height="130" class="rect"></rect><rect x="-108" y="73" fill="rgb(0, 0, 255, .1)" width="591" height="447" class="rect"></rect><style>
+:root { --mermaid-font-family: sans-serif}
+:root { --mermaid-alt-font-family: sans-serif}</style><style></style><g></g><g><line id="actor3" x1="75" y1="5" x2="75" y2="739" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px;"><tspan x="75" dy="0">Client</tspan></text></g><g><line id="actor4" x1="275" y1="5" x2="275" y2="739" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="200" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px;"><tspan x="275" dy="0">Serveur</tspan></text></g><g><line id="actor5" x1="475" y1="5" x2="475" y2="739" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="400" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="475" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px;"><tspan x="475" dy="0">Autorité certif.</tspan></text></g><defs><marker id="arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"></path></marker></defs><defs><marker id="crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="16" refY="4"><path fill="black" stroke="#000000" stroke-width="1px" d="M 9,2 V 6 L16,4 Z" style="stroke-dasharray: 0, 0;"></path><path fill="none" stroke="#000000" stroke-width="1px" d="M 0,1 L 6,7 M 6,1 L 0,7" style="stroke-dasharray: 0, 0;"></path></marker></defs><defs><marker id="sequencenumber" refX="15" refY="15" markerWidth="60" markerHeight="40" orient="auto"><circle cx="15" cy="15" r="6"></circle></marker></defs><g><rect x="-100" y="89" fill="#EDF2AE" stroke="#666" width="150" height="52" rx="0" ry="0" class="note"></rect><text x="-104" y="113" class="noteText"><tspan x="-84">Génération d'une </tspan></text><text x="-104" y="129" class="noteText"><tspan x="-84"> clef de session</tspan></text></g><g><text x="175" y="169" class="messageText" style="text-anchor: middle;">Connexion à une URL sécurisés</text><line x1="75" y1="176" x2="275" y2="176" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="175" y="204" class="messageText" style="text-anchor: middle;">Certificat SSL (clef publique)</text><line x1="275" y1="211" x2="75" y2="211" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="275" y="239" class="messageText" style="text-anchor: middle;">Verification certificat</text><line x1="75" y1="246" x2="475" y2="246" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="275" y="274" class="messageText" style="text-anchor: middle;">Certificat valide</text><line x1="475" y1="281" x2="75" y2="281" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><rect x="0" y="289" fill="#EDF2AE" stroke="#666" width="150" height="52" rx="0" ry="0" class="note"></rect><text x="-4" y="313" class="noteText"><tspan x="16">génère une clef </tspan></text><text x="-4" y="329" class="noteText"><tspan x="16"> secrète</tspan></text></g><g><rect x="0" y="349" fill="#EDF2AE" stroke="#666" width="150" height="68" rx="0" ry="0" class="note"></rect><text x="-4" y="373" class="noteText"><tspan x="16">Encrypte la clef </tspan></text><text x="-4" y="389" class="noteText"><tspan x="16"> secrète avec </tspan></text><text x="-4" y="405" class="noteText"><tspan x="16">  la clef publique</tspan></text></g><g><text x="175" y="445" class="messageText" style="text-anchor: middle;">Clef secrète encryptée</text><line x1="75" y1="452" x2="275" y2="452" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><rect x="50" y="460" fill="#EDF2AE" stroke="#666" width="250" height="52" rx="0" ry="0" class="note"></rect><text x="46" y="484" class="noteText"><tspan x="66">Client et serveur génère la même </tspan></text><text x="46" y="500" class="noteText"><tspan x="66"> clef de sesion avec la clef secrète</tspan></text></g><g><rect x="-100" y="544" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="-104" y="568" class="noteText"><tspan x="-84">Echanges chiffrée</tspan></text></g><g><text x="175" y="608" class="messageText" style="text-anchor: middle;">Requête chiffrée avec clef de session</text><line x1="75" y1="615" x2="275" y2="615" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="175" y="643" class="messageText" style="text-anchor: middle;">Réponse chiffrée avec clef de session</text><line x1="275" y1="650" x2="75" y2="650" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><rect x="0" y="674" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="706.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px;"><tspan x="75" dy="0">Client</tspan></text></g><g><rect x="200" y="674" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="706.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px;"><tspan x="275" dy="0">Serveur</tspan></text></g><g><rect x="400" y="674" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="475" y="706.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px;"><tspan x="475" dy="0">Autorité certif.</tspan></text></g></svg></div><blockquote><p><span>🧙‍♂️ Si vous vous rappeler la second vidéo, il est dit que le HTTP est </span><em><span>connectionless</span></em><span> et je vous ai dit que c&#39;était faux. Dans le cas présent du HTTPS c&#39;est asse clair. S&#39;il n&#39;y avait pas de notion de connexion il faudrait générer une clef de session par requête </span>🙀<span>. Cela serait inutilement coüteux.</span></p></blockquote><textarea rows="5" name="description" style="width:100%;">            Notes chiffrement
+</textarea><h3><a name="uri-url-urn-et-dns-worldmap" class="md-header-anchor"></a><span>URI, URL, URN et DNS </span>🗺</h3><p><span>Maintenant que vous comprenez comment les données sont échangées, il reste encore un gros mystère, comment les données sont localisées. En effet pour un ordinateur </span><a href='http://www.ensai.fr' target='_blank' class='url'>www.ensai.fr</a><span> ne le renseigne pas sur la localisation de la ressource demandé. Bien que URL signifie </span><strong><span>U</span></strong><span>niform </span><strong><span>R</span></strong><span>essource </span><strong><span>L</span></strong><span>ocator c&#39;est surtout une localisation essentiellement humaine, et non pas machine. Vous avez déjà dû entendre parler d&#39;adresse IP (</span><strong><span>I</span></strong><span>nternet </span><strong><span>P</span></strong><span>rotocol). L&#39;adresse IP est la vraie adresse de votre machine. L&#39;URL est seulement son nom </span><em><span>human friendly</span></em><span> pour qu&#39;on s&#39;en souvienne facilement. Votre ordinateur va avoir besoin d&#39;un annuaire pour faire faire le lien entre cette URL et l&#39;IP de machine qui héberge la ressource. Ce système appelle le DNS pour </span><strong><span>D</span></strong><span>omain </span><strong><span>N</span></strong><span>ame </span><strong><span>S</span></strong><span>ystem. </span></p><iframe src="https://www.youtube.com/embed/vpYct2npKD8" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe>
+<iframe src="https://www.youtube.com/embed/Rck3BALhI5c?start=35" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><textarea rows="5" name="description" style="width:100%;">            Notes URL, URN, URI, DNS
+</textarea><h2><a name="le-modèle-client-serveur-computerimg-srcservers119542svg-styleheight1em-" class="md-header-anchor"></a><span>Le modèle client serveur </span>💻<img src="servers_119542.svg" style="height:1em" /></h2><h3><a name="larchitecture-client-serveur-computerimg-srcservers119542svg-styleheight1em-" class="md-header-anchor"></a><span>L&#39;architecture client-serveur​ </span>💻<img src="servers_119542.svg" style="height:1em" /></h3><p><span>Le modèle </span><strong><span>client-serveur est l&#39;architecture qui domine le web actuellement</span></strong><span>. Son résumé est simple, des clients font des requêtes HTTP à des  serveurs qui y répondent. Les client fonts seulement des actions de temps en temps, alors que le serveur doit pouvoir répondre à toutes les requêtes qui lui arrive, jour et nuit. Ainsi la différence entre client et serveur n&#39;est finalement que liée au fonctionnement du modèle, le client demande et le serveur répond. Ce qui fait que presque tout équipement informatique peut être client et serveur en fonction du contexte. Vous pouvez très bien utiliser une raspberry pie comme petit serveur de contenu web ou comment client pour récupérer des données. Ou vous pouvez héberger votre site web sur votre pc portable. Par contre dés que votre pc s&#39;éteint votre site devient inaccessible.</span></p><iframe src="https://www.youtube.com/embed/L5BlpPU_muY" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><textarea rows="5" name="description" style="width:100%;">            Note client serveur
+</textarea><h3><a name="apiweb-services-rest-et-requête-http-en-python-🐍img-srcservers119542svg-styleheight1em-" class="md-header-anchor"></a><span>API/web services REST et requête http en python 🐍</span><img src="servers_119542.svg" style="height:1em" /></h3><p><span>Maintenant que vous avez du comprendre la notion de client-serveur, abordons la notion d&#39;API ou de </span><em><span>web services</span></em><span>. Il est important que vous compreniez dans les grandes lignes comment ils fonctionnent car de plus en plus de données sont échangées par leur biais.</span></p><p><span>Vous pouvez vous arrêter quand la vidéo parle de nodejs. C&#39;est une plateforme logicielle en JavaScript. Comme vous ne connaissez pas ce langage la fin de la vidéo va vous sembler compliquée (pour info le cours de visualisation des données et de technologie mobile du second semestre vont vous faire découvrir le JavaScript, et dernière chose Java et  JavaScript n&#39;ont rien à voir)</span></p><iframe src="https://www.youtube.com/embed/FOZtRzY5x8E?start=35" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><p><span>Voici par contre comment réaliser des requêtes HTTP/HTTPS en python</span></p><iframe src="https://www.youtube.com/embed/qriL9Qe8pJc" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><textarea rows="5" name="description" style="width:100%;">            Notes webservices
+</textarea><h2><a name="un-peu-de-culture-informatique-robot" class="md-header-anchor"></a><span>Un peu de culture informatique </span>🤖</h2><p><span>Terminons ce FOAD par 3 petites vidéos sur des notions que vous avez sûrement déjà entendu, à savoir:</span></p><ul><li><span>Proxy</span></li><li><span>VPN</span></li><li><span>Coockies</span></li></ul><p><span>Ce sont des notions que l&#39;on entend de plus de plus en plus et que vous devez comprendre, pas pour ce cours, mais pour devenir des personnes conscientes du fonctionnement d&#39;internet et du web.</span></p><iframe src="https://www.youtube.com/embed/i23KIs9ybDM" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><iframe src="https://www.youtube.com/embed/DhYeqgufYss" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><iframe src="https://www.youtube.com/embed/BTlq6WmWqMk" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe><textarea rows="5" name="description" style="width:100%;">            Notes diverses
+</textarea><div class='footnotes-area'  ><hr/>
+<div class='footnote-line'><span class='md-fn-count'>1</span> <span>Si tous le monde possédait un couple de clefs les échanges pourraient être chiffrés et illisible par tous sauf le destinataire c&#39;est vrai, par contre l&#39;usurpation d&#39;identité sera assez simple. Un attaquant pourrait très bien surveiller vos communications, et intercepter toutes les réponses que vous recevez pour les remplacer par les siennes. Comme il dispose de votre clef publique, il pourra chiffrer ses messages et vous n&#39;aurez pas de moyen de détecter l&#39;usurpation d&#39;identité. Sauf si au début de la communication vous vous mettez d&#39;accord sur un code secret avec le récepteur. Si vous avez pensez cette solution, bravo vous avez presque deviné le fonctionnement du HTTPS. L&#39;autre problème également avec un système de clefs publique et privée généralisé sera la qualité de la sécurité des clefs sur les ordinateurs personnel. Si la sécurité des serveurs est en général assurée, celle des ordinateurs de M et Mme tout le monde ne l&#39;est pas. Donc il faut trouver un système qui ne demande aucune manipulation aux utilisateurs, et également des clefs facilement révocables.</span> <a name='dfref-footnote-1' href='#ref-footnote-1' title='back to document' class='reversefootnote' >↩</a></div></div></div>
+</body>
+</html>

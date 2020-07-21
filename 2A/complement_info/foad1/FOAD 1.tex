@@ -1,0 +1,334 @@
+
+\documentclass[a4paper]{article}
+%\raggedright
+\usepackage[12pt]{extsizes}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[default,oldstyle,scale=0.95]{opensans} %% Alternatively
+\usepackage[french]{babel}
+\usepackage[hmargin=2cm,vmargin=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{media9}
+%\usepackage{tabularx}
+%\usepackage{fontspec}
+%\setmainfont{Open Dyslexic}[WordSpace={2.5,1.2,0}]
+
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+
+\makeatother
+\renewcommand{\baselinestretch}{1.5} %interline
+\setlength{\parskip}{1em} %interparagraphe
+\title{Les échanges sur le web et l'architecture client-serveur}
+\date{2020-2021}
+\author{Rémi Pépin}
+
+
+\begin{document}
+\maketitle
+
+\hypertarget{header-n0}{%
+\section{Les échanges sur le web et l'architecture
+client-serveur}\label{header-n0}}
+
+Ce document couvre les connaissances de bases que vous êtes sensé avoir
+à la fin de ce cours sur des notions de base d'internet et du web et de
+l'échange de données sur le web. Comme tout outil, savoir comment il
+fonctionne vous permettra de mieux l'utiliser et de savoir ce qui est
+possible et impossible avec.
+
+\includemedia[
+width=0.6\linewidth,height=0.3375\linewidth, % 16:9
+activate=pageopen,
+flashvars={
+	modestbranding=1 % no YT logo in control bar
+	&autohide=1 % controlbar autohide
+	&showinfo=0 % no title and other info before start
+	&rel=0 % no related videos after end
+}
+]{1594196295282.png}{http://www.youtube.com/v/r382kfkqAF4?rel=0}
+
+\begin{quote}
+ La lecture du document et des différentes vidéos devrait vous prendre
+environ une heure et quart. C'est le temps passé l'an dernier pour
+couvrir les même notions en cours. Des espaces pour prendre des notes
+sont disponibles dans ce document si vous voulez y ajouter des
+informations (il vous faudra par contre l'imprimer sous forme de pdf
+pour conserver vos notes ce qui vous fera perdre les vidéos).
+
+Une fois ce FOAD fait vous devrez tester vos connaissances avec un QCM
+sur Moodle. Une note de 15/20 est attendue pour le valider. \textbf{S'il
+n'est pas validé, un malus d'un point sera appliqué sur votre note du
+module.}
+\end{quote}
+
+\hypertarget{header-n6}{%
+\subsection{Le web}\label{header-n6}}
+
+\hypertarget{header-n7}{%
+\subsubsection{Internet et le web}\label{header-n7}}
+
+Si dans la vie de tous les jours, l'internet et le web sont souvent
+considérés comme des notions interchangeables, il n'en est rien, et le
+web et internet sont bien deux choses différentes.
+
+\begin{quote}
+\textbf{Internet} : l'internet ou l'inter-connexion des réseaux, ou
+réseau des réseaux désigne l'ensemble des infrastructures physiques et
+protocoles logiques qui permettent l'inter-connexion des réseaux et
+l'échange des données sans présupposer de leur type.
+
+\textbf{Le web} : le web est une des applications d'internet, mais
+elle n'est pas la seule. Le web désigne l'échange d'information décrite
+dans des documents, historiquement des pages HTML
+(\textbf{H}yper\textbf{T}ext \textbf{M}arkup \textbf{L}anguage). Mais ce
+n'est pas la seule application du web. Les mails avec le SMTP
+(\textbf{S}imple \textbf{M}essage \textbf{T}ransfer \textbf{P}rotocole,
+les chats IRC (\textbf{I}nternet \textbf{R}elay \textbf{C}hat), le
+\emph{peer-to-peer} avec BitTorrent sont d'autres services qui utilisent
+internet.
+
+Pour simplifier internet désigne les infrastructure dans lesquels les
+données circulent alors que le web désigne les pages qui sont liées les
+unes aux autres par des liens hypertexte et la manière de le récupérer.
+Donc le web dépend internet, mais la réciproque est fausse.
+\end{quote}
+
+            Notes internet vs web
+
+\hypertarget{header-n16}{%
+\subsubsection{Le protocole HTTP et HTTPS}\label{header-n16}}
+
+Le web est fondamentalement lié au protocole HTTP
+(\textbf{H}yper\textbf{T}ext \textbf{T}ransfer \textbf{P}rotocol).
+
+\begin{quote}
+\textbf{Protocole} : un protocole informatique défini l'ensemble des
+règles qui vont définir des échanges. Il normalise la communication et
+donne un cadre à respecter pour rendre la communication possible entre
+une multitude d'éléments différents car ils suivent les même règles.
+\end{quote}
+
+Le HTTP est un protocole qui fonctionne sur le principe de requête -
+réponse. Un client demande une ressource à un serveur (c'est la
+requête), et le serveur lui fournit s'il le peut (c'est la réponse).
+
+Il faut bien comprendre que le web n'a jamais été prévu pour devenir ce
+qu'il est aujourd'hui. Heureusement il a été bien conçu et a pu évoluer
+pour passer d'un simple outil pour accéder à des documents au service le
+plus utilisé au monde. Au début la sécurité n'était pas importante.
+Quand on accède simplement à des papiers de recherche encrypter les
+données n'est pas forcément une priorité. Par contre quand on veut
+acheter des objets en ligne, communiquer de manière sécurisée, acheter
+ou vendre des produits financier et que nos informations vont transiter
+on ne sait où et sont donc potentiellement accessibles à tous, la
+sécurité devient importante.
+
+ 
+
+            Note http, https
+
+Pour sécuriser les échanges le HTTP a dû évoluer pour devenir le HTTPS
+(\textbf{H}yper\textbf{T}ext \textbf{T}ransfer \textbf{P}rotocol
+\textbf{S}ecure). Le principe est simple, on garde le principe du HTTP
+mais on chiffre les données échangé grâce à l'ajout d'une couche de
+sécurité (SSL pour \textbf{S}ecure \textbf{S}ockets \textbf{L}ayer, ou
+TSL pour \textbf{T}ransport \textbf{L}ayer \textbf{S}ecurity). La
+théorie de la cryptographie est assez complexe, mais il n'y a pas besoin
+d'être un expert du domaine pour comprendre comment le HTTPS fonctionne
+et les choix de ce protocole.
+
+Il existe deux grands types de chiffrement :
+
+\begin{itemize}
+\item
+  Le symétrique ;
+\item
+  Et le asymétrique.
+\end{itemize}
+
+Dans les deux cas le principe général consiste \textbf{à prendre un
+message le transformer pour le rendre impossible à comprendre pour
+toutes personne qui n'a pas la clef de déchiffrement}. Un message
+correctement crypté pourrait être affiché dans la rue sans que quiconque
+à part les personnes qui dispose de la clef de déchiffrement ne puisse
+le comprendre. Fondamentalement le cryptage consiste juste à rendre
+illisible un message sauf pour quelques personnes. La clef de
+déchiffrement peut être un objet physique, une connaissance spécifique
+ou une fonction mathématique. Ce n'est donc pas un précédé informatique
+par nature. Mais l'informatique excelle dans ce domaine car elle permet
+de réaliser rapidement des calculs complexes.
+
+\hypertarget{header-n34}{%
+\paragraph{Chiffrement symétrique}\label{header-n34}}
+
+Dans le chiffrement symétrique l'émetteur du message et le récepteur
+dispose de la même clef qui leur permet à la fois de chiffrer et de
+déchiffrer les données. On pourrait croire que le problème de ce
+fonctionnement c'est que dans un système à \(n\) machines, il faut
+\(\frac{n(n-1)}{2}\)clefs (donc un \(\Theta(n^2)\) clef). Mais en fait
+non, ce n'est pas un réel problème. La grande difficulté se pose sur
+l'échange des clefs. \textbf{En effet il faut s'assurer qu'on arrive à
+échanger toutes ces clefs de manière sécurisée}. Car si une clef est
+compromise entre deux machines, un attaquant va pouvoir lire les
+communications et insérer ses propres messages entre elles. Si vous
+voulez mettre ce genre de communication avec des amis vous pouvez vous
+échanger des clefs USB, mais imaginez le calvaire si, quand vous voulez
+accéder à un site sécurisé, vous deviez attendre une clef USB avec la
+clef de chiffrement ! (en plus l'échange postal n'est pas le plus
+sécurisé du monde). C'est clairement intenable et ne permet pas à des
+milliards d'équipement dez communiquer entre eux.
+
+\hypertarget{header-n36}{%
+\paragraph{Chiffrement asymétrique}\label{header-n36}}
+
+Le chiffrement asymétrique quand à lui permet de résoudre ce problème.
+Au lieu d'avoir une clef entre émetteur et récepteur, le récepteur
+dispose de deux clefs, une clef dite publique et une clef dite privée.
+chacune de ces clefs a un rôle bien précis, \textbf{la clef publique
+permet uniquement de chiffrer un message, alors que la clef privé va le
+déchiffrer}. Cela permet de rendre la clef publique accessible à tous
+car elle ne permet pas de déchiffrer des données. Ainsi l'émetteur va
+demander au récepteur sa clef publique, chiffrer son message et lui
+envoyer. Ce message peut être intercepté par tous sans risque car seul
+le récepteur peut le déchiffrer (théoriquement). Par contre si le
+récepteur veut répondre, il ne peut pas le faire de manière sécurisée.
+En effet s'il chiffre la réponse avec sa clef publique, l'émetteur ne
+pourra pas lire la réponse. Mais au moins on a un chiffrement dans un
+sens.
+
+On pourrait imaginer alors qu'émetteur et récepteur aient un couple clef
+publique, clef privée, mais ce n'est pas la solution retenue pour le
+HTTPS.
+
+\hypertarget{header-n39}{%
+\paragraph{Fonctionnement du HTTPS}\label{header-n39}}
+
+La solution retenue pour le HTTPS est de faire un \textbf{échange en
+deux temps, d'abord asymétrique puis symétrique}. Le client (que
+j'appelais émetteur avant) va demander la clef publique su serveur
+(récepteur). Le clef publique sera contenu dans le certificat du
+serveur. Le certificat est en quelque sorte sa carte d'identité. Un
+organisme tiers de confiance (autorité de certification) valide
+l'identité du serveur. C'est la même chose avec une carte d'identité. Un
+état sert d'organisme tiers en "validant" votre identité légale.
+L'émetteur va aller vérifier auprès de l'autorité de certification si ce
+certificat est véridique (pour éviter l'usurpation d'identité de
+serveur).
+
+Si l'autorité valide le certificat, le client va ensuite générer une
+clef secrète et l'envoyer au serveur en la chiffrant avec la clef
+publique. Ce message ne peut être déchiffré que par le récepteur, donc
+il peut transiter tranquillement sur internet. Une fois qu'il a
+déchiffré la clef générée, le serveur utilise la clef pour générer la
+clef de session qui va servir à chiffrer les futurs échanges. Le client
+va lui aussi déterminer la clef de session avec la clef secrète qu'il a
+généré. À partir de maintenant les échanges seront chiffrés de manière
+symétrique entre client et serveur.
+
+\begin{quote}
+Rassurer vous, tout ça est fait automatiquement par votre navigateur ou
+les bibliothèque que vous allez utiliser. Mais il est important de
+comprendre ce qu'il se passe, car par moment on peut aller sur des sites
+où notre navigateur nous alerte sur le certificat du site (autosigné,
+périmé). Cela n'est pas forcément grave quand on comprend le problème.
+Dernière chose, un certificat est payant. Par extrêmement cher, mais pas
+gratuit pour autant.
+\end{quote}
+
+\begin{figure}
+\hypertarget{mermaid}{%
+\centering
+\includegraphics[width=7.02083in,height=\textheight]{1594196295282.png}
+\caption{}\label{mermaid}
+}
+\end{figure}
+
+            Notes chiffrement
+
+\hypertarget{header-n47}{%
+\subsubsection{URI, URL, URN et DNS}\label{header-n47}}
+
+Maintenant que vous comprenez comment les données sont échangées, il
+reste encore un gros mystère, comment les données sont localisées. En
+effet pour un ordinateur www.ensai.fr ne le renseigne pas sur la
+localisation de la ressource demandé. Bien que URL signifie
+\textbf{U}niform \textbf{R}essource \textbf{L}ocator c'est surtout une
+localisation essentiellement humaine, et non pas machine. Vous avez déjà
+dû entendre parler d'adresse IP (\textbf{I}nternet \textbf{P}rotocol).
+L'adresse IP est la vraie adresse de votre machine. L'URL est seulement
+son nom \emph{human friendly} pour qu'on s'en souvienne facilement.
+Votre ordinateur va avoir besoin d'un annuaire pour faire faire le lien
+entre cette URL et l'IP de machine qui héberge la ressource. Ce système
+appelle le DNS pour \textbf{D}omain \textbf{N}ame \textbf{S}ystem.
+
+            Notes URL, URN, URI, DNS
+
+\hypertarget{header-n54}{%
+\subsection{Le modèle client serveur}\label{header-n54}}
+
+\hypertarget{header-n55}{%
+\subsubsection{L'architecture client-serveur}\label{header-n55}}
+
+Le modèle \textbf{client-serveur est l'architecture qui domine le web
+actuellement}. Son résumé est simple, des clients font des requêtes HTTP
+à des serveurs qui y répondent. Les client fonts seulement des actions
+de temps en temps, alors que le serveur doit pouvoir répondre à toutes
+les requêtes qui lui arrive, jour et nuit. Ainsi la différence entre
+client et serveur n'est finalement que liée au fonctionnement du modèle,
+le client demande et le serveur répond. Ce qui fait que presque tout
+équipement informatique peut être client et serveur en fonction du
+contexte. Vous pouvez très bien utiliser une raspberry pie comme petit
+serveur de contenu web ou comment client pour récupérer des données. Ou
+vous pouvez héberger votre site web sur votre pc portable. Par contre
+dés que votre pc s'éteint votre site devient inaccessible.
+
+ 
+
+            Note client serveur
+
+\hypertarget{header-n60}{%
+\subsubsection{API/web services REST et requête http en
+python}\label{header-n60}}
+
+Maintenant que vous avez du comprendre la notion de client-serveur,
+abordons la notion d'API ou de \emph{web services}. Il est important que
+vous compreniez dans les grandes lignes comment ils fonctionnent car de
+plus en plus de données sont échangées par leur biais.
+
+Vous pouvez vous arrêter quand la vidéo parle de nodejs. C'est une
+plateforme logicielle en JavaScript. Comme vous ne connaissez pas ce
+langage la fin de la vidéo va vous sembler compliquée (pour info le
+cours de visualisation des données et de technologie mobile du second
+semestre vont vous faire découvrir le JavaScript, et dernière chose Java
+et JavaScript n'ont rien à voir)
+
+            Notes webservices
+
+\hypertarget{header-n68}{%
+\subsection{Un peu de culture informatique}\label{header-n68}}
+
+Terminons ce FOAD par 3 petites vidéos sur des notions que vous avez
+sûrement déjà entendu, à savoir:
+
+\begin{itemize}
+\item
+  Proxy
+\item
+  VPN
+\item
+  Coockies
+\end{itemize}
+
+Ce sont des notions assez basiques que vous devez comprendre, pas pour
+ce cours, mais pour devenir des personnes consciente du fonctionnement
+d'internet et du web.
+
+ 
+
+            Notes diverses
+
+\end{document}
