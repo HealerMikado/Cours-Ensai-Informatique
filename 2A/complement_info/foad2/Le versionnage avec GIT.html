@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>Le versionnage avec GIT</title></head>
+<body><h3>Le versionnage avec GIT</h3>
+<p>Ce document couvre les connaissances de bases que vous êtes sensé avoir à la fin de ce cours git. Git est un outil de versionnage de code, « agnostique » au langage utilisé, qui vous servira pour tout vos projets, qu&#39;ils soient Python, R, SAS ou d&#39;un autre langage.</p>
+<blockquote><p>⌛️ La lecture du document et des différentes vidéos devrait vous prendre environ une heure et quart. C&#39;est le temps passé l&#39;an dernier pour couvrir les même notions en cours. </p>
+<p>Une fois ce FOAD fait vous devrez tester vos connaissances avec un QCM sur Moodle. Une note de 15/20 est attendue pour le valider, vous pouvez faire ce QCM plusieurs fois. <strong>S&#39;il n&#39;est pas validé, un malus d&#39;un point sera appliqué sur votre note du module.</strong></p>
+</blockquote>
+<h3>C&#39;est quoi le versionnage ?</h3>
+<p>Avant de vous présenter git, il faut bien que vous compreniez le besoin derrière la nécessité d&#39;avoir un système de versionnage. Vous avez déjà dû tous travailler sur un projet un peu long, et avoir différentes versions de votre travail. Ou travailler sur un seul dossier collaboratif. Mais ces deux méthodes de travail, bien que facile d&#39;accès ont des limites importantes que je vais essayer de vous présenter avec différentes situations fictionnelles, mais que vous avez peut-être déjà dû croiser (et que vous rencontrerez peut-être dans le futur).</p>
+<p>Les protagonistes de ces situations seront :</p>
+<ul>
+<li>Le capitaine Holt, il aura le rôle de &quot;maîtrise d&#39;ouvrage&quot; (= demandeur, client);</li>
+<li>Terry Jeffords, il aura le rôle chef de projet ;</li>
+<li>Amy Santiago, elle aura le rôle de développeuse &quot;full stack&quot; (profil polyvalent qui s&#39;y connait aussi bien en code qu&#39;en architecture);</li>
+<li>Rosa Diaz, elle aura le rôle de développeuse senior;</li>
+<li>Jake Peralata, il aura le rôle de développeur senior ;</li>
+<li>Charles Boyle, il aura le rôle de développeur junior.</li>
+
+</ul>
+<p>Le capitane Holt demande à son équipe de réaliser une application pour automatiser les tâches administrative pour le commissariat du 99ième district de New York. Il met donc ses meilleurs éléments sur ce projet. Au début Amy Santiago avec sa casquette de &quot;full stack&quot; travail encore sur un autre projet et ne participe pas aux premières discussions.</p>
+<h4>Un monde sans versionnage et travail dans un dossier partagé.</h4>
+<p>Après quelques discussion sur la modélisation du projet l&#39;équipe est prête à commencer le codage. D&#39;après la modélisation l&#39;application est assez simple et devrait être terminée en un mois. Terry laisse son équipe gérer, ce n&#39;est pas le premier projet sur lequel ils travaillent donc ils vont s&#39;en sortir d&#39;après lui, et il se concentre sur la rédaction de notes diverses pour montrer que tout avance bien.</p>
+<p><img src="https://media.giphy.com/media/26FPqAHtgCBzKG9mo/giphy.gif" referrerpolicy="no-referrer"></p>
+<p>Comme le projet est court, Jake, Rosa et Boyle s&#39;accordent pour créer un dossier un projet sur un serveur partagé et tous travailler dessus. Boyle préviens que ça lui semble une mauvaise idée, mais on lui dit que tout va bien se passer et il n&#39;insiste pas.</p>
+<p>Le premier jour se passent bien le projet avance, mais des le lendemain des problèmes arrivent : </p>
+<ul>
+<li>Quand une personne est en train de travailler sur un fichier, ce fichier se verrouille empêchant toutes autre personne de travailler. Tous les logiciels ne font pas ça, alors l&#39;équipe passe sur un logiciel qui ne verrouille pas les documents ;</li>
+<li>Quand une personne modifie le code d&#39;un fichier se fichier ne fonctionne plus tant que la modification n&#39;est pas terminée et stable. Donc l&#39;équipe va copier coller le dossier sur leur machine, faire les modification et copier/coller les modifications ;</li>
+<li>Cela crée un nouveau problème, par moment des modifications sont effacées lorsque des modification sont collées sur le serveur partagé et il n&#39;y a aucun moyen de revenir en arrière, n&#39;y d&#39;avoir un historique des modifications.</li>
+
+</ul>
+<p>Après une semaine l&#39;équipe passe plus de temps à gérer les problèmes qu&#39;ils génèrent eux même qu&#39;à coder. Lors de la démo de fin de semaine, l&#39;équipe se rend compte que le code sur le dossier ne fonctionne pas ne peut donc rien présenter et le Capitain Holt est très deçu.</p>
+<p><img src="https://media.giphy.com/media/9Pk6tjP4BNXmxkOJE7/giphy.gif" referrerpolicy="no-referrer"></p>
+<p>Dans le stress de la démonstration, Boyle se souvient qu&#39;il a toujours une version de 2 jours qui fonctionne sur sa machine. La démonstration est partiellement sauvée. Pour éviter que le désastre se reproduisent Terry décide de mettre en place un système de versionnage à la main.</p>
+<h4>Versionnage à la main</h4>
+<p>À partir d&#39;aujourd&#39;hui l&#39;équipe devra créer une dossier tous les soirs avec un code qui fonctionne. Et voici à quoi rassemble rapidement le dossier partagé.</p>
+<p><img src="https://raw.githubusercontent.com/HealerMikado/Cours-Ensai-Informatique/master/2A/complement_info/foad2/versionning-no-git.JPG" referrerpolicy="no-referrer"></p>
+<p>Après une semaine plus personne ne sais ce que font les différentes versions du code. Et même si cette solution évite de perdre une journée de code cela ne résout pas l&#39;effacement du code des autres dans la workspace. La tension dans l&#39;équipe commence à monter et la bonne ambiance du début se détériore. La confiance entre les membres de l&#39;équipe commence à disparaitre. Et puis l&#39;espace dans le dossier commence à manquer à cause de la duplication du code.</p>
+<p>Pour couronner le tout de nouvelles fonctionnalités sont demandées par le Capitaine Holt qui est arrivé à vendre l&#39;application à d&#39;autres districts. D&#39;un petit projet interne avec un niveau de qualité minimal, l&#39;application doit être utilisable dans tous les districts, et chaque district demande quelques fonctionnalités supplémentaires. Une première version de l&#39;application est attendus pour dans 3 mois avec un jeu de fonctionnalité <em>core</em> et le reste dans 9 mois. Terry se rend bien compte qu&#39;il faut changer la manière de travailler sous peine de voir le projet échouer et devoir gérer une équipe qui se déteste. Il demande alors à Amy d&#39;apporter son expertise pour aider l&#39;équipe.</p>
+<h4>Git la solution</h4>
+<p>Venant de terminer un autre projet, Amy ne connait rien au projet en cours. Elle demande alors une petit réunion pour qu&#39;on lui présente le projet et les outils utilisés. L&#39;équipe utilise Pycharm ou VScode comme IDE, ce qui lui convient, et quand on lui montre le dossier avec les 20 versions du code sans réel <em>change log</em> elle comprend rapidement pourquoi le projet n&#39;avance pas.</p>
+<p><img src="https://media.giphy.com/media/l4JyLz255Lsfc42A0/giphy.gif" referrerpolicy="no-referrer"></p>
+<p>Le problème c&#39;est qu&#39;elle est face à elle 2 développeurs senior qui n&#39;aiment pas qu&#39;on critique leur façon de faire. Au lieu de présenter directement le <em>workflow</em> qu&#39;elle avait mis en place sur son précédent projet, elle va commencer par demander une semaine où personne ne travaille sur le projet pour demander une formation git et organiser une journée sous forme de jeu avec git (<a href='https://learngitbranching.js.org/?locale=fr_FR'>jeu avec git</a>).</p>
+<p>Après une prise en main compliquée et quelques couacs, le projet avance bien, et les tensions diminuent. De mauvaise pratiques persistent et des conflit de code se produisent, mais Amy arrivent à régler les problèmes. Le projet est sauvé.</p>
+<p>Je vais arrêter notre histoire ici pour la reprendre plus tard et proposer un épilogue.</p>
+<p>Ce que vous devez en retenir :</p>
+<ul>
+<li><strong>Travailler dans un fichier collaboratif pour rédiger du code est une très mauvaise idée !</strong> Il est impossible de travailler à plusieurs mains en même temps dans cette configuration. En effet dés que quelqu&#39;un tape du code le code ne peut pas fonctionner tantque cette personne n&#39;a pas terminée. Et même une fois qu&#39;elle a lâché le clavier, le code ne va sûrement pas fonctionner du premier coup. C&#39;est pour cela qu&#39;il n&#39;existe pas de service comme google doc ou overleaf pour rédiger du code de façon synchrone. <strong>Pour pouvoir faire du code à plusieurs vous devez absolument le faire de manière asynchrone.</strong></li>
+<li><strong>Si pour des petits projets scolaires ne pas avoir d&#39;historique n&#39;est pas un gros problème, c&#39;est impensable pour un gros projet d&#39;entreprise qui dure plusieurs années</strong>. Cela permet de faire des retours en arrière rapides en cas d&#39;erreur grave et d&#39;avoir une trace de ce qui a été fait. Dans ce contexte faire un <em>change log</em> avec les modifications entre les versions est un plus pour savoir jusqu&#39;à où remonter en cas d&#39;erreur.</li>
+<li>Cette fiction ne permet pas de le montrer, mais git (ou tout autre système de gestion de code source décentralisé) ne doit pas rester la propriété des développeurs. Si vous faites du code R, SAS, Julia ou tout autre langage vous pouvez (et devez) utiliser git pour versionner votre code !</li>
+<li>N&#39;essayez de réinventer un système de versionnage du code avec une organisation maison du travail !!!</li>
+
+</ul>
+<h3>Git, un système de versionnage</h3>
+<p>Git  est un logiciel de versionnage de code source. Il repose sur une <strong>architecture décentralisée</strong>. Il a été créé par <a href='https://fr.wikipedia.org/wiki/Linus_Torvalds'>Linus Torvalds</a>, pour gérer les contributions au <a href='https://fr.wikipedia.org/wiki/Noyau_Linux'>noyau Linux</a>. Le fonctionnement de git est loin d&#39;être trivial, et le coût d&#39;entrée est loin d&#39;être nul. Mais il est très largement utilisé en entreprise et ne pas savoir comment git fonctionne est aujourd&#39;hui un défaut pour un data scientist.</p>
+<blockquote><p>🧙‍♂️ git signifie &quot;connard&quot; en argot britannique. Oui Linus Torvalds est un être adorable =)</p>
+</blockquote>
+<p>L&#39;architecture de git est une architecture <a href='https://fr.wikipedia.org/wiki/Pair_%C3%A0_pair'><em>peer-to-peer</em></a> même si en général on va donner un rôle différent à un des nœuds du système qui va être le serveur où tout le monde récupère et pousse le code. Ce serveur est appelé le serveur le <a href='https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes'><em>remote</em></a> ou dépôt distant ou dépôt central. Mais si le fait d&#39;avoir ce serveur est une facilité car tout le monde va se connecter à ce serveur pour récupérer et pousser du code, il faut bien comprendre <strong>quand vous récupérez du code avec git vous allez avoir un dépôt local sur votre machine qui va contenir l&#39;intégralité de l&#39;historique git</strong>. Donc si le dépôt distant venait à disparaitre, vous aurez toujours sur votre machine tout l&#39;historique du code que vous pourrez déposer sur un nouveau dépôt distant. <strong>Donc vous ne pouvez pas perdre de code déposé sur le dépôt distante suite sa disparition.</strong></p>
+<h4>L&#39;historique git</h4>
+<p>Cette notion d&#39;historique est vraiment le cœur de git, et une fois compris comment fonctionne l&#39;historique vous aurez compris la majeure partie de git. L&#39;historique de git ne contient pas l&#39;intégralité des modifications que vous avez effectuez sur votre, vous n&#39;allez pas pouvoir faire des sortes de <code>crtl+z</code> pour rapidement retourner à une version privée de la dernière lignes que vous avez modifié, mais des <em>snippets</em> (extraits) que vous aurez choisi.</p>
+<p>En effet c&#39;est vous qui allez devoir construire &quot;à la main&quot; l&#39;historique git. Quand vous considérerez que votre code mérite d&#39;être historisé (fin de journée, vous venez de terminer une fonctionnalité etc) vous allez faire un <em>commit</em>. C&#39;est à dire prendre le code que vous voulez historiser et le mettre dans l&#39;historique. Mais votre historique n&#39;est pas forcément un enchainement linéaire de <em>commits</em> et par moment vous pouvez faire diverger votre code pour ensuite le refaire converger. Cela peut être volontaire en faisant des branches ou involontaire en travaillant à plusieurs et en créant des conflits.</p>
+<p><img src="https://raw.githubusercontent.com/HealerMikado/Cours-Ensai-Informatique/master/2A/complement_info/foad2/historique%20git.png" referrerpolicy="no-referrer"></p>
+<p>Vous l&#39;aurez compris l&#39;historique va contenir beaucoup d&#39;informations. Et pour éviter de prendre une place considérable, git ne fonctionne que par différence. Quand vous allez faire un <em>commit</em>, ce n&#39;est pas le code que vous ajoutez que git va mémoriser, mais le différentiel entre ce <em>commit</em> et le <em>commit</em> précédent. Comme ça pas de duplication inutile de code.</p>
+<h4>Git workflow</h4>
+<p>Parlons un peu plus en détail du <em>workflow</em> de git. Car pour bien utiliser git vous allez devoir faire plusieurs commandes dans un certains ordres précis. Voici un petit enchainement qui permet de récupérer le code du serveur distant, le modifier, et envoyer vos modification sur le serveur.</p>
+<ol start='' >
+<li>Du code source est présent sur le serveur distant. Un utilisateur (Jake) va cloner le code du serveur distant sur sa machine avec l&#39;instruction <code>git clone</code> (<a href='https://git-scm.com/docs/git-clone'>documentation</a>) si c&#39;est la première fois qu&#39;il récupère le code ou un <code>git pull</code> (<a href='https://git-scm.com/docs/git-pull'>documentation</a>) s&#39;il veut seulement récupérer la dernière version du code car il possède une version ancienne. <strong>Il va récupérer le code courant mais également l&#39;intégralité de l&#39;historique du code sur sa machine</strong> ;</li>
+<li>Il va ensuite faire des modifications sur le code;</li>
+<li>Pour que git les prennent en compte il va devoir faire <code>git add file1.py file.py</code> (si les fichiers modifiés sont file1.py et file2.py) (<a href='https://git-scm.com/docs/git-add'>documentation</a>). Il peut également faire <code>git add .</code> ou <code>git add --all</code> pour que git prennent en compte tous les fichiers modifiés ;</li>
+<li>L&#39;étape suivante est de faire une <code>git commit</code> (<a href='https://git-scm.com/docs/git-commit'>documentation</a>) cela va créer une nouvelle entrée dans historique git. Le code est pour le moment uniquement présent sur la machine de Jake ; </li>
+<li>Enfin Jake va faire un <code>git push</code> (<a href='https://git-scm.com/docs/git-push'>documentation</a>) pour pousser son code sur le dépôt distant et le rendre accessible à tout le monde.</li>
+
+</ol>
+<p><img src="https://raw.githubusercontent.com/HealerMikado/Cours-Ensai-Informatique/master/2A/complement_info/foad2/git%20d%C3%A9butant.png" referrerpolicy="no-referrer" alt="Worklow basique gi. Récupération du code du dépôt distant, modification des fichiers, git add, git push et dit commit"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Une chose à comprendre pour bien utiliser git est la notion de cycle de vie de vos fichiers. En effet il ne suffit pas de modifier une fichier et de le pousser (<em>push</em>) sur le serveur distant pour que ce fichier soit accessible à tous. Il y a plusieurs étapes à faire dans le bon ordre. </p>
+<h5>Fichier existant</h5>
+<p>Le premier cas et le plus courant et quand vous allez mettre à jour un fichier dans votre <em>workspace</em>. Comme git à déjà connaissance du fichier il va détecter qu&#39;il a été modifié car son <em>hash</em> (résultat d&#39;une fonction de hachage) sera différent. Mais sans action de votre part il ne va rien faire (il faut bien comprendre que git ne fait que ce que vous lui dites). En faisant un <code>git add votreFichier</code> vous allez placer votre fichier dans une zone tampon appelée <em>staging index</em> ou <em>stating area</em>. Rien de vous empêche de continuer à modifier votre fichier, mais il faut bien comprendre à partir de là, deux versions de votre fichier existent, celle de votre <em>workspace</em> et celle de votre <em>staging index</em> (qui vous est cachée, mais si besoin vous pouvez récupérer cette version). Vous pouvez également modifier d&#39;autres fichier et les mettre dans le <em>staging index</em>. </p>
+<p>Une fois le travail en cours terminé, vous allez faire un <em>commit</em>, c&#39;est à dire prendre le contenu de votre <em>staging index</em> et créer une nouvelle entrée dans l&#39;historique git avec. Pour faire un commit il faut taper <code>git commit -m &quot;message de commit&quot;</code> (avec &quot;message de commit&quot; un court message explicatif entre &quot; &quot; qui explique le contenu du <em>commit</em>). En plus d&#39;ajouter une entrée dans l&#39;historique, git va considérer vos fichiers comme <em>Unmodified</em>. En effet votre fichier est désormais cohérent avec la version la plus récente de l&#39;historique donc pour git il est désormais <em>Unmodified</em>. Par contre pour le moment ce fichier (et les autre que vous avez <em>commit</em>) sont toujours que sur votre ordinateur dans votre dépôt local.</p>
+<h5>Nouveau fichier</h5>
+<p>Dans le cas d&#39;un nouveau fichier les commandes vont être les même, mais la philosophie derrière va être un peu différente. En effet quand vous créez un nouveau fichier, git n&#39;a pas connaissance de ce fichier. Si vous ne lui dites rien, il ne va rien faire avec. Il va bien détecter que le fichier est nouveau, mais comme il n&#39;a aucune information dessus il ne peux rien dire d&#39;autre. Pour dire à git de suivre (<em>track</em>) ce fichier vous allez devoir faire également un <code>git add monFichier</code> ce qui va le mettre dans votre <em>staging index</em> et en plus git va commencer à avoir des informations, donc si vous remodifiez votre fichier à partir de maintenant git va détecter que vous avez juste modifié le fichier. La suite du processus est la même.</p>
+<p>Voici un diagramme tiré de la documentation officiel de git qui résumer tout cela  (<a href='https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository'>source</a>):</p>
+<p><img src="https://git-scm.com/book/en/v2/images/lifecycle.png" referrerpolicy="no-referrer"></p>
+<blockquote><p>📖 En parlant de la documentation de git : git est l&#39;un des sujets les plus documentés que je connaisse. Si vous êtes bloqués un jour faites une recherche sur le web et vous trouverez sûrement la solution à votre problème. </p>
+</blockquote>
+<h5>Et avec le dépôt distant</h5>
+<p>Une autre manière de voir le <em>workflow</em> de git est ne plus regarder le statut des fichiers mais comment passer d&#39;une zone git à l&#39;autre (<a href='https://nceas.github.io/sasap-training/materials/reproducible_research_in_r_fairbanks/version-control-with-git-and-github.html'>source</a>): </p>
+<p><img src="https://nceas.github.io/sasap-training/materials/reproducible_research_in_r_fairbanks/images/git-flowchart.png" referrerpolicy="no-referrer"></p>
+<p>On va partir de votre zone de travail (<em>workspace</em>). Au fur et à mesure de votre progression vous allez <em>stage</em> des fichiers et les envoyer dans le <em>staging index</em> avec des <code>git add</code>. Puis quand vous avez un code qui tourne (ou quand vous voulez) vous allez le <em>commit</em> pour créer une entrée dans votre historique local avec un <code>git commit</code>. Et enfin si vous souhaitez envoyer votre code sur le serveur distant vous allez faire un <code>git push</code>. Et si vous voulez récupérer le code du serveur distant vous allez faire un <code>git pull</code> pour tout récupérer et mettre à jour votre <em>workspace</em> ou un <code>git fetch</code> pour simplement récupérer le code du dépôt distant sans modifier votre <em>workspace</em>, puis un <code>git merge</code> pour mettre à jour votre <em>workspace</em> (dans certain cas procéder en deux temps est une meilleur solution qu&#39;en un temps).</p>
+<p>Pour le moment git nous permet d&#39;avoir un historique de notre code et avec on peut retourner en arrière à tout moment. Je ne vais pas trop rentrer dans les détails, mais <strong>l&#39;historique de git est assez dur à altérer donc il n&#39;y aucun risque qu&#39;une version précédente du code ne soit perdue.</strong></p>
+<h5>Et à plusieurs ?</h5>
+<p>Depuis le début je fait comme si une seule personne travaillait sur un dépôt de code, ce qui n&#39;arrive presque jamais, et en général plusieurs personnes travail en parallèle sur le même code. Et comme git repose sur sur une architecture décentralisée asynchrone, plusieurs version de votre application vont exister à un même moment :</p>
+<ul>
+<li>Celle du dépôt distant ;</li>
+<li>Celle de chaque dépôt locaux sur les ordinateurs des différentes personnes qui ont récupéré le code.</li>
+
+</ul>
+<p>Et cela va potentiellement générer des conflits. Par exemple si Charles et Jake récupèrent le même code mais que Jake <em>push</em> le premier lorsque Charles va vouloir push sont code il va avoir une erreur.</p>
+<p><img src="https://raw.githubusercontent.com/HealerMikado/Cours-Ensai-Informatique/master/2A/complement_info/foad2/git%20d%C3%A9butant%20multi%20site.png" referrerpolicy="no-referrer" alt="Jake et Boyle récupère un même code du dépôt distant, et le modifie. Jake pousse son code le premier, et quand Charles veut faire de même le dépôt distant refuse son code car les historiques ne correspondent pas"></p>
+<p>Et cette erreur va être : </p>
+<pre><code> ! [rejected]        master -&gt; dev (fetch first)
+error: failed to push some refs to &#39;https://charle.boyle@bitbucket.org/repo_user/repo_name.git&#39;
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., &#39;git pull ...&#39;) before pushing again.
+hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.
+</code></pre>
+<p>L&#39;erreur est assez parlante, on ne peut pas <em>push</em> car notre historique ne contient pas la dernière version du code. Et pour résoudre cela il faut faire un <code>git pull</code>.</p>
+<p>Déjà une chose que montre bien le schéma précédent c&#39;est qu&#39;avant le <em>push</em> de Jake il existe :</p>
+<ul>
+<li>Le code du dépôt distant</li>
+<li>Le code de Jake</li>
+<li>Le code de Charles</li>
+
+</ul>
+<p>Et tous ces codes sont parfaitement indépendants et peuvent être modifiés sans impacter les autres. Ainsi si vous vous prenez la tête sur une fonctionnalité compliquée et que votre code refuse de fonctionner, cela ne pénalise pas les personnes qui travaillent sur leur propre code.</p>
+<p>Voici le <em>workflow</em> complet dans le cas où quelqu&#39;un <em>push</em> son code avant vous. </p>
+<p><img src="https://raw.githubusercontent.com/HealerMikado/Cours-Ensai-Informatique/master/2A/complement_info/foad2/git%20d%C3%A9butant%20multi%20site%20avec%20pull.png" referrerpolicy="no-referrer" alt="Jake et Boyle récupère un même code du dépôt distant, et le modifie. Jake pousse son code le premier, et quand Charles veut faire de même le dépôt distant refuse son code car les historiques ne correspondent pas. Boyle doit alors pull le code du dépôt distant, gérer les conflits, puis faire git add, git commit et git push."></p>
+<p>En fait il faut juste suivre les conseilles que vous affiche git et commencer par faire un <code>git pull</code>. Là deux cas sont possibles :</p>
+<ul>
+<li>Le cas à gérer à la main : il y a un conflit car une zone de code que vous avez modifié a aussi été modifiée sur le dépôt distant. Cela va vous générer un conflit car git est incapable de choisir la version à prendre. Surtout car vous allez peut-être vouloir garder un mélange des deux. Il faut alors modifier le code à la main, faire un <code>git add</code>, <code>git commit</code> pour fusionner les historiques et enfin faire un <code>git push</code> pour pousser le code sur le dépôt distant ;</li>
+<li>Le cas que git peut gérer seul : il n&#39;y a pas de chevauchements dans les modifications, alors git fait un <em>fast forward</em>. Il met votre travail à la suite de l&#39;historique qu&#39;il vient de récupérer. Et vous pouvez <em>push</em> votre code directement</li>
+
+</ul>
+<p>Comme git empêche les opérations destructrices :</p>
+<ul>
+<li>La division/fusion de votre historique fait désormais partie de l&#39;histoire de votre projet, et si on observe l&#39;historique on verra cette séparation de votre code entre le tronc et une branche pour ensuite fusionner la branche dans le tronc ;</li>
+<li>Vous ne pouvez par perdre du travail que vous avez <em>commit</em>. Votre code sera toujours présent dans un commit et il est récupérable. Peut-être pas pour vous, mais pour votre tuteur de projet ou moi ça ne représente pas une grande difficulté. Alors demandez-nous ! Et surtout faites des <em>commit</em> de votre travail ! Car on ne peut pas récupérer un travail non <em>commit</em>.</li>
+
+</ul>
+<h3>Git crash course</h3>
+<p>En complément je vous conseille cette vidéo pour voir en pratique les concepts de ce cours. Vous pouvez faire les même manipulation de la vidéo pour vous entrainer à utiliser git.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SWYqp7iY_Tc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<p>&nbsp;</p>
+<h3>Ce qu&#39;il faut retenir</h3>
+<ul>
+<li>Pour récupérer le code d&#39;un dépôt distant pour la première fois : <code>git clone url.du.dépot</code>, exemple <code>git clone https://github.com/HealerMikado/Cours-Ensai-Informatique.git</code> pour récupérer le code de tous mes cours d&#39;informatique ;</li>
+<li>Pour récupérer un code plus récent d&#39;un dépôt que vous avez déjà téléchargé : <code>git pull</code> ;</li>
+<li>Pour mettre dans les fichiers dans le <em>staging index</em> : <code>git add file</code> pour mettre juste un fichier ou <code>git add .</code> pour tout mettre ;</li>
+<li>Pour faire un <em>commit</em> avec tous les fichiers dans le <em>staging index</em> <code>git commit -m &quot;message&quot;</code> . Si vous oubliez le <code>-m &quot;message&quot;</code> un éditeur Vim va s&#39;ouvrir et vous n&#39;allez pas arriver à l&#39;utiliser ;</li>
+<li>Pour pousser du code : <code>git push</code></li>
+<li>Pour voir l&#39;état de vos fichiers <code>git status</code></li>
+<li>Pour voir votre historique &quot;joliment&quot; <code>git log --all --decorate --oneline --graph</code></li>
+<li>Pour initier un dépôt git : <code>git init</code></li>
+<li>Pour créer une branche <code>git branch &quot;non de la branche&quot;</code></li>
+<li>Pour passer d&#39;une branche à l&#39;autre <code>git checkout nom de la branche</code></li>
+<li>Pour fusionner deux branches, en étant sur la branche &quot;receveuse&quot; <code>git merge nom de la à fusionner</code></li>
+
+</ul>
+<h3>Epilogue, git niveau expert</h3>
+<p>Après 3 mois de développement et la livraison de la première version de l&#39;application, Amy convoque l&#39;équipe pour proposer une nouvelle manière de travailler pour limiter les conflits, rendre l&#39;historique plus propre,permettre des développement vraiment en parallèle et ajouter de l&#39;intégration continue pour ajouter des fonctionnalités au fur et à mesure. Elle veut mettre en place un vrai <em>git workflow</em> plus complexe à base de <em>feature branch</em></p>
+<p>Le principe va être au lieu de tout mettre sur le même branche <em>master</em> plusieurs branches vont être créée :</p>
+<ul>
+<li><p>La branche <em>master</em> contient le code de la production. Dés qu&#39;un <em>commit</em> est fait dessus les tests du code sont joués et si aucun test n&#39;a échoué le code est automatiquement déployé en production le soir. Chaque <em>commit</em> du <em>master</em> est tagué par un numéro de version ;</p>
+</li>
+<li><p>La branche <em>develop</em> contient le code en cours de développement. Dés qu&#39;un <em>commit</em> est fait dessus les tests du code sont joués et si aucun test n&#39;a échoué le code est automatiquement déployé dans un environnement de développement pour tester l&#39;application ;</p>
+</li>
+<li><p>Une <em>feature branch</em> est créée pour développer chaque fonctionnalité de l&#39;application. Une fois le développement de la fonctionnalité terminé elle <em>merge</em> dans la branche <em>develop</em>.</p>
+<p><img src="https://fr.lutece.paris.fr/fr/image?resource_type=wiki_image&amp;id=10" referrerpolicy="no-referrer"></p>
+</li>
+
+</ul>
+<p>En plus pour pouvoir <em>merge</em> des branches (<em>feature</em> → <em>develop</em>, <em>develop</em> → <em>master</em>) il faut faire une <em>merge request</em> (ou <em>pull request</em>). Cela consiste à faire une demande de fusion qui doit être approuvé par un ou plusieurs autres membres de l&#39;équipe. cela peut sembler lourd, mais ça oblige à minima un autre membre de l&#39;équipe à approuver la fusion, et permet de répartir les responsabilités en cas de problème. D&#39;autant plus qu&#39;en général seul le chef de projet peut valider une <em>merge request</em> sur le <em>master</em>.</p>
+<p>Ce fonctionnement permet d&#39;avoir une indépendance totale dans le développement des fonctionnalités, de responsabiliser les membre de l&#39;équipe et d&#39;avoir du déploiement continue, c&#39;est à dire un code qui va automatiquement se déployer sur des machines sans intervention humaine. C&#39;est une manière de travailler de plus en plus courante dans le monde de l&#39;entreprise, qui doit être associer à une politique de test.</p>
+<p>&nbsp;</p>
+</body>
+</html>
