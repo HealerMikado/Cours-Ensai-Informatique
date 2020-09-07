@@ -6,37 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Projet informatique</title>
-    <link rel="icon" href="../../reveal/img/ensai_logo_transparent.png" type="image/x-icon">
+    <link rel="icon" href="../../img/ensai_logo_transparent.png" type="image/x-icon">
 
 
-    <link rel="stylesheet" href="../../reveal/css/reveal.css">
-    <link rel="stylesheet" href="../../reveal/css/theme/black.css">
-    <link rel="stylesheet" href="../../reveal/css/mine.css">
-    <link rel="stylesheet" href="../../reveal/css/simple-grid.css">
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/black.css">
+    <link rel="stylesheet" href="../../css/mine.css">
+    <link rel="stylesheet" href="../../css/simple-grid.css">
 
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="../../reveal/plugin/highlight/monokai.css" id="highlight-theme">
+    <link rel="stylesheet" href="../../lib/css/zenburn.css">
 
     <!-- Printing and PDF exports -->
     <script>
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = window.location.search.match(/print-pdf/gi) ? '../../reveal/css/print/pdf.css' : '../../reveal/css/print/paper.css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
         document.getElementsByTagName('head')[0].appendChild(link);
 
 
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = window.location.search.match(/print-pdf/gi) ? '../../reveal/css/print/mine-pdf.css' : '../../reveal/css/print/paper.css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/mine-pdf.css' : 'css/print/paper.css';
         document.getElementsByTagName('head')[0].appendChild(link);
 
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = window.location.search.match(/print-pdf/gi) ? '../../reveal/css/theme/white.css' : '../../reveal/css/print/paper.css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/theme/white.css' : 'css/print/paper.css';
         document.getElementsByTagName('head')[0].appendChild(link);
     </script>
 </head>
@@ -57,27 +57,25 @@
                 <section>
                     <h3>Le plan</h3>
                     <ol style="font-size: xx-large;">
-                        <li>Data Access Object
+                        <li>Gestion de projet
                             <ol>
-                                <li>Pourquoi persister des données ?</li>
-                                <li>C'est quoi une DAO</li>
-                                <li>Exemple de DAO</li>
+                                <li>Conseils généraux</li>
+                                <li>Méthodes Agiles</li>
                             </ol>
                         </li>
                         <hr>
-                        <li>Sécurité informatique
+                        <li>Rappels
                             <ol>
-                                <li>Définition</li>
-                                <li>Failles de sécurité</li>
-                                <li>Injection SQL</li>
+                                <li>Separation of concern</li>
+                                <li>API</li>
                             </ol>
                         </li>
                         <li>
-                            Gestion des mots de passe
+                            Webservice
                             <ol>
-                                <li>Comment on authentifie</li>
-                                <li>Hashage de mots de passe</li>
-                                <li>Exemple</li>
+                                <li>Définition</li>
+                                <li>Exemples</li>
+                                <li>Architecture microservices</li>
                             </ol>
                         </li>
                         <li>
@@ -103,11 +101,11 @@
                     <h2>Data access object (DAO)</h2>
 
                     <iframe src="https://giphy.com/embed/dIBLtolI6axTGIGopo" width="960" height="540" frameBorder="0"
-                        class="giphy-embed no-print" allowFullScreen></iframe>
+                        class="giphy-embed" allowFullScreen></iframe>
                 </section>
 
                 <section>
-                    <iframe allowfullscreen class="no-print" frameborder="0" height="600px" mozallowfullscreen
+                    <iframe allowfullscreen frameborder="0" height="600px" mozallowfullscreen
                         src="https://app.wooclap.com/events/SNUTMX/questions/5f4dfa4acba3ae11961bff0e"
                         width="100%"></iframe>
                 </section>
@@ -128,7 +126,7 @@
                 </section>
 
                 <section>
-                    <iframe class="no-print" allowfullscreen frameborder="0" height="600px" mozallowfullscreen
+                    <iframe allowfullscreen frameborder="0" height="600px" mozallowfullscreen
                         src="https://app.wooclap.com/events/SNUTMX/questions/5f4dfb28cb082227ca3533e1"
                         width="100%"></iframe>
                 </section>
@@ -137,7 +135,7 @@
                     <h3>Comment résoudre ce problème ?</h3>
 
                     <img src="https://media2.giphy.com/media/a5viI92PAF89q/giphy.gif?cid=790b76119068737928a0a3e1282ee7ff952e04585d31791e&rid=giphy.gif"
-                        class="plain w80 no-print" alt="Batman pensif">
+                        class="plain w80" alt="Batman pensif">
                 </section>
 
                 <section>
@@ -185,10 +183,10 @@
 
                     <ul>
                         <li class="fragment">Écrire nos données sur le disque dur dans un fichier (sérialisation, format
-                            json, xml ...) <img class="plain icon no-print" src=https://img.icons8.com/dusk/48/000000/hdd.png>
+                            json, xml ...) <img class="plain icon" src=https://img.icons8.com/dusk/48/000000/hdd.png>
                         </li>
                         <li class="fragment">Utiliser une base de données (SQL tables + relations; No-SQL) <img
-                                class="plain icon no-print" src="https://img.icons8.com/clouds/100/000000/favorite-database.png">
+                                class="plain icon" src="https://img.icons8.com/clouds/100/000000/favorite-database.png">
                         </li>
                     </ul>
 
@@ -223,7 +221,7 @@
                     <h3>C'est quoi une DAO ?</h3>
 
                     <img src="https://media2.giphy.com/media/a5viI92PAF89q/giphy.gif?cid=790b76119068737928a0a3e1282ee7ff952e04585d31791e&rid=giphy.gif"
-                        class="plain w80 no-print" alt="Batman pensif">
+                        class="plain w80" alt="Batman pensif">
                 </section>
 
                 <section>
@@ -300,11 +298,10 @@
                 </section>
 
                 <section data-auto-animate>
-                    <h3>Un petit exemple : Livre_DAO</h3>
+                    <h3>Un petit exemple : AvengerDAO</h3>
 
-                    <pre><code data-trim data-noescape>
+                    <pre><code data-trim data-noescape data-line-numbers="|2-4|6-10|12-13|14-15|16-19|20-21|22" class="python" >
                     def create(livre):
-                    """Méthode pour ajouter un livre en base"""
                         # Récupération de la connexion
                         conn = psycopg2.connect("dbname='template1' user='dbuser' host='localhost' password='dbpass'")
                         curseur = conn.cursor()
@@ -335,31 +332,54 @@
                 </section>
 
                 <section>
-                    <h3>Un petit exemple : Livre_DAO</h3>
+                    <h3>Un petit exemple : AvengerDAO</h3>
 
                     <pre><code data-trim data-noescape>
-            def find_all(id):
-                """Méthode pour récupérer un livre en base"""
-                # Récupération de la connexion
-                conn = psycopg2.connect("dbname='template1' user='dbuser' host='localhost' password='dbpass'")
-                curseur = conn.cursor()
+                def read(self, id):
                     with connection.cursor() as cur:
-                        cur.execute(
-                            "select isbm, titre,auteur,genre ;")
-                        livre_bdd = cur.fetchall()
-                        livres= []
-                        for livre in livre_bdd :
-                            livres.append(Livre(isbm=row[0], titre=row[1],auteur=row[2], genre=row[3]))
-                    except psycopg2.Error as error:
-                        #Gestion de l'erreur
-                return livres
+                        row = cur.execute(
+                            "select name, alias, power from avengers where id=%s;", (id,))
+                        row = cur.fetchone()
+                        if row:
+                            return Avenger(name=row[0], alias=row[1],power=row[2], id=id)
+                        else:
+                            return None
+                </code></pre>
+
+                    <pre><code data-trim data-noescape>
+                def update(self, avenger):
+                    with connection.cursor() as cur:
+                        try:
+                            cur.execute(
+                                "update avengers set name=%s, alias=%s, power=%s where id=%s"
+                                ,(avenger.name, avenger.alias, avenger.power, avenger.id))
+                            connection.commit()
+                        except psycopg2.Error as error:
+                            connection.rollback()
+                            raise error
+                </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Un petit exemple : AvengerDAO</h3>
+
+                    <pre><code data-trim data-noescape>
+                def delete(self, avenger):
+                    with connection.cursor() as cur:
+                        try:
+                            cur.execute("delete from avengers where id=%s", (avenger.id,))
+                            connection.commit()
+                        except psycopg2.Error as error:
+                            connection.rollback()
+                            raise error
                 </code></pre>
 
                 </section>
 
 
                 <section>
-                    <h3>Conclusion</h3>
+                    <h3>Avenger End game</h3>
 
                     <ul>
                         <li class="fragment">Python travail en RAM (volatile) <img class="plain icon"
@@ -383,7 +403,7 @@
                 <section>
                     <h3>Question ?</h3>
                     <iframe src="https://giphy.com/embed/acJ6UbGLUB2De" width="960" height="540" frameBorder="0"
-                        class="giphy-embed no-print" allowFullScreen></iframe>
+                        class="giphy-embed" allowFullScreen></iframe>
                 </section>
 
             </section>
@@ -395,7 +415,7 @@
                 </section>
 
                 <section>
-                    <iframe class="no-print" allowfullscreen frameborder="0" height="600px" mozallowfullscreen src="https://app.wooclap.com/events/CZXCLT/questions/5f4e0e846e633c245e7c0151" width="100%"></iframe>
+                    <iframe allowfullscreen frameborder="0" height="600px" mozallowfullscreen src="https://app.wooclap.com/events/CZXCLT/questions/5f4e0e846e633c245e7c0151" width="100%"></iframe>
                 </section>
 
                 <section>
@@ -473,7 +493,7 @@
                 </section>
 
                 <section>
-                    <iframe class="no-print" allowfullscreen frameborder="0" height="600px" mozallowfullscreen src="https://app.wooclap.com/events/CZXCLT/questions/5f4e0edbbaad5f2417448c2f" width="100%"></iframe>                </section>
+                    <iframe allowfullscreen frameborder="0" height="600px" mozallowfullscreen src="https://app.wooclap.com/events/CZXCLT/questions/5f4e0edbbaad5f2417448c2f" width="100%"></iframe>                </section>
                 <section>
                     <h3>Trop de failles !!!</h3>
                     <ul>
@@ -504,7 +524,7 @@
                 </section>
                 <section>
                     <h2>Exemple de failles, les injections SQL et de données</h2>
-                    <img class="w80" src="https://imgs.xkcd.com/comics/exploits_of_a_mom.png"
+                    <img class="no-print w80" src="https://imgs.xkcd.com/comics/exploits_of_a_mom.png"
                         alt="injection sql">
 
                 </section>
@@ -707,27 +727,25 @@
                         <li class="fragment">Ne jamais faire confiance aux utilisateurs, vérifier / nettoyer leurs
                             inputs</li>
                 </section>
-            </section>
-            <section>
 
                 <section>
                     <h2>Gestion des mots de passe</h2>
                 </section>
                 <section>
                     <h3>Votre application doit-elle stocker des mots de passe en clair?</h3>
-                    <img src="https://media.giphy.com/media/d10dMmzqCYqQ0/source.gif" class="fragment w60 plain no-print" alt="">
+                    <img src="https://media.giphy.com/media/d10dMmzqCYqQ0/source.gif" class="fragment w60 plain" alt="">
                 </section>
                 <section>
                     <h3>Votre application doit-elle connaître le mot de passe d'un utilisateur pour l'authentifier ?
                     </h3>
                     
-                    <img src="https://media.giphy.com/media/Y8hzdgPnZ6Hwk/source.gif" class="fragment w50 plain no-print" alt="">
+                    <img src="https://media.giphy.com/media/Y8hzdgPnZ6Hwk/source.gif" class="fragment w50 plain" alt="">
 
                 </section>
 
                 <section>
                     <h3>????</h3>
-                    <img src="https://media.giphy.com/media/kQOxxwjjuTB7O/source.gif" class="w70 plain no-print" alt="">
+                    <img src="https://media.giphy.com/media/kQOxxwjjuTB7O/source.gif" class="w70 plain" alt="">
                 </section>
 
                 <section>
@@ -749,11 +767,11 @@
                     </aside>
                 </section>
                 <section>
-                    <img src="https://media.giphy.com/media/Pk4ldVR0sCHgA/source.gif" class="w80 plain no-print"alt="">
+                    <img src="https://media.giphy.com/media/Pk4ldVR0sCHgA/source.gif" class="w80 plain"alt="">
                 </section>
                 <section>
                     <h3>Ajouter du sel pour plus de sécurité</h3>
-                        <img src="https://media.giphy.com/media/3o7P4F86TAI9Kz7XYk/giphy.gif" class="w50 plain no-print"alt="">
+                        <img src="https://media.giphy.com/media/3o7P4F86TAI9Kz7XYk/giphy.gif" class="w50 plain"alt="">
                 </section>
 
                 <section>
@@ -903,13 +921,13 @@
     </div>
 
 
-    <script src="../../reveal/dist/reveal.js"></script>
-    <script src="../../reveal/plugin/zoom/zoom.js"></script>
-    <script src="../../reveal/plugin/notes/notes.js"></script>
-    <script src="../../reveal/plugin/search/search.js"></script>
-    <script src="../../reveal/plugin/markdown/markdown.js"></script>
-    <script src="../../reveal/plugin/highlight/highlight.js"></script>
-    <script src="../../reveal/plugin/math/math.js"></script>
+    <script src="../../dist/reveal.js"></script>
+    <script src="../../plugin/zoom/zoom.js"></script>
+    <script src="../../plugin/notes/notes.js"></script>
+    <script src="../../plugin/search/search.js"></script>
+    <script src="../../plugin/markdown/markdown.js"></script>
+    <script src="../../plugin/highlight/highlight.js"></script>
+    <script src="../../plugin/math/math.js"></script>
     <script>
 
         // Also available as an ES module, see:
@@ -923,7 +941,6 @@
             width: 1080,
             height: 720,
             slideNumber: 'c/t',
-            pdfSeparateFragments: false ,
             mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
             config: 'TeX-AMS_HTML-full',
             // pass other options into `MathJax.Hub.Config()`
